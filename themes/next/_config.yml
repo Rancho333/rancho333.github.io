@@ -202,6 +202,7 @@ sidebar:
   b2t: true
 
   # Scroll percent label in b2t button.
+  # 显示当前浏览进度
   scrollpercent: true
 
   # Enable sidebar on narrow view (only for Muse | Mist).
@@ -702,11 +703,12 @@ pace: false
 # pace_theme: pace-theme-center-simple
 pace_theme: pace-theme-minimal
 
+#next的4种动态主题背景
 # Canvas-nest
 canvas_nest: false
 
 # three_waves
-three_waves: false
+three_waves: true
 
 # canvas_lines
 canvas_lines: false
