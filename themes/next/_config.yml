@@ -27,12 +27,12 @@ override: false
 # For example, you put your favicons into `hexo-site/source/images` directory.
 # Then need to rename & redefine they on any other names, otherwise icons from Next will rewrite your custom icons in Hexo.
 favicon:
-  small: /images/favicon-16x16-next.png
-  medium: /images/favicon-32x32-next.png
+  small: /images/R-16x16.png
+  medium: /images/R-32x32.png
   apple_touch_icon: /images/apple-touch-icon-next.png
   safari_pinned_tab: /images/logo.svg
   #android_manifest: /images/manifest.json
-  #ms_browserconfig: /images/browserconfig.xml
+  #ms_browserconfig: /imagesetbrowserconfig.xml
 
 # Set default keywords (Use a comma to separate)
 keywords: "Rancho Blog, 蓝澈的博客, 嵌入式"
@@ -190,8 +190,8 @@ sidebar:
   #  - always  expand for all pages automatically
   #  - hide    expand only when click on the sidebar toggle icon.
   #  - remove  Totally remove sidebar including sidebar toggle.
-  display: hide
-  #display: always
+  #display: post
+  display: always
   #display: hide
   #display: remove
 
@@ -225,7 +225,7 @@ excerpt_description: true
 # Automatically Excerpt. Not recommend.
 # Please use <!-- more --> in the post to control excerpt accurately.
 auto_excerpt:
-  enable: false
+  enable: true
   length: 150
 
 # Post meta display settings
@@ -362,7 +362,7 @@ han: false
 #swiftype_key:
 
 # Baidu Analytics ID
-#baidu_analytics:
+baidu_analytics: 7d3bf4ed9e6781e06f94e93120e97f33
 
 # Duoshuo ShortName
 #duoshuo_shortname:
@@ -708,10 +708,10 @@ pace_theme: pace-theme-minimal
 canvas_nest: false
 
 # three_waves
-three_waves: true
+three_waves: false
 
 # canvas_lines
-canvas_lines: false
+canvas_lines: true
 
 # canvas_sphere
 canvas_sphere: false

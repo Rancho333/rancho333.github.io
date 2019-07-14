@@ -35,7 +35,8 @@ titlecase: false # Transform title into titlecase
 external_link: true # Open external links in new tab
 filename_case: 0
 render_drafts: false
-post_asset_folder: false
+#使能资源文件夹
+post_asset_folder: true
 relative_link: false
 future: true
 highlight:
@@ -81,5 +82,3 @@ deploy:
   type: git
   repository: git@github.com:Rancho333/rancho333.github.io.git
   branch: master
-
-baidu_analytics: 7d3bf4ed9e6781e06f94e93120e97f33
