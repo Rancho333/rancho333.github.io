@@ -1,7 +1,11 @@
 ---
 title: Linux查找so文件所在pkg
 date: 2019-07-14 20:17:03
+categories: 
+- Linux相关
 tags:
+- Linux
+- so文件
 ---
 
 ## 问题描述

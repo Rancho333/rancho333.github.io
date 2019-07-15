@@ -1,7 +1,10 @@
 ---
 title: Hexo使用优化
 date: 2019-07-14 21:45:48
+categories:
+- Hexo
 tags:
+- Hexo
 ---
 
 ## 说明
@@ -61,6 +64,49 @@ favicon:
   medium: /images/R-32x32.png 
 ```
 替换small和medium两项，分别对应两种尺寸的图标。
+
+## 给文章添加"categories"属性
+创建`categories`页面  
+```
+hexo new page categories
+```
+找到`source/categories/index.md`文件，里面的初始内容如下：
+```
+---                                       
+title: categories
+date: 2019-07-12 12:14:44
+---
+```
+添加`type: "categories"`到内容中，添加后内容如下：
+```
+---                                               
+title: categories
+date: 2019-07-12 12:14:44
+type: "categories"
+---
+```
+
+给文章添加`categories`属性，打开任意一篇md文件，为其添加概述信，添加后内容如下：
+```
+---                                              
+title: Linux查找so文件所在pkg 
+date: 2019-07-14 20:17:03
+categories: 
+- Linux相关
+tags:
+- Linux
+- so文件
+---
+```
+hexo一篇文章只能属于一个分类，如添加多个分类，则按照分类嵌套进行处理。
+
+## 给文章添加"tags"属性
+创建`tags`页面
+```
+hexo new page tags
+```
+后面的操作与添加`categories`属性类似，一篇文章可以添加多个`tags`  
+
 
 **参考资料：**
 [NexT官方](http://theme-next.iissnan.com/)  
