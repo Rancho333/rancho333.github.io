@@ -107,6 +107,15 @@ hexo new page tags
 ```
 后面的操作与添加`categories`属性类似，一篇文章可以添加多个`tags`  
 
-
+## 使用资源文件夹
+在站点配置文件找到`post_asset_folder`关键字,设置成如下：
+```
+_config.yml
+post_asset_folder: true
+```
+当资源管理功能打开后，Hexo将会在每一次通过hexo new创建md时在相同路径下面创建一个同名的文件夹，与该md相关的资源都可以放在该文件夹里面。之后即可使用标签通过相对路径引用资源。  
+```
+{% asset_img image_name.jpg tag %}
+```
 **参考资料：**
 [NexT官方](http://theme-next.iissnan.com/)  
