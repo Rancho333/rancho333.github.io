@@ -17,7 +17,7 @@ ubuntu使用apt来管理软件包，apt将软件库存储在如下文件中:
 ```
 /etc/apt/sources.list
 /etc/apt/sources.list.d/目录中带.list后缀的文件
-```  
+```
  
 可以通过man sources.lis来查看apt的完整存储机制。  
 
@@ -32,14 +32,15 @@ ubuntu使用apt来管理软件包，apt将软件库存储在如下文件中:
 
 ### ubuntu系统代号
 codename是ubuntu不同版本的代号
-| 版本号 | 代号(codename) |
-| :----: | :--: |
-| 10.04 | lucid |
-| 12.04 | precise |
-| 14.04 | trusty |
-| 14.10 | utopic |
-| 16.04 | xenial |
-| 18.04 | bionic |  
+
+| 版本号 | 代号(codename) |  
+| :----: | :--: |  
+| 10.04 | lucid |  
+| 12.04 | precise |  
+| 14.04 | trusty |  
+| 14.10 | utopic |  
+| 16.04 | xenial |  
+| 18.04 | bionic |    
 
 ### deb说明
 deb后面的内容有三大部分：deb URI section1 section2  
@@ -57,10 +58,10 @@ codename-backports    #unsupported updates
 codename-proposed	  #pre-released updates
 codename-security	  #important security updates
 codename-updates	  #recommanded updates
-```  
+```
 
 打开其中一个任一文件夹，例如`xenial-updates`:  
-{% asset-img xenial-updates.png xenial-updates %}  
+{% asset_img xenial-updates.png xenial-updates %}  
 里面有`main,multiverse,restricted,universe`文件夹，这些文件夹对应deb后面的section2,里面包含了不同软件包的索引。它们的区别在于：  
 
 ```
@@ -68,7 +69,7 @@ main：完全的自由软件
 restricted: 不完全的自由软件
 universe: ubuntu官方不提供支持与补丁，全靠社区支持
 multiverse: 非自由软件，完全不提供支持和补丁
-```  
+```
 
 打开main目录下的binary-i386子目录下的Packages.gz文件，可以看到如下内容：  
 {% asset_img packages.png packages %}
@@ -78,19 +79,19 @@ multiverse: 非自由软件，完全不提供支持和补丁
 先将默认的sources.list进行备份，然后仿照下表修改源：  
 
 ```
-\# 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释
+# 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释
 deb https://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
-\# deb-src https://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+# deb-src https://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
 deb https://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
-\# deb-src https://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+# deb-src https://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
 deb https://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
-\# deb-src https://mirrors.aliyun.com/ bionic-backports main restricted universe multiverse
+# deb-src https://mirrors.aliyun.com/ bionic-backports main restricted universe multiverse
 deb https://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
-\# deb-src https://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+# deb-src https://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
 
-\# 预发布软件源，不建议启用
-\# deb https://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
-\# deb-src https://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+# 预发布软件源，不建议启用
+# deb https://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+# deb-src https://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
 ```
 
 推荐使用阿里云的源，延迟低，异常少！  
