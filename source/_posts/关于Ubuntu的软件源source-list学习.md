@@ -25,7 +25,7 @@ ubuntu使用apt来管理软件包，apt将软件库存储在如下文件中:
 1. 以`#`开头的行是注释行  
 2. 以deb或deb-src开头的是`apt respository`，具体格式为：  
   1. deb：二进制包仓库  
-  2. deb-src：二进制包的源码库  
+  2. deb-src：二进制包的源码库,不自己看程序或者编译，deb-src可以不要。  
   3. URI: 库所在的地址，可以是网络地址，也可以是本地的镜像地址  
   4. codename：ubuntu版本的代号，可以通过命令`lsb_release -a`来查看当前系统的代号  
   5. components：软件的性质(free或non-free等)  
