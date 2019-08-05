@@ -94,5 +94,9 @@ deb https://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe 
 # deb-src https://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
 ```
 
-推荐使用阿里云的源，延迟低，异常少！  
+## 国内镜像网站
+这里推荐两个国内镜像网站，一个是[清华源](http://mirrors.tuna.tsinghua.edu.cn/)，一个是[阿里源](https://mirrors.aliyun.com/)
+找到对应的源后，清华源可以点击源名称后的问号获取源路径，阿里源可以点击源名称所在行的帮助获取源路径。
+注意事项：
+	清华源中源路径默认使用https,这在某些系统中可能无法访问，修改为http进行使用 
 
