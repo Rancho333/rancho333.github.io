@@ -118,8 +118,30 @@ deb https://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe 
 	1.更换源，换成清华源就没问题了
 	2.使用https协议
 
+## 关于pypi国内源
+哈，顺便在这里提一下pip的国内源啦，就不单独写篇文章了。
+python使用pip作为包管理工具，类似于debian/ubuntu的apt-get/aptitude和redhat的yum。国内镜像网站可以在上面找到。替换方法如下：
+临时使用：
+	`pip install -i https://pypi.tuna.tsinghua.edu.cn/simple some-package`
+设为默认：
+升级 pip 到最新的版本 (>=10.0.0) 后进行配置：
+```
+	pip install pip -U
+	pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+```
+如果您到 pip 默认源的网络连接较差，临时使用本镜像站来升级 pip：
+`pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pip -U`
 
-
+如果不升级pip,那么可以修改pip的配置文件：
+修改 ~/.pip/pip.conf (没有就创建一个文件夹及文件)
+内容如下：
+```
+[global]
+index-url = https://pypi.tuna.tsinghua.edu.cn/simple
+[install]
+trusted-host = https://pypi.tuna.tsinghua.edu.cn
+```
 
 **参考资料：**
 [ubuntu论坛](https://forum.ubuntu.org.cn/viewtopic.php?t=465499)
+
