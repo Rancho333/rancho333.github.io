@@ -98,5 +98,28 @@ deb https://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe 
 这里推荐两个国内镜像网站，一个是[清华源](http://mirrors.tuna.tsinghua.edu.cn/)，一个是[阿里源](https://mirrors.aliyun.com/)
 找到对应的源后，清华源可以点击源名称后的问号获取源路径，阿里源可以点击源名称所在行的帮助获取源路径。
 注意事项：
-	清华源中源路径默认使用https,这在某些系统中可能无法访问，修改为http进行使用 
+	清华源中源路径默认使用https,需要安装apt-transport-https软件包，否则修改为http进行使用
 
+## unmet dependencies
+在执行命令`apt-get -y build-dep linux`时出现`unmet dependencies`错误，如下图所示：
+{% asset_image unmet_dep.png unmet_dep %}
+解决方法：
+	在镜像服务器上可以查询到2.99版本存在，将`apt-get`命令换成`aptitude`命令，使用`apt-get install -y apt-utils aptitude`安装`aptitude`
+
+## Hash Sum Mismatch
+在使用阿里源编译sonic源码的时候(debian:stretch)，出现`Hash Sum Mismatch`的报错。如下图所示：
+{% asset_image hash_mismatch.png hash_mismatch %}
+
+有些网络服务商，特别是一些小区网络的服务商，为了减少流量费用和提高对常见网络资源的访问速度，很多都搞了这么个东西出来
+但是他们的缓存策略有问题，只比对文件路径，不考虑域名/IP地址，也没怎么考虑过文件内容更新后的同步，即缓存服务器上的内容和实际文件的内容可能不一致。
+即对于http://example.com/a/b/c.dat这么一个文件，如果被收入缓存，那么你访问其他任意域名下的/a/b/c.dat文件都会去读取被缓存的文件。如果http://example.com/a/b/c.dat有了改变，缓存服务器上的对应文件不一定能跟着更新。
+而ubuntu大部分源的文件路径是一致的，所以如果163源中的 http://mirrors.163.com/ubuntu/dists/tru ... ources.bz2 被收入缓存，那么你访问官方源 http://archive.ubuntu.com/ubuntu/dists/ ... ources.bz2 时，由于路径都是/ubuntu/dists/trusty/main/source/Sources.bz2，还是获取的是缓存服务器上的缓存文件。这个可用wget验证。如果缓存服务器上文件过时了，就会出现Hash Sum Mismatch。
+解决方法：
+	1.更换源，换成清华源就没问题了
+	2.使用https协议
+
+
+
+
+**参考资料：**
+[ubuntu论坛](https://forum.ubuntu.org.cn/viewtopic.php?t=465499)
