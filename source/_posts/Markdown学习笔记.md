@@ -139,6 +139,13 @@ md和HTML语法兼容，可以通过HTML的标签来实现效果，如下：
 ```
 ![](https://rancho333.github.io/uploads/Rancho.png)  
 md没法指定图片的高度与宽度，可以使用`<image>`标签  
+
+使用资源文件夹后，将图片资源放置在对应的文章资源文件夹里面，可以通过：
+```
+{% asset_img image_name.png image_name %}
+```
+来调用图片资源
+
 ## Markdown表格  
 md使用|来分隔不同的单元格，使用-来分隔表头和其它行。在减号的不同侧加入:代表方向对齐。  
 ```
