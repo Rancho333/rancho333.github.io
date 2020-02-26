@@ -64,6 +64,7 @@ void main()
 
 再次ldd看下并执行：
 {% asset_img ldd_3.png ldd_3 %}
+
 可以正常执行打印出函数名字了，但是有点奇怪的是没有调用befor_main函数为什么也会打印出来呢。
 
 ## constructor关键字
