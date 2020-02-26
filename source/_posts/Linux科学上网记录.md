@@ -69,7 +69,8 @@ apt-get install privoxy
 ```
 vi /etc/privoxy/config
 forward-socks5t / 127.0.0.1:1080 .
-localhost：8118
+listen-address 127.0.0.1:8118
+确保这两行的存在
 ```
 
 * 启动privoxy
