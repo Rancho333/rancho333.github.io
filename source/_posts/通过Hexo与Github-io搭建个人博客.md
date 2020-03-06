@@ -24,7 +24,7 @@ sudo apt-get install git-core
 ```
 wget -qO- https://raw.github.com/creationix/nvm/v0.33.11/install.sh | sh
 安装完成后，重启终端后执行如下命令:
-nvm install stable
+npm install stable
 ```
 
 依赖程序安装完成之后，就可以使用npm安装Hexo.
