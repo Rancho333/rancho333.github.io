@@ -31,7 +31,7 @@ tags:
 
 # 代码演示
 ## 弱符号声明
-两种方式，第一种
+两种方式，第一种 
 ```
 extern void weak0();
 #pragma weak weak0

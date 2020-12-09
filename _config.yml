@@ -6,7 +6,7 @@
 title: Rancho Blog
 subtitle: 知行合一，致良知！
 description: "No pain, no gain!"
-keywords: "Racncho, Rancho Blog, 蓝澈的博客, 嵌入式"
+keywords: "Racncho, Rancho Blog, 嵌入式"
 author: Rancho
 language: zh-Hans 
 timezone:
@@ -80,5 +80,6 @@ theme: next
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repository: git@github.com:Rancho333/rancho333.github.io.git
+  repository: https://github.com/Rancho333/rancho333.github.io.git
   branch: master
+  message: Blog

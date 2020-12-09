@@ -14,17 +14,16 @@ Linux服务器
   git
   node.js(6.9版本以上)
 ```
-Github账号的注册在这里不做赘述，然后创建一个名为yourname.github.io的仓库（仓库名格式一定要符合）。我用的Linux是ubuntu16.04 server版(家用)与ubuntu18.04(aws云服务器,一年免费，可以用来科学上网)。
+Github账号的注册在这里不做赘述，然后创建一个名为yourname.github.io的仓库（仓库名格式一定要符合）。我用的Linux是ubuntu16.04 server版(家用)与ubuntu18.04(aws云服务器,一年免费，可以用来科学上网)。hexo依赖于git与node.js
 安装git  
 ```
 sudo apt-get install git-core
 ```
 
-安装node.js
+安装node.js,具体的node.js与hexo的对应版本参见hexo官网，我们这里使用的是hexo3.9，对应的node.js版本应该不高于12,否则会有一些奇奇怪怪的错误。
 ```
-wget -qO- https://raw.github.com/creationix/nvm/v0.33.11/install.sh | sh
-安装完成后，重启终端后执行如下命令:
-npm install stable
+curl -sL https://deb.nodesource.com/setup_15.x | sudo -E bash -
+sudo apt-get install -y nodejs
 ```
 
 依赖程序安装完成之后，就可以使用npm安装Hexo.
