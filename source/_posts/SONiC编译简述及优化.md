@@ -81,6 +81,15 @@ SONiC通过Dockerfile对每个用户都构建一个编译环境，对于单用�
     +   #SLAVE_IMAGE = $(SLAVE_BASE_IMAGE)-$(USER)
     +   SLAVE_IMAGE = sonic-201911-stretch
  
+    OVERLAY_MODULE_CHECK := \
+     lsmod | grep -q "^overlay " &>/dev/null || \
+    @@ -113,6 +115,7 @@ DOCKER_RUN := docker run --rm=true --privileged \
+     -w $(DOCKER_BUILDER_WORKDIR) \
+     -e "http_proxy=$(http_proxy)" \
+     -e "https_proxy=$(https_proxy)" \
+    +   -u root \
+     -i$(if $(TERM),t,)
+
     @@ -200,9 +202,9 @@ endif
         @$(OVERLAY_MODULE_CHECK)
         

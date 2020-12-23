@@ -367,6 +367,11 @@ ARISTA01T1>
 ###
 
 ## Sonic-Mgmt testbed设置
+从github上将sonic testbed设置到自己的环境中将会是一个冗长的过程。在将测试用例跑起来之前有十多个文件需要更新。
+然而，这个过程可以通过testbed.yaml和TestbedProcessing.py自动完成。testbed.yaml是一个配置文件（编译所有需要运行testcase的数据到一个文件中）。TestbedProcess.py的工作原理是：从配置文件拉取信息，然后将信息推送到它们属于的文件中去。这篇指南将会勾勒并简易化testbed的设置。
+
+### 目标
+通过使用testbed.yaml和TestbedProcessing.py来完成testbed的设置。这篇指南结束后，应该完成sonic-mgmt testbed的设置并且将testcases跑起来。
  
 ### 预迁移设置 
  sonic-mgmt启动并运行测试用例需要下述的设备：
@@ -374,6 +379,7 @@ ARISTA01T1>
  - root fanout
  - leaf fanout
  - DUT (device under test)
+ testbed的信息和拓扑可以从overview中获取到。
 
 ### 修改 Testbed.yaml配置文件
 在testbed.yaml中有7个主要的部分需要编辑：
@@ -384,8 +390,143 @@ ARISTA01T1>
 5. veos
 6. testbed
 7. topology
+每一部分文件的作用都需要按顺序的写好。具体信息在Sonic-Mgmt testbed Configuration中有描述
+
+对于testbed.yaml文件（在ansible下面有个testbed-new.yaml文件）：
+
+#### （可选）testbed_config部分：
+- name - 给testbed配置文件选择一个名字
+- alias - 给testbed配置文件选择一个别名
+
+##### device_groups部分
+用法：lab
+
+device_group部分生成lab文件，是用来设置testbed的的必须清单文件。配置文件的格式是yaml格式，脚本会将之转换成INI格式。device_group部分包含实验室中所有DUTs, fanout switchs，testbed server拓扑。组子节点从下面的device部分介绍。在大多数情况下可以不用管这一部分。
+
+#### devices部分
+用法：files/sonic_lab_devices, group_vars/fanout/secrets, group_vars/lab/secrets, lab
+
+device部分是包含所有设备和主机的字典。这部分不包含PTF容器的信息。关于PTF容器的信息，查看testbed.csv文件。
+对每一个你添加的设备，添加下面的信息：
+
+| Hostname | ansible_host | ansible_ssh_user | ansible_ssh_pass | HwSKU | device_type |
+| ---- | ---- | ---- | ---- | ---- | ---- | 
+| str-msn2700-01 | [IP Address] | [username] | [password] | DevSonic | DevSonic |
+| str-7260-10 | [IP Address] | [username] | [password] | Arista-7260QX-64 | FanoutRoot |
+| str-7260-10 | [IP Address] | [username] | [password] | Arista-7260QX-64 | FanoutLeaf |
+| str-acs-serv-01 | [IP Address] | [username] | [password] | TestServ | Server |
+
+- hostname - 设备名称
+- ansible_host - 设备的管理IP
+- ansible_ssh_user - 设备登录名称
+- ansible_ssh_pass - 设备登录密码
+- hesku - 这是用来查阅验证的值（在/group_vars/all/labinfo.json）。没有这部分，就爱那个会失败。确保这部分在labinfo.json中有准确的数据。
+- device_type - 设备类型。如果只有4种设备，可以将提供标签留白不填写。
+
+lab server部分需要不同的字段输入：ansible_become_pass, sonicadmin_user(用户名), sonicadmin_password, sonic_inital_password. 这些字段是可选的，因为它们是直接从group_var/lab/secrets.yml中获取的变量。所以为了便利，这部分的配置文件作为一个拷贝。
+
+#### host_vars部分
+
+用法：所有的host_val数据
+
+host的参数在此处设置。在这篇指南中，我们在此处定义server（str-acs-serv-01）：
+对于每一个你添加的host，定义或确认如下数据：
+
+- mgmt_bridge
+- mgmt_prefixlen (这个应该和mgmt_subnet_mask_length匹配)
+- mgmt_gw
+- external_about
+
+#### veos_groups部分
+
+用法：veos
+
+#### veos部分
+
+用法：group_vars/eos/cred, main.yml, group_vars/vm_host/creds
 
 
+#### testbed部分
+
+用法： testbed.csv
+
+#### 拓扑部分
+
+用法： files/sonic_lab_links.csv
+
+#### docker_registry部分
+
+用法： /vars/docker_registry.yml
 
 
+### testbed运行脚本
 
+当testbed.yaml文件配置好后，将TestbedProcess.py和testbed.yaml文件放在sonic-mgmt/ansible下面。
+
+运行TestbedProcessing.py脚本：
+```
+python TestbedProcessing.py -i testbed.yaml
+options:
+-i = 解析testbed.yaml文件
+-basedir = 项目的根目录
+-backup = 文件的备份文件夹
+```
+
+#### VMS命令
+开启VMS（使用vms_1）:
+```
+./testbed-cli.sh start-vms vms_1 password.txt
+```
+停止VMS（使用vms_1）:
+```
+./testbed-cli.sh stop-vms vms_1 password.txt
+```
+
+### 部署（PTF32）拓扑容器
+
+在这篇指南中，将会使用testbed-cli.sh添加ptf32-1作为示例
+
+移除拓扑 ptf32-1:
+```
+./testbed-cli.sh remove-topo ptf32-1 password.txt
+```
+
+添加拓扑 ptf32-1:
+```
+./testbed-cli.sh add-topo ptf32-1 password.txt
+```
+可以使用"docker ps"或者"dokcer container ls"命令去检查是否添加或移除。
+
+### 运行第一个测试用例（Neighbour）
+
+当VMs和ptf32-1拓扑成功添加后，第一个测试用例“neighbour”就可以运行起来了。testbed的名字和测试用例的名字需要通过变量声明出来。请检查一下，之后，playbook就可以运行了。
+运行如下命令：
+```
+export TESTBED_NAME=ptf32-1
+export TESTCASE_NAME=neighbour
+echo $TESTBED_NAME
+echo $TESTCASE_NAME
+ansible-playbook -i lab -l sonic-ag9032 test_sonic.ynl -e testbed_name=$TESTBED_NAME -e testcase_name=$TESTCASE_NAME
+```
+
+## 排错
+
+问题：Testbed命令行提示没有password文件
+解决方式：创建一个空的password文件去绕过这个问题
+
+问题：即使在我运行完stop-vms命令后IPs不可达
+解决方式：如果运行了stop-vms命令后这个问题依然存在，运行如下命令：
+```
+virsh
+list
+destory VM_Name (删除占用这个IP的VM)
+exit(退出virsh)，在永久删除这个IPs前请确保没有其它VM使用这个IPs
+```
+
+问题：任务设置失败。SSH Error：data could not be sent to the remote host
+解决方式：导致这个现象的问题可能有很多。
+    1. 确保这台主机可以通过SSH到达
+    2. group_vars/all/lab_info.json文件中包含了正确的凭证吗？
+    3. 设备在files/sonic_lab_devices.cav中有正确的hwsku吗？
+    4. 确保lab文件中在IPs后面没有"/"，INI文件无法识别
+    5. 重新检查testbed.yaml配置文件，是否获取了IPs和正确的凭证
