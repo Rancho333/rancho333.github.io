@@ -1,7 +1,7 @@
 ---
 title: sonic-testbed
 date: 2020-12-18 15:29:56
-tags: sonic
+tags: SONiC
 ---
 
 # 写在前面
