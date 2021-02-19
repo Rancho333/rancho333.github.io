@@ -1,7 +1,7 @@
 ---
 title: 通过Hexo与Github.io搭建个人博客
 date: 2019-07-14 11:05:48
-tags:
+tags: hexo
 ---
 
 ## 前言

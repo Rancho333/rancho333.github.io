@@ -145,6 +145,32 @@ index 8cbf7269..edc51460 100644
 在SONiC的安装镜像第一次启动时，会在`rc.local`中将其释放到文件系统中去.
 ![](https://rancho333.github.io/uploads/platform_module_2.png)
 
+对于`platform-modules-*_amd64.deb`，里面包含了device的驱动，会在systemd中添加服务完成驱动的加载。这个deb的生成规则参见`platform/broadcom/sonic-platform-modules-cel/debian/`，主要修改如下几个文件：
+```
+rules
+control
+```
+以及添加
+```
+platform-modules-ivystone.init
+platform-modules-ivystone.install
+platform-modules-ivystone.postinst
+```
+
+注意编译`platform-modules-*_amd64.deb`的规则：
+```
+CEL_DX010_PLATFORM_MODULE = platform-modules-dx010_$(CEL_DX010_PLATFORM_MODULE_VERSION)_amd64.deb
+$(CEL_DX010_PLATFORM_MODULE)_SRC_PATH = $(PLATFORM_PATH)/sonic-platform-modules-cel
+$(CEL_DX010_PLATFORM_MODULE)_DEPENDS += $(LINUX_HEADERS) $(LINUX_HEADERS_COMMON)
+$(CEL_DX010_PLATFORM_MODULE)_PLATFORM = x86_64-cel_seastone-r0
+SONIC_DPKG_DEBS += $(CEL_DX010_PLATFORM_MODULE)
+           
+CEL_HALIBURTON_PLATFORM_MODULE = platform-modules-haliburton_$(CEL_HALIBURTON_PLATFORM_MODULE_VERSION)_amd64.deb
+$(CEL_HALIBURTON_PLATFORM_MODULE)_PLATFORM = x86_64-cel_e1031-r0
+$(eval $(call add_extra_package,$(CEL_DX010_PLATFORM_MODULE),$(CEL_HALIBURTON_PLATFORM_MODULE)))
+```
+在slave.mk中会有编译SONIC_DPKG_DEBS的命令，只有CEL_DX010_PLATFORM_MODULE是显示的添加到SONIC_DPKG_DEBS
+
 # SONiC启动简述
 
 对于从onie下面安装SONiC，在onie下面会维护一个`machine.conf`文件，这里面有设备的详细信息，之后SONiC会根据这里的信息完成初始化的文件加载流程。
