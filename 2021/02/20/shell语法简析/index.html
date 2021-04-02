@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>shell语法简析 | Rancho Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="问题说明在shell下遇到一个赋值的问题 123[rancho ~]$ a&#x3D;10[rancho ~]$ demo$a&#x3D;$(echo 123)demo10&#x3D;123: command not found  shell下的命令格式shell下我们常用的命令格式如下： 123var&#x3D;value           #变量赋值，例如a&#x3D;1cmd [args]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shell语法简析">
+<meta property="og:url" content="https://rancho333.gitee.io/2021/02/20/shell%E8%AF%AD%E6%B3%95%E7%AE%80%E6%9E%90/index.html">
+<meta property="og:site_name" content="Rancho Blog">
+<meta property="og:description" content="问题说明在shell下遇到一个赋值的问题 123[rancho ~]$ a&#x3D;10[rancho ~]$ demo$a&#x3D;$(echo 123)demo10&#x3D;123: command not found  shell下的命令格式shell下我们常用的命令格式如下： 123var&#x3D;value           #变量赋值，例如a&#x3D;1cmd [args]">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-02-20T16:14:32.000Z">
+<meta property="article:modified_time" content="2021-04-02T12:01:40.795Z">
+<meta property="article:author" content="Rancho">
+<meta property="article:tag" content="shell">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Rancho Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Rancho Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">知行合一，致良知！</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rancho333.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-shell语法简析" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/02/20/shell%E8%AF%AD%E6%B3%95%E7%AE%80%E6%9E%90/" class="article-date">
+  <time class="dt-published" datetime="2021-02-20T16:14:32.000Z" itemprop="datePublished">2021-02-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      shell语法简析
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="问题说明"><a href="#问题说明" class="headerlink" title="问题说明"></a>问题说明</h1><p>在shell下遇到一个赋值的问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[rancho ~]$ a&#x3D;10</span><br><span class="line">[rancho ~]$ demo$a&#x3D;$(echo 123)</span><br><span class="line">demo10&#x3D;123: command not found</span><br></pre></td></tr></table></figure>
+
+<h1 id="shell下的命令格式"><a href="#shell下的命令格式" class="headerlink" title="shell下的命令格式"></a>shell下的命令格式</h1><p>shell下我们常用的命令格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var&#x3D;value           #变量赋值，例如a&#x3D;1</span><br><span class="line">cmd [args]          #命令执行，例如ls -l</span><br><span class="line">&gt;redirection        #重定向,例如:&gt;a.c </span><br></pre></td></tr></table></figure>
+
+<p>实际上，bash中的一个简单命令的完整格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var&#x3D;value ... cmd args &gt;redirection ...</span><br></pre></td></tr></table></figure>
+<p>一个完整的简单命令由三部分组成：变量赋值部分、命令和参数部分、重定向部分，只是很多时候我们会省略一些部分的内容。<br>其中：</p>
+<ul>
+<li>变量赋值和重定向可以有多个</li>
+<li>变量赋值必须在cmd前面，并且变量名必须符合bash要求的命令规则<ul>
+<li>定义变量时，普通变量名是字母、数字、下划线的组合，且不能以数字开头</li>
+<li>调用变量时，在变量名前加<code>$</code>，shell有一部分特殊变量如<code>$0 $1 $$</code></li>
+</ul>
+</li>
+</ul>
+<p>对于变量赋值：</p>
+<ul>
+<li>如果有变量赋值而没有命令执行部分，则变量赋值在当前shell下生效</li>
+<li>如果有变量赋值也有命令执行部分，则变量赋值只作用于改命令，对当前shell无影响</li>
+<li>如果变量名不符合bash的命令规范，则不认为是变量赋值语句，而是当作cmd部分</li>
+</ul>
+<h1 id="问题说明-1"><a href="#问题说明-1" class="headerlink" title="问题说明"></a>问题说明</h1><p><code>demo$a</code>不是一个有效的变量名，所以会当作cmd来执行，但是在执行之前会从左到右执行shell命令解析规则，得到<code>demo10=123</code>，之后将其作为命令进行执行，找不到改命令从而报错。类似的，输入<code>123das=10</code>也会报这种错误。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rancho333.gitee.io/2021/02/20/shell%E8%AF%AD%E6%B3%95%E7%AE%80%E6%9E%90/" data-id="ckn09cxzm001lkjnv0tx6cjpr" data-title="shell语法简析" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/" rel="tag">shell</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/02/22/shell%E6%A0%B8%E5%BF%83%E6%9C%BA%E5%88%B6%E4%B9%8B%E5%AD%90shell%E4%B8%8Eshell%E7%8E%AF%E5%A2%83/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          shell核心机制之子shell与shell环境
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/02/20/shell-tips-tricks/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">shell_tips_tricks</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux%E7%9B%B8%E5%85%B3/">Linux相关</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SONiC/">SONiC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SONiC/" rel="tag">SONiC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Systemd/" rel="tag">Systemd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/attribute%E5%B1%9E%E6%80%A7/" rel="tag">attribute属性</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flash/" rel="tag">flash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/igmp-snooping/" rel="tag">igmp snooping</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kernel/" rel="tag">kernel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/passwd/" rel="tag">passwd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/" rel="tag">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/so%E6%96%87%E4%BB%B6/" rel="tag">so文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/stty/" rel="tag">stty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vxlan/" rel="tag">vxlan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E6%96%AD/" rel="tag">中断</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93so/" rel="tag">动态库so</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%98%E5%82%A8/" rel="tag">存储</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%B1%E7%AC%A6%E5%8F%B7/" rel="tag">弱符号</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%AE%B5%E9%94%99%E8%AF%AF/" rel="tag">段错误</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" rel="tag">科学上网</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E7%A7%BB%E6%A4%8D/" rel="tag">系统移植</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E8%AF%91/" rel="tag">编译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%91%E6%AD%A5/" rel="tag">跑步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B8%A9%E5%9D%91/" rel="tag">踩坑</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AF%E4%BB%B6%E6%BA%90/" rel="tag">软件源</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/" rel="tag">通信协议</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Linux/" style="font-size: 16px;">Linux</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/SONiC/" style="font-size: 18px;">SONiC</a> <a href="/tags/Systemd/" style="font-size: 10px;">Systemd</a> <a href="/tags/attribute%E5%B1%9E%E6%80%A7/" style="font-size: 10px;">attribute属性</a> <a href="/tags/flash/" style="font-size: 10px;">flash</a> <a href="/tags/hexo/" style="font-size: 12px;">hexo</a> <a href="/tags/igmp-snooping/" style="font-size: 10px;">igmp snooping</a> <a href="/tags/kernel/" style="font-size: 10px;">kernel</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/passwd/" style="font-size: 10px;">passwd</a> <a href="/tags/shell/" style="font-size: 20px;">shell</a> <a href="/tags/so%E6%96%87%E4%BB%B6/" style="font-size: 10px;">so文件</a> <a href="/tags/stty/" style="font-size: 10px;">stty</a> <a href="/tags/vxlan/" style="font-size: 10px;">vxlan</a> <a href="/tags/%E4%B8%AD%E6%96%AD/" style="font-size: 10px;">中断</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93so/" style="font-size: 10px;">动态库so</a> <a href="/tags/%E5%AD%98%E5%82%A8/" style="font-size: 10px;">存储</a> <a href="/tags/%E5%BC%B1%E7%AC%A6%E5%8F%B7/" style="font-size: 10px;">弱符号</a> <a href="/tags/%E6%AE%B5%E9%94%99%E8%AF%AF/" style="font-size: 10px;">段错误</a> <a href="/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" style="font-size: 10px;">科学上网</a> <a href="/tags/%E7%B3%BB%E7%BB%9F%E7%A7%BB%E6%A4%8D/" style="font-size: 10px;">系统移植</a> <a href="/tags/%E7%BC%96%E8%AF%91/" style="font-size: 10px;">编译</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">网络</a> <a href="/tags/%E8%B7%91%E6%AD%A5/" style="font-size: 10px;">跑步</a> <a href="/tags/%E8%B7%AF%E7%94%B1/" style="font-size: 10px;">路由</a> <a href="/tags/%E8%B8%A9%E5%9D%91/" style="font-size: 10px;">踩坑</a> <a href="/tags/%E8%BD%AF%E4%BB%B6%E6%BA%90/" style="font-size: 10px;">软件源</a> <a href="/tags/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/" style="font-size: 14px;">通信协议</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/04/02/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/05/shell-test/">shell-test</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/02/sonic-testbed%E7%9A%84%E7%90%86%E8%A7%A3/">sonic-testbed的理解</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/25/%E5%AF%B9SONiC%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AE%A4%E8%AF%86/">对SONiC项目的认识</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/23/shell%E9%87%8D%E5%AE%9A%E5%90%91/">shell重定向</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 Rancho<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

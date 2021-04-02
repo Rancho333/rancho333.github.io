@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>一些shell基础知识 | Rancho Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="写在前面最开始接触到的命令行是windows的cmd，一次用它来查ip感觉很神奇。后来接触到Linux，vim，从起初的抵触不适应，到后来的得心应手。使用命令行，离计算机更近。这篇文章记录一下shell下面的一些细节。分为  标准输入和命令参数的区别 在后台运行的命令退出终端也就全部退出了 单引号和双引号表示字符串的区别 有的命令和sudo一起用就command not found  标准输入和参">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一些shell基础知识">
+<meta property="og:url" content="https://rancho333.gitee.io/2020/03/06/%E4%B8%80%E4%BA%9Bshell%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="Rancho Blog">
+<meta property="og:description" content="写在前面最开始接触到的命令行是windows的cmd，一次用它来查ip感觉很神奇。后来接触到Linux，vim，从起初的抵触不适应，到后来的得心应手。使用命令行，离计算机更近。这篇文章记录一下shell下面的一些细节。分为  标准输入和命令参数的区别 在后台运行的命令退出终端也就全部退出了 单引号和双引号表示字符串的区别 有的命令和sudo一起用就command not found  标准输入和参">
+<meta property="og:locale">
+<meta property="og:image" content="https://rancho333.gitee.io/uploads/grep.png">
+<meta property="og:image" content="https://rancho333.gitee.io/uploads/find.png">
+<meta property="og:image" content="https://rancho333.gitee.io/uploads/find.png">
+<meta property="og:image" content="https://rancho333.gitee.io/uploads/block.png">
+<meta property="og:image" content="https://rancho333.gitee.io/uploads/ps.png">
+<meta property="og:image" content="https://rancho333.gitee.io/uploads/nohup.png">
+<meta property="og:image" content="https://rancho333.gitee.io/uploads/ds.png">
+<meta property="article:published_time" content="2020-03-06T16:35:48.000Z">
+<meta property="article:modified_time" content="2021-04-02T12:01:40.803Z">
+<meta property="article:author" content="Rancho">
+<meta property="article:tag" content="shell">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://rancho333.gitee.io/uploads/grep.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Rancho Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Rancho Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">知行合一，致良知！</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rancho333.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-一些shell基础知识" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/03/06/%E4%B8%80%E4%BA%9Bshell%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="article-date">
+  <time class="dt-published" datetime="2020-03-06T16:35:48.000Z" itemprop="datePublished">2020-03-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      一些shell基础知识
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>最开始接触到的命令行是windows的cmd，一次用它来查ip感觉很神奇。后来接触到Linux，vim，从起初的抵触不适应，到后来的得心应手。使用命令行，离计算机更近。这篇文章记录一下shell下面的一些细节。分为</p>
+<ol>
+<li>标准输入和命令参数的区别</li>
+<li>在后台运行的命令退出终端也就全部退出了</li>
+<li>单引号和双引号表示字符串的区别</li>
+<li>有的命令和<code>sudo</code>一起用就<code>command not found</code></li>
+</ol>
+<h1 id="标准输入和参数的区别"><a href="#标准输入和参数的区别" class="headerlink" title="标准输入和参数的区别"></a>标准输入和参数的区别</h1><p>最初遇到这个问题的时候是在shell下面使用<code>管道</code>操作，例如：<code>find ./ -name &quot;*.c&quot; | xargs grep -rn zhw</code>,这条命令的含义是：在当前路径下的所有<code>.c</code>文件中查找<code>zhw</code>关键字，注意这里在管道的右侧加了关键字<code>xargs</code>，表示将<code>find</code>找到的结果作为<em>参数</em>传递给<code>grep</code>，grep是不接受标准输入的。</p>
+<p>标准输入就是编程语言中诸如<code>scanf</code>或者<code>readline</code>获取到的信息；而参数是指程序的<code>main</code>函数传入的<code>args</code>字符串数组。管道符和重定向符都是将数据作为程序的标准输入，下面这个示例：<br><img src="https://rancho333.gitee.io/uploads/grep.png"></p>
+<ol>
+<li>grep要搜索的文件作为参数是可选的，<code>-r</code>可以在当前路径下递归查找</li>
+<li>find不加xargs和直接grep效果是一样的，说明没有指定查找文件，而使用xargs则指定了查找文件作为参数传递给grep</li>
+</ol>
+<p>这里多说一点：<br><img src="https://rancho333.gitee.io/uploads/find.png"><br>通常使用find命令查找特定的文件，然后再这些文件中用grep去匹配关键字，但是如果find的结果是空，那么通过xargs方式就相当于没有给grep指明特定查找文件（它就会在当前目录递归）,而通过<code>-exec</code>则表示对匹配的文件执行该参数所给出的shell命令，此时grep实际并没有执行，这才符合我们的预期结果。</p>
+<p>上面两个小例子，理解问题的本质是多么的重要，基础打牢固，花哨的东西就随便玩了！<br>除了<code>xargs</code>可以读取数据作为命令参数外，通过<code>$(cmd)</code>形式也能达到同样的效果，例如：<br><img src="https://rancho333.gitee.io/uploads/find.png"></p>
+<p><code>$(cmd)</code>读取<code>cmd</code>命令输出的数据作为参数。</p>
+<p>最后说一下如何区分命令能够接受标准输入还是参数：如果命令能够让终端阻塞，说明该命令能接受标准输入，反之就是不接受。<code>rm</code>命令是不接受标准输入的。<br><img src="https://rancho333.gitee.io/uploads/block.png"></p>
+<h1 id="后台运行程序"><a href="#后台运行程序" class="headerlink" title="后台运行程序"></a>后台运行程序</h1><p>如果一些服务需要长时间运行，比如main函数里面有个<code>while(1)</code>的死循环，程序运行后命令行会阻塞。在命令后加上<code>&amp;</code>后程序就可以在后台运行而不会阻塞命令行。底层的原理或者说这是怎么实现的呢？</p>
+<p>每一个命令行终端都是一个shell进程，每当有命令需要执行是shell会fork一个子进程去执行命令，而shell进程会阻塞，等待子shell进程退出才重新响应。写一个很简单的demo</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">void main()                                                                                           </span><br><span class="line">&#123;</span><br><span class="line">    while(1)</span><br><span class="line">    &#123;&#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>加上<code>&amp;</code>后，只是让shell进程不再阻塞，可以继续响应你的新命令，但是当你关掉这个shell命令行中终端后，依附于它的所有子进程都会退出。如下：<br><img src="https://rancho333.gitee.io/uploads/ps.png"><br>但是如果<code>(cmd &amp;)</code>这样来运行命令，则是将<code>cmd</code>挂到一个<code>systemd</code>系统守护进程下，这样即使当终端退出后，对于刚才的命令也没有影响。如下：<br><img src="https://rancho333.gitee.io/uploads/nohup.png"><br>不过<code>nohup cmd &amp;</code>的做法似乎常见一些，原理类似。此外还可以试试<code>tmux</code>这个小工具，如果利用晚上的时候在服务器编译大型项目，这玩意挺好用的，不用担心断网（终端被kill）。</p>
+<h1 id="单引号和双引号的区别"><a href="#单引号和双引号的区别" class="headerlink" title="单引号和双引号的区别"></a>单引号和双引号的区别</h1><p>使用<code>set -x</code>命令，可以开启shell的命令回显。</p>
+<p>对于单引号：所见即所得，会将单引号内的内容原样输出</p>
+<p>对于双引号：把双引号内的内容输出出来；如果内容中有命令、变量等，会先把变量、命令解析出结果，然后在输出最终内容来。</p>
+<p>不加引号：不会将含有空格的字符串视为一个整体输出, 如果内容中有命令、变量等，会先把变量、命令解析出结果，然后在输出最终内容来，如果字符串中带有空格等特殊字符，则不能完整的输出，需要改加双引号，一般连续的字符串，数字，路径等可以用。所以在写shell脚本的时候一定注意使用小括号和双引号哈！</p>
+<p>示例如下：<br><img src="https://rancho333.gitee.io/uploads/ds.png"></p>
+<h1 id="sudo-找不到命令"><a href="#sudo-找不到命令" class="headerlink" title="sudo 找不到命令"></a>sudo 找不到命令</h1><p>有时候普通用户可以印的命令，加上<code>sudo</code>之后却报错<code>command not found</code>，原因在于这个命令仅存在与该用户的环境变量PATH中。解决方法是：</p>
+<ol>
+<li>使用绝对路径调用命令</li>
+<li>将命令添加到需要使用的用户的环境变量中<br>同样的道理，root用户或其他用户的命令另外一些用户也可能找不到。</li>
+</ol>
+<p>参考资料：<br><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Nj58VYQc955bFukrt4Jm2Q">关于Linux shell你必须知道的</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rancho333.gitee.io/2020/03/06/%E4%B8%80%E4%BA%9Bshell%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" data-id="ckn09cxzw001rkjnvang5fuyq" data-title="一些shell基础知识" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/" rel="tag">shell</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/03/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%98%E5%82%A8%E4%BD%93%E7%B3%BB/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          计算机存储体系
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/03/03/C%E8%AF%AD%E8%A8%80%E5%BC%B1%E7%AC%A6%E5%8F%B7weak/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">C语言弱符号weak</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux%E7%9B%B8%E5%85%B3/">Linux相关</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SONiC/">SONiC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SONiC/" rel="tag">SONiC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Systemd/" rel="tag">Systemd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/attribute%E5%B1%9E%E6%80%A7/" rel="tag">attribute属性</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flash/" rel="tag">flash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/igmp-snooping/" rel="tag">igmp snooping</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kernel/" rel="tag">kernel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/passwd/" rel="tag">passwd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/" rel="tag">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/so%E6%96%87%E4%BB%B6/" rel="tag">so文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/stty/" rel="tag">stty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vxlan/" rel="tag">vxlan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E6%96%AD/" rel="tag">中断</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93so/" rel="tag">动态库so</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%98%E5%82%A8/" rel="tag">存储</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%B1%E7%AC%A6%E5%8F%B7/" rel="tag">弱符号</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%AE%B5%E9%94%99%E8%AF%AF/" rel="tag">段错误</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" rel="tag">科学上网</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E7%A7%BB%E6%A4%8D/" rel="tag">系统移植</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E8%AF%91/" rel="tag">编译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%91%E6%AD%A5/" rel="tag">跑步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B8%A9%E5%9D%91/" rel="tag">踩坑</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AF%E4%BB%B6%E6%BA%90/" rel="tag">软件源</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/" rel="tag">通信协议</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Linux/" style="font-size: 16px;">Linux</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/SONiC/" style="font-size: 18px;">SONiC</a> <a href="/tags/Systemd/" style="font-size: 10px;">Systemd</a> <a href="/tags/attribute%E5%B1%9E%E6%80%A7/" style="font-size: 10px;">attribute属性</a> <a href="/tags/flash/" style="font-size: 10px;">flash</a> <a href="/tags/hexo/" style="font-size: 12px;">hexo</a> <a href="/tags/igmp-snooping/" style="font-size: 10px;">igmp snooping</a> <a href="/tags/kernel/" style="font-size: 10px;">kernel</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/passwd/" style="font-size: 10px;">passwd</a> <a href="/tags/shell/" style="font-size: 20px;">shell</a> <a href="/tags/so%E6%96%87%E4%BB%B6/" style="font-size: 10px;">so文件</a> <a href="/tags/stty/" style="font-size: 10px;">stty</a> <a href="/tags/vxlan/" style="font-size: 10px;">vxlan</a> <a href="/tags/%E4%B8%AD%E6%96%AD/" style="font-size: 10px;">中断</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93so/" style="font-size: 10px;">动态库so</a> <a href="/tags/%E5%AD%98%E5%82%A8/" style="font-size: 10px;">存储</a> <a href="/tags/%E5%BC%B1%E7%AC%A6%E5%8F%B7/" style="font-size: 10px;">弱符号</a> <a href="/tags/%E6%AE%B5%E9%94%99%E8%AF%AF/" style="font-size: 10px;">段错误</a> <a href="/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" style="font-size: 10px;">科学上网</a> <a href="/tags/%E7%B3%BB%E7%BB%9F%E7%A7%BB%E6%A4%8D/" style="font-size: 10px;">系统移植</a> <a href="/tags/%E7%BC%96%E8%AF%91/" style="font-size: 10px;">编译</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">网络</a> <a href="/tags/%E8%B7%91%E6%AD%A5/" style="font-size: 10px;">跑步</a> <a href="/tags/%E8%B7%AF%E7%94%B1/" style="font-size: 10px;">路由</a> <a href="/tags/%E8%B8%A9%E5%9D%91/" style="font-size: 10px;">踩坑</a> <a href="/tags/%E8%BD%AF%E4%BB%B6%E6%BA%90/" style="font-size: 10px;">软件源</a> <a href="/tags/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/" style="font-size: 14px;">通信协议</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/04/02/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/05/shell-test/">shell-test</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/02/sonic-testbed%E7%9A%84%E7%90%86%E8%A7%A3/">sonic-testbed的理解</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/25/%E5%AF%B9SONiC%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AE%A4%E8%AF%86/">对SONiC项目的认识</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/23/shell%E9%87%8D%E5%AE%9A%E5%90%91/">shell重定向</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 Rancho<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

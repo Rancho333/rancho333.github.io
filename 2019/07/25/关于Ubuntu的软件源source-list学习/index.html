@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>关于Ubuntu的软件源source.list学习 | Rancho Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="背景说明最近参与到公司的白盒交换机项目中，需要编译ONL和sonic，其中软件源的设置让我非常头疼，编译依赖有很大的问题。决定深入学习一下Linux软件源.主机环境为ubuntu16.04.   软件库存储文件*.listubuntu使用apt来管理软件包，apt将软件库存储在如下文件中:   12&#x2F;etc&#x2F;apt&#x2F;sources.list&#x2F;etc&amp;#x2F">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于Ubuntu的软件源source.list学习">
+<meta property="og:url" content="https://rancho333.gitee.io/2019/07/25/%E5%85%B3%E4%BA%8EUbuntu%E7%9A%84%E8%BD%AF%E4%BB%B6%E6%BA%90source-list%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Rancho Blog">
+<meta property="og:description" content="背景说明最近参与到公司的白盒交换机项目中，需要编译ONL和sonic，其中软件源的设置让我非常头疼，编译依赖有很大的问题。决定深入学习一下Linux软件源.主机环境为ubuntu16.04.   软件库存储文件*.listubuntu使用apt来管理软件包，apt将软件库存储在如下文件中:   12&#x2F;etc&#x2F;apt&#x2F;sources.list&#x2F;etc&amp;#x2F">
+<meta property="og:locale">
+<meta property="og:image" content="https://rancho333.gitee.io/uploads/ubuntu.png">
+<meta property="og:image" content="https://rancho333.gitee.io/uploads/xenial.png">
+<meta property="og:image" content="https://rancho333.gitee.io/uploads/xenial-updates.png">
+<meta property="og:image" content="https://rancho333.gitee.io/uploads/packages.png">
+<meta property="article:published_time" content="2019-07-25T03:02:19.000Z">
+<meta property="article:modified_time" content="2021-04-02T12:01:40.807Z">
+<meta property="article:author" content="Rancho">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="软件源">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://rancho333.gitee.io/uploads/ubuntu.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Rancho Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Rancho Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">知行合一，致良知！</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rancho333.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-关于Ubuntu的软件源source-list学习" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/07/25/%E5%85%B3%E4%BA%8EUbuntu%E7%9A%84%E8%BD%AF%E4%BB%B6%E6%BA%90source-list%E5%AD%A6%E4%B9%A0/" class="article-date">
+  <time class="dt-published" datetime="2019-07-25T03:02:19.000Z" itemprop="datePublished">2019-07-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Linux%E7%9B%B8%E5%85%B3/">Linux相关</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      关于Ubuntu的软件源source.list学习
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="背景说明"><a href="#背景说明" class="headerlink" title="背景说明"></a>背景说明</h2><p>最近参与到公司的白盒交换机项目中，需要编译ONL和sonic，其中软件源的设置让我非常头疼，编译依赖有很大的问题。决定深入学习一下Linux软件源.主机环境为ubuntu16.04.  </p>
+<h2 id="软件库存储文件-list"><a href="#软件库存储文件-list" class="headerlink" title="软件库存储文件*.list"></a>软件库存储文件*.list</h2><p>ubuntu使用apt来管理软件包，apt将软件库存储在如下文件中:  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;etc&#x2F;apt&#x2F;sources.list</span><br><span class="line">&#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;目录中带.list后缀的文件</span><br></pre></td></tr></table></figure>
+<p>可以通过man sources.lis来查看apt的完整存储机制。  </p>
+<h2 id="sources-list格式和写法"><a href="#sources-list格式和写法" class="headerlink" title="sources.list格式和写法"></a>sources.list格式和写法</h2><ol>
+<li>以<code>#</code>开头的行是注释行  </li>
+<li>以deb或deb-src开头的是<code>apt respository</code>，具体格式为：  </li>
+<li>deb：二进制包仓库  </li>
+<li>deb-src：二进制包的源码库,不自己看程序或者编译，deb-src可以不要。  </li>
+<li>URI: 库所在的地址，可以是网络地址，也可以是本地的镜像地址  </li>
+<li>codename：ubuntu版本的代号，可以通过命令<code>lsb_release -a</code>来查看当前系统的代号  </li>
+<li>components：软件的性质(free或non-free等)  </li>
+</ol>
+<h3 id="ubuntu系统代号"><a href="#ubuntu系统代号" class="headerlink" title="ubuntu系统代号"></a>ubuntu系统代号</h3><p>codename是ubuntu不同版本的代号</p>
+<table>
+<thead>
+<tr>
+<th align="center">版本号</th>
+<th align="center">代号(codename)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">10.04</td>
+<td align="center">lucid</td>
+</tr>
+<tr>
+<td align="center">12.04</td>
+<td align="center">precise</td>
+</tr>
+<tr>
+<td align="center">14.04</td>
+<td align="center">trusty</td>
+</tr>
+<tr>
+<td align="center">14.10</td>
+<td align="center">utopic</td>
+</tr>
+<tr>
+<td align="center">16.04</td>
+<td align="center">xenial</td>
+</tr>
+<tr>
+<td align="center">18.04</td>
+<td align="center">bionic</td>
+</tr>
+</tbody></table>
+<h3 id="deb说明"><a href="#deb说明" class="headerlink" title="deb说明"></a>deb说明</h3><p>deb后面的内容有三大部分：deb URI section1 section2<br>以<code>deb http://us.archive.ubuntu.com/ubuntu/ xenial main restricted</code>为例进行说明。<br>URI是库所在的地址，支持http，fpt以及本地路径,访问<code>http://us.archive.ubuntu.com/ubuntu/</code>可以看到如下信息：<br><img src="https://rancho333.gitee.io/uploads/ubuntu.png"><br><code>dists</code>和<code>pool</code>这两个目录比较重要。<code>dists</code>目录包含了当前库的所有软件包的索引。这些索引通过codename分布在不同的文件夹中。例如<code>xenial</code>所在的目录。<br><img src="https://rancho333.gitee.io/uploads/xenial.png"><br>上图中的文件夹名其实就是对应了section1，我们可以根据需要填写不同的section1.<br>这里面的文件都是用以下格式命名的：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">codename</span><br><span class="line">codename-backports    #unsupported updates</span><br><span class="line">codename-proposed	  #pre-released updates</span><br><span class="line">codename-security	  #important security updates</span><br><span class="line">codename-updates	  #recommanded updates</span><br></pre></td></tr></table></figure>
+
+<p>打开其中一个任一文件夹，例如<code>xenial-updates</code>:<br><img src="https://rancho333.gitee.io/uploads/xenial-updates.png"><br>里面有<code>main,multiverse,restricted,universe</code>文件夹，这些文件夹对应deb后面的section2,里面包含了不同软件包的索引。它们的区别在于：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">main：完全的自由软件</span><br><span class="line">restricted: 不完全的自由软件</span><br><span class="line">universe: ubuntu官方不提供支持与补丁，全靠社区支持</span><br><span class="line">multiverse: 非自由软件，完全不提供支持和补丁</span><br></pre></td></tr></table></figure>
+
+<p>打开main目录下的binary-i386子目录下的Packages.gz文件，可以看到如下内容：<br><img src="https://rancho333.gitee.io/uploads/packages.png"><br>说明：Packages.gz这个文件其实就是一个“索引”文件,里面记录了各种包的包名(Package)、运行平台(Architecture)、版本号（Version）、依赖关系(Depends)、deb包地址(Filename)等。Filename指向的是源服务器pool目录下的某个deb。猜测：<code>apt-get install</code>某个软件是，其实就是基于这些Packages.gz来计算依赖关系，然后根据其中的filename地址来下载所需的deb，最后执行<code>dpkg -i pacckage.deb</code>来完成软件包的安装。  </p>
+<h2 id="替换源"><a href="#替换源" class="headerlink" title="替换源"></a>替换源</h2><p>先将默认的sources.list进行备份，然后仿照下表修改源：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释</span><br><span class="line">deb https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic main restricted universe multiverse</span><br><span class="line"># deb-src https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic main restricted universe multiverse</span><br><span class="line">deb https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-updates main restricted universe multiverse</span><br><span class="line"># deb-src https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-updates main restricted universe multiverse</span><br><span class="line">deb https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-backports main restricted universe multiverse</span><br><span class="line"># deb-src https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F; bionic-backports main restricted universe multiverse</span><br><span class="line">deb https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-security main restricted universe multiverse</span><br><span class="line"># deb-src https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-security main restricted universe multiverse</span><br><span class="line"></span><br><span class="line"># 预发布软件源，不建议启用</span><br><span class="line"># deb https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-proposed main restricted universe multiverse</span><br><span class="line"># deb-src https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-proposed main restricted universe multiverse</span><br></pre></td></tr></table></figure>
+
+<h2 id="国内镜像网站"><a href="#国内镜像网站" class="headerlink" title="国内镜像网站"></a>国内镜像网站</h2><p>这里推荐两个国内镜像网站，一个是<a target="_blank" rel="noopener" href="http://mirrors.tuna.tsinghua.edu.cn/">清华源</a>，一个是<a target="_blank" rel="noopener" href="https://mirrors.aliyun.com/">阿里源</a><br>找到对应的源后，清华源可以点击源名称后的问号获取源路径，阿里源可以点击源名称所在行的帮助获取源路径。<br>注意事项：<br>    清华源中源路径默认使用https,需要安装apt-transport-https软件包，否则修改为http进行使用</p>
+<h2 id="unmet-dependencies"><a href="#unmet-dependencies" class="headerlink" title="unmet dependencies"></a>unmet dependencies</h2><p>在执行命令<code>apt-get -y build-dep linux</code>时出现<code>unmet dependencies</code>错误，如下图所示：</p>
+
+<p>解决方法：<br>    在镜像服务器上可以查询到2.99版本存在，将<code>apt-get</code>命令换成<code>aptitude</code>命令，使用<code>apt-get install -y apt-utils aptitude</code>安装<code>aptitude</code></p>
+<h2 id="Hash-Sum-Mismatch"><a href="#Hash-Sum-Mismatch" class="headerlink" title="Hash Sum Mismatch"></a>Hash Sum Mismatch</h2><p>在使用阿里源编译sonic源码的时候(debian:stretch)，出现<code>Hash Sum Mismatch</code>的报错。如下图所示：</p>
+
+
+<p>有些网络服务商，特别是一些小区网络的服务商，为了减少流量费用和提高对常见网络资源的访问速度，很多都搞了这么个东西出来<br>但是他们的缓存策略有问题，只比对文件路径，不考虑域名/IP地址，也没怎么考虑过文件内容更新后的同步，即缓存服务器上的内容和实际文件的内容可能不一致。<br>即对于<a target="_blank" rel="noopener" href="http://example.com/a/b/c.dat%E8%BF%99%E4%B9%88%E4%B8%80%E4%B8%AA%E6%96%87%E4%BB%B6%EF%BC%8C%E5%A6%82%E6%9E%9C%E8%A2%AB%E6%94%B6%E5%85%A5%E7%BC%93%E5%AD%98%EF%BC%8C%E9%82%A3%E4%B9%88%E4%BD%A0%E8%AE%BF%E9%97%AE%E5%85%B6%E4%BB%96%E4%BB%BB%E6%84%8F%E5%9F%9F%E5%90%8D%E4%B8%8B%E7%9A%84/a/b/c.dat%E6%96%87%E4%BB%B6%E9%83%BD%E4%BC%9A%E5%8E%BB%E8%AF%BB%E5%8F%96%E8%A2%AB%E7%BC%93%E5%AD%98%E7%9A%84%E6%96%87%E4%BB%B6%E3%80%82%E5%A6%82%E6%9E%9Chttp://example.com/a/b/c.dat%E6%9C%89%E4%BA%86%E6%94%B9%E5%8F%98%EF%BC%8C%E7%BC%93%E5%AD%98%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84%E5%AF%B9%E5%BA%94%E6%96%87%E4%BB%B6%E4%B8%8D%E4%B8%80%E5%AE%9A%E8%83%BD%E8%B7%9F%E7%9D%80%E6%9B%B4%E6%96%B0%E3%80%82">http://example.com/a/b/c.dat这么一个文件，如果被收入缓存，那么你访问其他任意域名下的/a/b/c.dat文件都会去读取被缓存的文件。如果http://example.com/a/b/c.dat有了改变，缓存服务器上的对应文件不一定能跟着更新。</a><br>而ubuntu大部分源的文件路径是一致的，所以如果163源中的 <a target="_blank" rel="noopener" href="http://mirrors.163.com/ubuntu/dists/tru">http://mirrors.163.com/ubuntu/dists/tru</a> … ources.bz2 被收入缓存，那么你访问官方源 <a target="_blank" rel="noopener" href="http://archive.ubuntu.com/ubuntu/dists/">http://archive.ubuntu.com/ubuntu/dists/</a> … ources.bz2 时，由于路径都是/ubuntu/dists/trusty/main/source/Sources.bz2，还是获取的是缓存服务器上的缓存文件。这个可用wget验证。如果缓存服务器上文件过时了，就会出现Hash Sum Mismatch。<br>解决方法：<br>    1.更换源，换成清华源就没问题了<br>    2.使用https协议</p>
+<h2 id="关于pypi国内源"><a href="#关于pypi国内源" class="headerlink" title="关于pypi国内源"></a>关于pypi国内源</h2><p>哈，顺便在这里提一下pip的国内源啦，就不单独写篇文章了。<br>python使用pip作为包管理工具，类似于debian/ubuntu的apt-get/aptitude和redhat的yum。国内镜像网站可以在上面找到。替换方法如下：<br>临时使用：<br>    <code>pip install -i https://pypi.tuna.tsinghua.edu.cn/simple some-package</code><br>设为默认：<br>升级 pip 到最新的版本 (&gt;=10.0.0) 后进行配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install pip -U</span><br><span class="line">pip config set global.index-url https:&#x2F;&#x2F;pypi.tuna.tsinghua.edu.cn&#x2F;simple</span><br></pre></td></tr></table></figure>
+<p>如果您到 pip 默认源的网络连接较差，临时使用本镜像站来升级 pip：<br><code>pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pip -U</code></p>
+<p>如果不升级pip,那么可以修改pip的配置文件：<br>修改 ~/.pip/pip.conf (没有就创建一个文件夹及文件)<br>内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[global]</span><br><span class="line">index-url &#x3D; https:&#x2F;&#x2F;pypi.tuna.tsinghua.edu.cn&#x2F;simple</span><br><span class="line">[install]</span><br><span class="line">trusted-host &#x3D; https:&#x2F;&#x2F;pypi.tuna.tsinghua.edu.cn</span><br></pre></td></tr></table></figure>
+
+<p><strong>参考资料：</strong><br><a target="_blank" rel="noopener" href="https://forum.ubuntu.org.cn/viewtopic.php?t=465499">ubuntu论坛</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rancho333.gitee.io/2019/07/25/%E5%85%B3%E4%BA%8EUbuntu%E7%9A%84%E8%BD%AF%E4%BB%B6%E6%BA%90source-list%E5%AD%A6%E4%B9%A0/" data-id="ckn09cy03001vkjnv20rdfey3" data-title="关于Ubuntu的软件源source.list学习" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%BD%AF%E4%BB%B6%E6%BA%90/" rel="tag">软件源</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/07/25/hexo%E4%B8%AD%E8%B8%A9%E8%BF%87%E7%9A%84%E5%9D%91/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          hexo中踩过的坑
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/07/14/Hexo%E4%BD%BF%E7%94%A8%E4%BC%98%E5%8C%96/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hexo使用优化</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux%E7%9B%B8%E5%85%B3/">Linux相关</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SONiC/">SONiC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SONiC/" rel="tag">SONiC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Systemd/" rel="tag">Systemd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/attribute%E5%B1%9E%E6%80%A7/" rel="tag">attribute属性</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flash/" rel="tag">flash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/igmp-snooping/" rel="tag">igmp snooping</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kernel/" rel="tag">kernel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/passwd/" rel="tag">passwd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/" rel="tag">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/so%E6%96%87%E4%BB%B6/" rel="tag">so文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/stty/" rel="tag">stty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vxlan/" rel="tag">vxlan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E6%96%AD/" rel="tag">中断</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93so/" rel="tag">动态库so</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%98%E5%82%A8/" rel="tag">存储</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%B1%E7%AC%A6%E5%8F%B7/" rel="tag">弱符号</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%AE%B5%E9%94%99%E8%AF%AF/" rel="tag">段错误</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" rel="tag">科学上网</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E7%A7%BB%E6%A4%8D/" rel="tag">系统移植</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E8%AF%91/" rel="tag">编译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%91%E6%AD%A5/" rel="tag">跑步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B8%A9%E5%9D%91/" rel="tag">踩坑</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AF%E4%BB%B6%E6%BA%90/" rel="tag">软件源</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/" rel="tag">通信协议</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Linux/" style="font-size: 16px;">Linux</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/SONiC/" style="font-size: 18px;">SONiC</a> <a href="/tags/Systemd/" style="font-size: 10px;">Systemd</a> <a href="/tags/attribute%E5%B1%9E%E6%80%A7/" style="font-size: 10px;">attribute属性</a> <a href="/tags/flash/" style="font-size: 10px;">flash</a> <a href="/tags/hexo/" style="font-size: 12px;">hexo</a> <a href="/tags/igmp-snooping/" style="font-size: 10px;">igmp snooping</a> <a href="/tags/kernel/" style="font-size: 10px;">kernel</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/passwd/" style="font-size: 10px;">passwd</a> <a href="/tags/shell/" style="font-size: 20px;">shell</a> <a href="/tags/so%E6%96%87%E4%BB%B6/" style="font-size: 10px;">so文件</a> <a href="/tags/stty/" style="font-size: 10px;">stty</a> <a href="/tags/vxlan/" style="font-size: 10px;">vxlan</a> <a href="/tags/%E4%B8%AD%E6%96%AD/" style="font-size: 10px;">中断</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93so/" style="font-size: 10px;">动态库so</a> <a href="/tags/%E5%AD%98%E5%82%A8/" style="font-size: 10px;">存储</a> <a href="/tags/%E5%BC%B1%E7%AC%A6%E5%8F%B7/" style="font-size: 10px;">弱符号</a> <a href="/tags/%E6%AE%B5%E9%94%99%E8%AF%AF/" style="font-size: 10px;">段错误</a> <a href="/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" style="font-size: 10px;">科学上网</a> <a href="/tags/%E7%B3%BB%E7%BB%9F%E7%A7%BB%E6%A4%8D/" style="font-size: 10px;">系统移植</a> <a href="/tags/%E7%BC%96%E8%AF%91/" style="font-size: 10px;">编译</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">网络</a> <a href="/tags/%E8%B7%91%E6%AD%A5/" style="font-size: 10px;">跑步</a> <a href="/tags/%E8%B7%AF%E7%94%B1/" style="font-size: 10px;">路由</a> <a href="/tags/%E8%B8%A9%E5%9D%91/" style="font-size: 10px;">踩坑</a> <a href="/tags/%E8%BD%AF%E4%BB%B6%E6%BA%90/" style="font-size: 10px;">软件源</a> <a href="/tags/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/" style="font-size: 14px;">通信协议</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/04/02/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/05/shell-test/">shell-test</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/02/sonic-testbed%E7%9A%84%E7%90%86%E8%A7%A3/">sonic-testbed的理解</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/25/%E5%AF%B9SONiC%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AE%A4%E8%AF%86/">对SONiC项目的认识</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/23/shell%E9%87%8D%E5%AE%9A%E5%90%91/">shell重定向</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 Rancho<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

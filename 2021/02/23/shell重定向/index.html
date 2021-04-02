@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>shell重定向 | Rancho Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="shell重定向shell重定向即重新确定数据的流向，是通过改变文件描述符目标来实现的，如流向1的数据让其流向&#x2F;tmp&#x2F;a.c。 shell中，基础重定向有以下几种方式：  [n]&gt;file：覆盖式输出重定向，输出到fd&#x3D;n的数据改变流向输出到file文件中，file不存在则创建，file存在则先清空再写入数据  n可省略，默认值为1，即标准输出覆盖重定向到file中 &gt;&gt;表示追">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shell重定向">
+<meta property="og:url" content="https://rancho333.gitee.io/2021/02/23/shell%E9%87%8D%E5%AE%9A%E5%90%91/index.html">
+<meta property="og:site_name" content="Rancho Blog">
+<meta property="og:description" content="shell重定向shell重定向即重新确定数据的流向，是通过改变文件描述符目标来实现的，如流向1的数据让其流向&#x2F;tmp&#x2F;a.c。 shell中，基础重定向有以下几种方式：  [n]&gt;file：覆盖式输出重定向，输出到fd&#x3D;n的数据改变流向输出到file文件中，file不存在则创建，file存在则先清空再写入数据  n可省略，默认值为1，即标准输出覆盖重定向到file中 &gt;&gt;表示追">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-02-23T13:28:38.000Z">
+<meta property="article:modified_time" content="2021-04-02T12:01:40.807Z">
+<meta property="article:author" content="Rancho">
+<meta property="article:tag" content="shell">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Rancho Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Rancho Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">知行合一，致良知！</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rancho333.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-shell重定向" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/02/23/shell%E9%87%8D%E5%AE%9A%E5%90%91/" class="article-date">
+  <time class="dt-published" datetime="2021-02-23T13:28:38.000Z" itemprop="datePublished">2021-02-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      shell重定向
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="shell重定向"><a href="#shell重定向" class="headerlink" title="shell重定向"></a>shell重定向</h1><p>shell重定向即重新确定数据的流向，是通过改变文件描述符目标来实现的，如流向<code>1</code>的数据让其流向<code>/tmp/a.c</code>。</p>
+<p>shell中，基础重定向有以下几种方式：</p>
+<ul>
+<li><p><code>[n]&gt;file</code>：覆盖式输出重定向，输出到fd=n的数据改变流向输出到file文件中，file不存在则创建，file存在则先清空再写入数据</p>
+<ul>
+<li>n可省略，默认值为<code>1</code>，即标准输出覆盖重定向到file中</li>
+<li><code>&gt;&gt;</code>表示追加式输出重定向</li>
+</ul>
+</li>
+<li><p><code>[n]&lt;file</code>:输入重定向，以读取模式打开文件并分配fd=n,file不存在则报错</p>
+<ul>
+<li>n可省略，默认值为0，即直接冲file中读数据</li>
+<li>通常程序只是从0中都数据，所以当n不等于0时，需要多做一步<code>3&lt;file &lt;&amp;3</code></li>
+</ul>
+</li>
+</ul>
+<p><code>cat</code>命令中经常使用到重定向，要明白<code>cat file</code>和<code>cat &lt;file</code>的区别。cat命令会读取指定的文件然后输出到标准输出，如果没有指定，则从标准输入读取数字符，然后输出字符。<code>cat file</code>是直接读取file这个文件中的内容，<code>cat &lt;file</code>是file文件被读取后内容重定向到标准输入，然后cat从标准输入读取到里面的数据，虽然结果都一样，但是里面的内容不一样。一个很经典的在shell脚本中创建配置文件的方式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;EOF&gt;a.c           #这一行的EOF表示doc的起始符</span><br><span class="line">zhw</span><br><span class="line">wan</span><br><span class="line">EOF                     #这一行的doc表示doc的终止符，前后必须一致</span><br></pre></td></tr></table></figure>
+
+<p>这里需要解释一下，输入重定向是<code>&lt;</code>，除此之外，还有<code>&lt;&lt;</code>与<code>&lt;&lt;&lt;</code>，我们一般也就用到<code>&lt;&lt;</code>.<br><code>&lt;&lt;</code>符号表示here doc。也就是说，它后面跟的是一篇文档，就像一个文件一样，只不过这个文件的内容是临时定义在<code>&lt;&lt;</code>符号后面的。here doc常用语指定多行数据输入。<br>既然是文档，就有文档的起始符和终止符，这中间的内容全部是文档的内容，文档内容会被作为标准输入的数据读取。起始符和终止符可以随意定义，但是前后必须一致，一般用<code>EOF</code>来表示。</p>
+<p><code>&lt;&lt;&lt;</code>表示here string,即后面跟的是字符串，注意</p>
+<ul>
+<li>双引号包围的字符串shell会对其进行解释</li>
+<li>单引号包围的字符串shell不会对其进行解释</li>
+</ul>
+<p>在脚本中创建配置文件还可以使用<code>tee</code>命令,tee从标准输入中读取数据，然后写到标准输出和0或多个文件中去。换言之，tee可以实现数据多重定向。实现如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tee a.c &lt;&lt;EOF</span><br><span class="line">zhw</span><br><span class="line">wan</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rancho333.gitee.io/2021/02/23/shell%E9%87%8D%E5%AE%9A%E5%90%91/" data-id="ckn09cxzp001nkjnvadfr4nil" data-title="shell重定向" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/" rel="tag">shell</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/02/25/%E5%AF%B9SONiC%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AE%A4%E8%AF%86/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          对SONiC项目的认识
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/02/22/shell%E5%8F%98%E9%87%8F/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">shell变量</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux%E7%9B%B8%E5%85%B3/">Linux相关</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SONiC/">SONiC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SONiC/" rel="tag">SONiC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Systemd/" rel="tag">Systemd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/attribute%E5%B1%9E%E6%80%A7/" rel="tag">attribute属性</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flash/" rel="tag">flash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/igmp-snooping/" rel="tag">igmp snooping</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kernel/" rel="tag">kernel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/passwd/" rel="tag">passwd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/" rel="tag">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/so%E6%96%87%E4%BB%B6/" rel="tag">so文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/stty/" rel="tag">stty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vxlan/" rel="tag">vxlan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E6%96%AD/" rel="tag">中断</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93so/" rel="tag">动态库so</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%98%E5%82%A8/" rel="tag">存储</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%B1%E7%AC%A6%E5%8F%B7/" rel="tag">弱符号</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%AE%B5%E9%94%99%E8%AF%AF/" rel="tag">段错误</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" rel="tag">科学上网</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E7%A7%BB%E6%A4%8D/" rel="tag">系统移植</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E8%AF%91/" rel="tag">编译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%91%E6%AD%A5/" rel="tag">跑步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B8%A9%E5%9D%91/" rel="tag">踩坑</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AF%E4%BB%B6%E6%BA%90/" rel="tag">软件源</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/" rel="tag">通信协议</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Linux/" style="font-size: 16px;">Linux</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/SONiC/" style="font-size: 18px;">SONiC</a> <a href="/tags/Systemd/" style="font-size: 10px;">Systemd</a> <a href="/tags/attribute%E5%B1%9E%E6%80%A7/" style="font-size: 10px;">attribute属性</a> <a href="/tags/flash/" style="font-size: 10px;">flash</a> <a href="/tags/hexo/" style="font-size: 12px;">hexo</a> <a href="/tags/igmp-snooping/" style="font-size: 10px;">igmp snooping</a> <a href="/tags/kernel/" style="font-size: 10px;">kernel</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/passwd/" style="font-size: 10px;">passwd</a> <a href="/tags/shell/" style="font-size: 20px;">shell</a> <a href="/tags/so%E6%96%87%E4%BB%B6/" style="font-size: 10px;">so文件</a> <a href="/tags/stty/" style="font-size: 10px;">stty</a> <a href="/tags/vxlan/" style="font-size: 10px;">vxlan</a> <a href="/tags/%E4%B8%AD%E6%96%AD/" style="font-size: 10px;">中断</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93so/" style="font-size: 10px;">动态库so</a> <a href="/tags/%E5%AD%98%E5%82%A8/" style="font-size: 10px;">存储</a> <a href="/tags/%E5%BC%B1%E7%AC%A6%E5%8F%B7/" style="font-size: 10px;">弱符号</a> <a href="/tags/%E6%AE%B5%E9%94%99%E8%AF%AF/" style="font-size: 10px;">段错误</a> <a href="/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" style="font-size: 10px;">科学上网</a> <a href="/tags/%E7%B3%BB%E7%BB%9F%E7%A7%BB%E6%A4%8D/" style="font-size: 10px;">系统移植</a> <a href="/tags/%E7%BC%96%E8%AF%91/" style="font-size: 10px;">编译</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">网络</a> <a href="/tags/%E8%B7%91%E6%AD%A5/" style="font-size: 10px;">跑步</a> <a href="/tags/%E8%B7%AF%E7%94%B1/" style="font-size: 10px;">路由</a> <a href="/tags/%E8%B8%A9%E5%9D%91/" style="font-size: 10px;">踩坑</a> <a href="/tags/%E8%BD%AF%E4%BB%B6%E6%BA%90/" style="font-size: 10px;">软件源</a> <a href="/tags/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/" style="font-size: 14px;">通信协议</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/04/02/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/05/shell-test/">shell-test</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/02/sonic-testbed%E7%9A%84%E7%90%86%E8%A7%A3/">sonic-testbed的理解</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/25/%E5%AF%B9SONiC%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AE%A4%E8%AF%86/">对SONiC项目的认识</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/23/shell%E9%87%8D%E5%AE%9A%E5%90%91/">shell重定向</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 Rancho<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

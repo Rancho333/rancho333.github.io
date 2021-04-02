@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>对SONiC项目的认识 | Rancho Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="SONiC简介不做过多赘述，SONiC本质就是一个Linux交换机网络操作系统，它有两个特点。 第一，它是基于SAI的，在没有SAI之前所有的芯片都要通过自己的SDK与上层软件进行通信，相当于用自己的“方言”与上层操作系统通信，SAI把这个“方言”标准化，大家的芯片用同样的语言同上层的控制软件交流，因为有了SAI，所以才能建立一个操作系统。有了SAI之后，适配ASIC的工作由芯片厂商完成，白盒交换">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对SONiC项目的认识">
+<meta property="og:url" content="https://rancho333.gitee.io/2021/02/25/%E5%AF%B9SONiC%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AE%A4%E8%AF%86/index.html">
+<meta property="og:site_name" content="Rancho Blog">
+<meta property="og:description" content="SONiC简介不做过多赘述，SONiC本质就是一个Linux交换机网络操作系统，它有两个特点。 第一，它是基于SAI的，在没有SAI之前所有的芯片都要通过自己的SDK与上层软件进行通信，相当于用自己的“方言”与上层操作系统通信，SAI把这个“方言”标准化，大家的芯片用同样的语言同上层的控制软件交流，因为有了SAI，所以才能建立一个操作系统。有了SAI之后，适配ASIC的工作由芯片厂商完成，白盒交换">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-02-25T13:36:57.000Z">
+<meta property="article:modified_time" content="2021-04-02T12:01:40.799Z">
+<meta property="article:author" content="Rancho">
+<meta property="article:tag" content="SONiC">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Rancho Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Rancho Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">知行合一，致良知！</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rancho333.gitee.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-对SONiC项目的认识" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/02/25/%E5%AF%B9SONiC%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AE%A4%E8%AF%86/" class="article-date">
+  <time class="dt-published" datetime="2021-02-25T13:36:57.000Z" itemprop="datePublished">2021-02-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      对SONiC项目的认识
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="SONiC简介"><a href="#SONiC简介" class="headerlink" title="SONiC简介"></a>SONiC简介</h1><p>不做过多赘述，SONiC本质就是一个Linux交换机网络操作系统，它有两个特点。</p>
+<p>第一，它是基于SAI的，在没有SAI之前所有的芯片都要通过自己的SDK与上层软件进行通信，相当于用自己的“方言”与上层操作系统通信，SAI把这个“方言”标准化，大家的芯片用同样的语言同上层的控制软件交流，因为有了SAI，所以才能建立一个操作系统。有了SAI之后，适配ASIC的工作由芯片厂商完成，白盒交换机厂商推出一款新产品所花费的时间大大缩短。</p>
+<p>第二，基于Docker，Sonic有丰富的扩展性。依托于Linux,Docker生态，Sonic孕育了丰富的管理软件和解决方案。而其自身也于Redis, Quagga, LLDP等开源技术碰撞出更多火花。</p>
+<p>2016年，SONiC的理念就是将传统交换机OS拆分成多个容器化组件的解决方案，进而也定义了控制面的容器化架构，囊括了组件和编程接口。</p>
+<p>2017年微软对SONiC的性能进行了大幅升级，全面支持IDV，并且融合了更多的容器特性。</p>
+<p>2018年微软又在管理性上下了大力气（如ConfigDB）</p>
+<h1 id="对SONiC项目的学习"><a href="#对SONiC项目的学习" class="headerlink" title="对SONiC项目的学习"></a>对SONiC项目的学习</h1><p>相比于传统Linux交换机操作系统几十M的镜像大小，SONiC镜像动辄几百M甚至超1G，这也说明了里面包含的内容极其庞杂。如果有比较深厚的Linux功底，上手会很快。因为里面大多是Linux本质性、不变性和可复用性的东西。以自己对SONiC项目的认知，将其划分为5个大块比较合适。分别是：</p>
+<ul>
+<li>SONiC的编译</li>
+<li>SONiC的安装</li>
+<li>SONiC的bring up</li>
+<li>SONiC的上层应用</li>
+<li>TestBed自动化测试</li>
+</ul>
+<h2 id="SONiC的编译"><a href="#SONiC的编译" class="headerlink" title="SONiC的编译"></a>SONiC的编译</h2><p>这一步本身就是一个庞大的源码编译出Linux安装镜像的过程，类比于LFS。这里可以借用嵌入式操作系统移植的4个步骤用来辅助说明。</p>
+<ol>
+<li>交叉编译环境的制作。一般而言，SONiC的宿主机与目标机都是x86，所以没有交叉编译这种说法，但是sonic是支持ARM和ARM64的，只是现阶段我没玩过。值得关注的是，SONiC在编译之前会制作一个docker用来打包编译环境，之后所有的编译在里面完成。</li>
+<li>kernel的配置、编译、移植。SONiC在kernel编译时会指定config，参见kernel的Makefile，我们可以按需修改。</li>
+<li>根文件系统的制作。SONiC使用debootstrap完成文件系统的基础架构，之后会将编译好的deb包，whl包等target释放或拷贝到rootfs中去，最终生成的sonic-platform.bin是一个fs.zip、fs.squashfa、docker.tar.gz以及初始化脚本的打包可执行文件。</li>
+<li>bootloader的移植。裸机装bios没有玩过，SONiC盒子需要在bios之上安装一个ONIE，ONIE本质是一个小的Linux，提供SONiC安装环境</li>
+</ol>
+<p>对于这一部分，如果有一个比较全面的概览，当有porting或任何需要修改源码的需求时，将会有一定方向性。SONiC的编译框架主要由shell脚本，Makefile，Dockefile以及j2模板文件构成，需要有一定的Makefile、shell脚本基础。</p>
+<h2 id="SONiC的安装"><a href="#SONiC的安装" class="headerlink" title="SONiC的安装"></a>SONiC的安装</h2><p>SONiC的安装是某种程度上是生成镜像的一个逆向过程。sonic-asic.bin是一个shell脚本，可以在shell下直接执行一下看看会发生什么事情。SONiC安装的本质其实就是bash ./sonic-asic.bin的执行过程。</p>
+<p>SONiC可以在ONIE和SONiC环境下完成安装，这里面会调用两个脚本sharch_body.sh和install.sh。SONiC的安装时会有一些打印，参照打印与shell脚本可以发现里面做了什么,关注一下<code>/boot</code>目录。在此处简单说明一下：</p>
+<ul>
+<li>在sharch_body.sh中<ul>
+<li>对image文件进行hash校验</li>
+<li>为install.sh准备运行环境并执行install.sh</li>
+</ul>
+</li>
+<li>在install.sh中<ul>
+<li>确定安装环境（ONIE、SONiC、build）</li>
+<li>调用machine.conf，准备platform相关环境变量，配置console，默认是ttyS0和9600。参数设置不匹配将导致SONiC bring up失败。新安装的onie，需要在onie下修改eeprom以及machine.conf(这个可以在onie编译的时候指定)。需要关注修改三个字段：onie_switch_asic、onie_machine、onie_platform。</li>
+<li>安排安装os的分区（uefi+gpt）</li>
+<li>解压fs.zip(boot+platform+docker+fs.squashfs)至分区，onie和SONiC安装会有一些细微差别。这里将创建boot和platform文件夹（在sonic的/host/image*下面，不是根目录），将驱动放到对应文件夹下，在rc.local中会释放出来。</li>
+<li>配置grub，安装完成 </li>
+<li>重启之后会按照安装时设置的grud启动新的操作系统</li>
+</ul>
+</li>
+</ul>
+<h2 id="SONiC的bring-up"><a href="#SONiC的bring-up" class="headerlink" title="SONiC的bring up"></a>SONiC的bring up</h2><p>SONiC基于SAI可以： 一个镜像适配相同ASIC厂家的不同设备型号，每一个款设备都有自己的差异性配置文件，如端口，led，波特率等。SONiC是如何正确加载对应设备型号的配置文件的？这里留个问题可以自己查查。</p>
+<p>SONiC是Linux, 所以遵循Linux的启动过程。</p>
+<ol>
+<li><p>bootloader + onie阶段<br>我们可以在onie下安装sonic，grub将cmdline参数传递给kernel，kernel启动，加载驱动</p>
+</li>
+<li><p>kernel启动之后systemd初始化阶段这里面可以细分</p>
+<ul>
+<li>systemd相关，使用<code>systemctl list-dependencies graphical.target</code>查看当前加载的服务 </li>
+<li>rc.local，这里面有一些启动后执行的动作，自己瞅瞅吧</li>
+</ul>
+</li>
+</ol>
+<p>需要关注一下SONiC的文件系统</p>
+<ul>
+<li>fdisk -l     查看有哪些分区,以及分区大小。那么如何调整分区大小？改那个配置文件？</li>
+<li>df 查看下那些文件夹挂载在物理硬盘分区上</li>
+<li>cat /proc/cmdline    查看内核启动参数</li>
+<li>blkid            查看分区对应的PARTUUID</li>
+</ul>
+<h2 id="SONiC的上层应用"><a href="#SONiC的上层应用" class="headerlink" title="SONiC的上层应用"></a>SONiC的上层应用</h2><p>SONiC的服务跑在docker中，如PMON、syncd、frr等。关于这些服务是如何启动的？可以参见《SONIC中docker运行服务的单分析》，源码中注意下<code>docker_image_ctl.j2</code>文件，这是docker的启动管理模板。</p>
+<p>SONiC核心的功能就是交换路由，所以交换路由协议在里面是很重要的，与传统交换机相比，SONiC中的服务运行在docker中，使用redis集中式进行数据管理，其它并没有什么本质区别。</p>
+<p>后续考虑以vxlan为切入点，深入了解学习SONiC的系统架构，对于vxlan，参见<a target="_blank" rel="noopener" href="https://rancho333.github.io/2021/02/03/vxlan%E5%AD%A6%E4%B9%A0/">vxlan学习</a>。</p>
+<p>如何配置管理SONiC呢？传统的交换机会做一个命令行程序，指定用户登录后执行该程序，可以称之为CLI，在里面可以进入shell，也可以从shell退回CLI。社区版SONiC登录之后运行bash，用python做了一套简单的命令行，可以进行配置管理，这玩意解析速度极慢，使用体验极差。除此之外，还可以通过修改<code>config_db.json</code>然后重新加载或者直接使用<code>redis</code>命令行进行配置。当然SONiC支持SDN，可以通过openflow方式集中式管理配置。阿里在SONiC上面做了一套传统CLI，称之为<code>lambda-cli</code>，比社区版SONiC的命令行好用多了。</p>
+<h2 id="TestBed自动化测试"><a href="#TestBed自动化测试" class="headerlink" title="TestBed自动化测试"></a>TestBed自动化测试</h2><p>TBD</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rancho333.gitee.io/2021/02/25/%E5%AF%B9SONiC%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AE%A4%E8%AF%86/" data-id="ckn09cy0h0024kjnv7deoaw8i" data-title="对SONiC项目的认识" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SONiC/" rel="tag">SONiC</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/03/02/sonic-testbed%E7%9A%84%E7%90%86%E8%A7%A3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          sonic-testbed的理解
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/02/23/shell%E9%87%8D%E5%AE%9A%E5%90%91/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">shell重定向</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux%E7%9B%B8%E5%85%B3/">Linux相关</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SONiC/">SONiC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SONiC/" rel="tag">SONiC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Systemd/" rel="tag">Systemd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/attribute%E5%B1%9E%E6%80%A7/" rel="tag">attribute属性</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flash/" rel="tag">flash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/igmp-snooping/" rel="tag">igmp snooping</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kernel/" rel="tag">kernel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/passwd/" rel="tag">passwd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/" rel="tag">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/so%E6%96%87%E4%BB%B6/" rel="tag">so文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/stty/" rel="tag">stty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vxlan/" rel="tag">vxlan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E6%96%AD/" rel="tag">中断</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93so/" rel="tag">动态库so</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%98%E5%82%A8/" rel="tag">存储</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%B1%E7%AC%A6%E5%8F%B7/" rel="tag">弱符号</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%AE%B5%E9%94%99%E8%AF%AF/" rel="tag">段错误</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" rel="tag">科学上网</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E7%A7%BB%E6%A4%8D/" rel="tag">系统移植</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E8%AF%91/" rel="tag">编译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%91%E6%AD%A5/" rel="tag">跑步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B8%A9%E5%9D%91/" rel="tag">踩坑</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AF%E4%BB%B6%E6%BA%90/" rel="tag">软件源</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/" rel="tag">通信协议</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Linux/" style="font-size: 16px;">Linux</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/SONiC/" style="font-size: 18px;">SONiC</a> <a href="/tags/Systemd/" style="font-size: 10px;">Systemd</a> <a href="/tags/attribute%E5%B1%9E%E6%80%A7/" style="font-size: 10px;">attribute属性</a> <a href="/tags/flash/" style="font-size: 10px;">flash</a> <a href="/tags/hexo/" style="font-size: 12px;">hexo</a> <a href="/tags/igmp-snooping/" style="font-size: 10px;">igmp snooping</a> <a href="/tags/kernel/" style="font-size: 10px;">kernel</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/passwd/" style="font-size: 10px;">passwd</a> <a href="/tags/shell/" style="font-size: 20px;">shell</a> <a href="/tags/so%E6%96%87%E4%BB%B6/" style="font-size: 10px;">so文件</a> <a href="/tags/stty/" style="font-size: 10px;">stty</a> <a href="/tags/vxlan/" style="font-size: 10px;">vxlan</a> <a href="/tags/%E4%B8%AD%E6%96%AD/" style="font-size: 10px;">中断</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93so/" style="font-size: 10px;">动态库so</a> <a href="/tags/%E5%AD%98%E5%82%A8/" style="font-size: 10px;">存储</a> <a href="/tags/%E5%BC%B1%E7%AC%A6%E5%8F%B7/" style="font-size: 10px;">弱符号</a> <a href="/tags/%E6%AE%B5%E9%94%99%E8%AF%AF/" style="font-size: 10px;">段错误</a> <a href="/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" style="font-size: 10px;">科学上网</a> <a href="/tags/%E7%B3%BB%E7%BB%9F%E7%A7%BB%E6%A4%8D/" style="font-size: 10px;">系统移植</a> <a href="/tags/%E7%BC%96%E8%AF%91/" style="font-size: 10px;">编译</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">网络</a> <a href="/tags/%E8%B7%91%E6%AD%A5/" style="font-size: 10px;">跑步</a> <a href="/tags/%E8%B7%AF%E7%94%B1/" style="font-size: 10px;">路由</a> <a href="/tags/%E8%B8%A9%E5%9D%91/" style="font-size: 10px;">踩坑</a> <a href="/tags/%E8%BD%AF%E4%BB%B6%E6%BA%90/" style="font-size: 10px;">软件源</a> <a href="/tags/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/" style="font-size: 14px;">通信协议</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/04/02/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/05/shell-test/">shell-test</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/02/sonic-testbed%E7%9A%84%E7%90%86%E8%A7%A3/">sonic-testbed的理解</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/25/%E5%AF%B9SONiC%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AE%A4%E8%AF%86/">对SONiC项目的认识</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/23/shell%E9%87%8D%E5%AE%9A%E5%90%91/">shell重定向</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 Rancho<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
