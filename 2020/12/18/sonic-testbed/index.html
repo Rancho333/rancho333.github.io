@@ -1,116 +1,130 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>sonic-testbed | Rancho Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="写在前面最初，SONiC的所有测试用例都是用ansible playbook写的。2019年开始使用pytest， 2020年9月份之后，只有用pytest写的测试用例才被采纳。但是ansible依然很重要，pytest-ansible插件连接pytest与ansible。pytest通过ansible进行多设备协同工作。 物理拓扑  DUT和leaf fanout的端口一一互联 leaf fan">
-<meta property="og:type" content="article">
-<meta property="og:title" content="sonic-testbed">
-<meta property="og:url" content="https://rancho333.gitee.io/2020/12/18/sonic-testbed/index.html">
-<meta property="og:site_name" content="Rancho Blog">
-<meta property="og:description" content="写在前面最初，SONiC的所有测试用例都是用ansible playbook写的。2019年开始使用pytest， 2020年9月份之后，只有用pytest写的测试用例才被采纳。但是ansible依然很重要，pytest-ansible插件连接pytest与ansible。pytest通过ansible进行多设备协同工作。 物理拓扑  DUT和leaf fanout的端口一一互联 leaf fan">
-<meta property="og:locale">
-<meta property="og:image" content="https://rancho333.gitee.io/uploads/physical-topology.png">
-<meta property="og:image" content="https://rancho333.gitee.io/uploads/testbed_server.png">
-<meta property="og:image" content="https://rancho333.gitee.io/uploads/testbed-direct.png">
-<meta property="og:image" content="https://rancho333.gitee.io/uploads/testbed-injected.png">
-<meta property="og:image" content="https://rancho333.gitee.io/uploads/testbed-t1.png">
-<meta property="og:image" content="https://rancho333.gitee.io/uploads/testbed-ti-lag.png">
-<meta property="og:image" content="https://rancho333.gitee.io/uploads/testbed-ptf32.png">
-<meta property="og:image" content="https://rancho333.gitee.io/uploads/testbed-ptf64.png">
-<meta property="og:image" content="https://rancho333.gitee.io/uploads/testbed-t0.png">
-<meta property="article:published_time" content="2020-12-18T15:29:56.000Z">
-<meta property="article:modified_time" content="2021-04-02T12:01:40.795Z">
-<meta property="article:author" content="Rancho">
-<meta property="article:tag" content="SONiC">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://rancho333.gitee.io/uploads/physical-topology.png">
-  
-    <link rel="alternate" href="/atom.xml" title="Rancho Blog" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
+    <meta charset="utf-8">
     
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
-
-  
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
+    <title>sonic-testbed | Rancho Blog</title>
     
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+        <meta name="description" content="No pain, no gain!">
+        <meta property="og:description" content="No pain, no gain!">
+    
+    
+        <meta property="og:site_name" content="Rancho Blog">
+    
+    
+        <meta property="article:author" content="Rancho">
+    
+    
+        <link rel="icon" href="/img/favicon.ico">
+    
+    
+<link rel="stylesheet" href="/css/minireset.min.css">
 
-  
+    
+<link rel="stylesheet" href="/css/all.min.css">
+
+    
+<link rel="stylesheet" href="/css/csshake.min.css">
+
+    
+<link rel="stylesheet" href="/css/hljs/lioshi.css">
+
+    
+<link rel="stylesheet" href="/css/jquery.fancybox.min.css">
+
+    
+<link rel="stylesheet" href="/styl/main.css">
+
+    
+<script src="/js/jquery.min.js"></script>
+
+    
+<script src="/js/highlight.min.js"></script>
+
+    
+<script src="/js/jquery.fancybox.min.js"></script>
+
+    
+<script src="/js/clipboard.min.js"></script>
+
 <meta name="generator" content="Hexo 5.4.0"></head>
-
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Rancho Blog</a>
+    <header>
+  <div class="outer">
+    <div class="inner">
+      <h1 class="logo-wrap">
+        <a>Rancho Blog<b><sup>1.1</sup></b></a>
       </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">知行合一，致良知！</a>
-        </h2>
-      
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
+    <div class="inner">
+      <nav class="main-nav">
         
-          <a class="main-nav-link" href="/">Home</a>
+          <a href="/">首页</a>
         
-          <a class="main-nav-link" href="/archives">Archives</a>
+          <a href="/archives">归档</a>
+        
+          <a href="/categories">分类</a>
+        
+          <a href="/tags">标签</a>
+        
+          <a href="/friends">友链</a>
+        
+          <a href="/about">关于</a>
+        
+          <a target="_blank" rel="noopener" href="https://www.baidu.com">百度</a>
         
       </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rancho333.gitee.io"></form>
-      </div>
     </div>
   </div>
 </header>
-
-      <div class="outer">
-        <section id="main"><article id="post-sonic-testbed" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/12/18/sonic-testbed/" class="article-date">
-  <time class="dt-published" datetime="2020-12-18T15:29:56.000Z" itemprop="datePublished">2020-12-18</time>
-</a>
+    <div class="content">
+        <section class="outer">
+    <article>
+        <div class="article-title">
+    <h2>
+        <a href="/2020/12/18/sonic-testbed/" class="shake shake-little" title="sonic-testbed">
+            
+            sonic-testbed
+        </a>
+    </h2>
+    <div class="meta_box">
     
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
         
-  
-    <h1 class="p-name article-title" itemprop="headline name">
-      sonic-testbed
-    </h1>
-  
-
-      </header>
+        
+            
+                
+        
+        <div class="meta meta_auth">
+            <img src="/img/default.png" alt="head" />
+            <p>anonymous</p>
+        </div>
     
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>最初，SONiC的所有测试用例都是用ansible playbook写的。2019年开始使用pytest， 2020年9月份之后，只有用pytest写的测试用例才被采纳。<br>但是ansible依然很重要，pytest-ansible插件连接pytest与ansible。pytest通过ansible进行多设备协同工作。</p>
+        
+        
+        <div class="meta meta_date">
+            <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
+            <p>发布于：2020年12月18日</p>
+        </div>
+    
+        <div class="meta meta_update">
+            <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+            <p>更新于：2021年04月02日</p>
+        </div>
+    </div>
+    
+  <div class="post_tags">
+    <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/SONiC/" rel="tag"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>SONiC</a></li></ul>
+  </div>
+
+
+</div>
+
+        <hr>
+        <div class="article-entry">
+            
+            
+            
+            <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>最初，SONiC的所有测试用例都是用ansible playbook写的。2019年开始使用pytest， 2020年9月份之后，只有用pytest写的测试用例才被采纳。<br>但是ansible依然很重要，pytest-ansible插件连接pytest与ansible。pytest通过ansible进行多设备协同工作。</p>
 <h2 id="物理拓扑"><a href="#物理拓扑" class="headerlink" title="物理拓扑"></a>物理拓扑</h2><p><img src="https://rancho333.gitee.io/uploads/physical-topology.png"></p>
 <ol>
 <li>DUT和leaf fanout的端口一一互联</li>
@@ -417,157 +431,102 @@
 
 <p>问题：任务设置失败。SSH Error：data could not be sent to the remote host<br>解决方式：导致这个现象的问题可能有很多。<br>    1. 确保这台主机可以通过SSH到达<br>    2. group_vars/all/lab_info.json文件中包含了正确的凭证吗？<br>    3. 设备在files/sonic_lab_devices.cav中有正确的hwsku吗？<br>    4. 确保lab文件中在IPs后面没有”/“，INI文件无法识别<br>    5. 重新检查testbed.yaml配置文件，是否获取了IPs和正确的凭证</p>
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://rancho333.gitee.io/2020/12/18/sonic-testbed/" data-id="ckn09cy2f003qkjnvfcr0hopo" data-title="sonic-testbed" class="article-share-link">Teilen</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SONiC/" rel="tag">SONiC</a></li></ul>
+        </div>
+        <div class="article-copyright">
+            
+    <blockquote>
+        <p>
+            版权声明：本文为「河东小伍」的原创文章，博客内容遵循 署名-非商业性使用-相同方式共享 协议。<br>本文永久链接是：https://rancho333.gitee.io/2020/12/18/sonic-testbed/
+        </p>
+    </blockquote>
 
-    </footer>
-  </div>
-  
+
+        </div>
+    </article>
     
-<nav id="article-nav">
-  
-    <a href="/2020/12/21/%E5%8A%A0%E5%BC%98%E8%B7%91%E5%9B%A2/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Neuer</strong>
-      <div class="article-nav-title">
-        
-          加弘跑团
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2020/12/15/SONiC%E7%BC%96%E8%AF%91%E7%AE%80%E8%BF%B0%E5%8F%8A%E4%BC%98%E5%8C%96/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Älter</strong>
-      <div class="article-nav-title">SONiC编译简述及优化</div>
-    </a>
-  
-</nav>
 
-  
-</article>
+    <section id="toc-div" >
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="toc-text">写在前面</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%A9%E7%90%86%E6%8B%93%E6%89%91"><span class="toc-text">物理拓扑</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Fanout-switch"><span class="toc-text">Fanout switch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Testbed-server"><span class="toc-text">Testbed server</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E8%BF%9E%E6%8E%A5"><span class="toc-text">网络连接</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#VMs"><span class="toc-text">VMs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PTF"><span class="toc-text">PTF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SONiC-Tested-with-keysight-IxNetwork-as-Traffic-Generator"><span class="toc-text">SONiC Tested with keysight IxNetwork as Traffic Generator</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Testbed%E8%AE%BE%E7%BD%AE"><span class="toc-text">Testbed设置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87testbed%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-text">准备testbed服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BAdocker-pth%E8%AE%BE%E7%BD%AEdocker%E4%BB%93%E5%BA%93"><span class="toc-text">为docker-pth设置docker仓库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%B9%B6%E4%B8%94%E8%BF%90%E8%A1%8Cdocker-sonic-mgmt"><span class="toc-text">创建并且运行docker-sonic-mgmt</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87Testbed%E9%85%8D%E7%BD%AE"><span class="toc-text">准备Testbed配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AEVMs"><span class="toc-text">设置VMs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2Fanout%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%9A%84Vlan"><span class="toc-text">部署Fanout交换机的Vlan</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E6%8B%93%E6%89%91"><span class="toc-text">部署拓扑</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker%E5%AE%B9%E5%99%A8%E8%AE%BE%E7%BD%AE"><span class="toc-text">Docker容器设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#KVM-testbed%E8%AE%BE%E7%BD%AE"><span class="toc-text">KVM testbed设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cEOS"><span class="toc-text">cEOS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E8%AE%BE%E7%BD%AE"><span class="toc-text">网络设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-text">配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%99%BB%E5%BD%95"><span class="toc-text">登录</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#testbed%E8%B7%AF%E7%94%B1%E8%AE%BE%E8%AE%A1"><span class="toc-text">testbed路由设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%93%E6%89%91"><span class="toc-text">拓扑</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#testbed%E6%8B%93%E6%89%91%E9%85%8D%E7%BD%AE"><span class="toc-text">testbed拓扑配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%93%E5%89%8D%E7%9A%84%E6%8B%93%E6%89%91"><span class="toc-text">当前的拓扑</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#t1"><span class="toc-text">t1</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#t1-lag"><span class="toc-text">t1-lag</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ptf32"><span class="toc-text">ptf32</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ptf64"><span class="toc-text">ptf64</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#t0"><span class="toc-text">t0</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#testbed%E9%85%8D%E7%BD%AE"><span class="toc-text">testbed配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#testbed%E6%B8%85%E5%8D%95"><span class="toc-text">testbed清单</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text"></span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sonic-Mgmt-testbed%E8%AE%BE%E7%BD%AE"><span class="toc-text">Sonic-Mgmt testbed设置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E6%A0%87"><span class="toc-text">目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%84%E8%BF%81%E7%A7%BB%E8%AE%BE%E7%BD%AE"><span class="toc-text">预迁移设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9-Testbed-yaml%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-text">修改 Testbed.yaml配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89testbed-config%E9%83%A8%E5%88%86%EF%BC%9A"><span class="toc-text">（可选）testbed_config部分：</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#device-groups%E9%83%A8%E5%88%86"><span class="toc-text">device_groups部分</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#devices%E9%83%A8%E5%88%86"><span class="toc-text">devices部分</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#host-vars%E9%83%A8%E5%88%86"><span class="toc-text">host_vars部分</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#veos-groups%E9%83%A8%E5%88%86"><span class="toc-text">veos_groups部分</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#veos%E9%83%A8%E5%88%86"><span class="toc-text">veos部分</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#testbed%E9%83%A8%E5%88%86"><span class="toc-text">testbed部分</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%93%E6%89%91%E9%83%A8%E5%88%86"><span class="toc-text">拓扑部分</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#docker-registry%E9%83%A8%E5%88%86"><span class="toc-text">docker_registry部分</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#testbed%E8%BF%90%E8%A1%8C%E8%84%9A%E6%9C%AC"><span class="toc-text">testbed运行脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#VMS%E5%91%BD%E4%BB%A4"><span class="toc-text">VMS命令</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%EF%BC%88PTF32%EF%BC%89%E6%8B%93%E6%89%91%E5%AE%B9%E5%99%A8"><span class="toc-text">部署（PTF32）拓扑容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B%EF%BC%88Neighbour%EF%BC%89"><span class="toc-text">运行第一个测试用例（Neighbour）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%92%E9%94%99"><span class="toc-text">排错</span></a></li></ol></li></ol>
+    </section>
+    <section id="gohome" style="display: none;"><a>顶</a></section>
 
+    <script>
+        function get_top_by_link(link){
+            var hnid = "#" + $(link).attr("data");
+            if ($(hnid).length > 0){
+                return $(hnid).offset().top;
+            }else{
+                return 0;
+            }
+        }
+        //go to hn
+        function gotohn(link){
+            $("html,body").animate({scrollTop: get_top_by_link(link) }, 300);
+        }
+        //页面滚动
+        function update(){
+            var scrollH = $(window).scrollTop();
+            if($(".toc-link")){
+                $(".toc-link").each(function(i,link){
+                    var mdHeight = get_top_by_link(link);
+                    if(mdHeight <= scrollH + 40){
+                        //高亮导航菜单
+                        $('.toc-link').removeClass('on');
+                        $(link).addClass('on');
+                    }
+                });
+            }
+            //返回顶部显隐
+            if(scrollH < 200){
+                $("#gohome").css("display","none");
+            }else{
+                $("#gohome").css("display","block");
+            }
+        }
+        $(function(){
+            //修复部分锚点从属关系
+            if($("#toc-div >li").length > 0){
+                $("#toc-div >li").appendTo($("#toc-div >ol:first"));
+            }
+            //返回顶部
+            $('#gohome').click(function(){
+                $("html,body").animate({scrollTop: 0}, 300);
+                return false;
+            })
+            //遍历锚点
+            $(".toc-link").each(function(i,link){
+                $(link).attr("data",$(link).attr('href').substring(1));
+                $(link).attr("href","javascript:void(0);");
+                $(link).attr("onclick","gotohn(this);");
+            })
+            //绑定滚动事件
+            $(window).bind('scroll', update);
+            //初始化toc
+            var first_toc = $(".toc-link")[0];
+            var first_scroll = get_top_by_link(first_toc);
+            var window_scroll = $(window).scrollTop();
+            if(window_scroll <= first_scroll){
+                $(first_toc).addClass('on');
+            }
+        })
+    </script>
 
 </section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Kategorien</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux%E7%9B%B8%E5%85%B3/">Linux相关</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SONiC/">SONiC</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/">编程语言</a></li></ul>
     </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/" rel="tag">Markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SONiC/" rel="tag">SONiC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Systemd/" rel="tag">Systemd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/attribute%E5%B1%9E%E6%80%A7/" rel="tag">attribute属性</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flash/" rel="tag">flash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/igmp-snooping/" rel="tag">igmp snooping</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kernel/" rel="tag">kernel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/" rel="tag">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/passwd/" rel="tag">passwd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/" rel="tag">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/so%E6%96%87%E4%BB%B6/" rel="tag">so文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/stty/" rel="tag">stty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vxlan/" rel="tag">vxlan</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E6%96%AD/" rel="tag">中断</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93so/" rel="tag">动态库so</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%98%E5%82%A8/" rel="tag">存储</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%B1%E7%AC%A6%E5%8F%B7/" rel="tag">弱符号</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%AE%B5%E9%94%99%E8%AF%AF/" rel="tag">段错误</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" rel="tag">科学上网</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E7%A7%BB%E6%A4%8D/" rel="tag">系统移植</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E8%AF%91/" rel="tag">编译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%91%E6%AD%A5/" rel="tag">跑步</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B8%A9%E5%9D%91/" rel="tag">踩坑</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AF%E4%BB%B6%E6%BA%90/" rel="tag">软件源</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/" rel="tag">通信协议</a></li></ul>
+    <footer>
+    <div class="outer">
+        <div class="inner">
+            Powered by <a href="http://prowiki.demopage.icu/" target="_blank">ProWiki</a>
+            &copy;2021 河东小伍<br>
+            <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/">冀ICP备00000000号</a>
+        </div>
     </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Linux/" style="font-size: 16px;">Linux</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/SONiC/" style="font-size: 18px;">SONiC</a> <a href="/tags/Systemd/" style="font-size: 10px;">Systemd</a> <a href="/tags/attribute%E5%B1%9E%E6%80%A7/" style="font-size: 10px;">attribute属性</a> <a href="/tags/flash/" style="font-size: 10px;">flash</a> <a href="/tags/hexo/" style="font-size: 12px;">hexo</a> <a href="/tags/igmp-snooping/" style="font-size: 10px;">igmp snooping</a> <a href="/tags/kernel/" style="font-size: 10px;">kernel</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/passwd/" style="font-size: 10px;">passwd</a> <a href="/tags/shell/" style="font-size: 20px;">shell</a> <a href="/tags/so%E6%96%87%E4%BB%B6/" style="font-size: 10px;">so文件</a> <a href="/tags/stty/" style="font-size: 10px;">stty</a> <a href="/tags/vxlan/" style="font-size: 10px;">vxlan</a> <a href="/tags/%E4%B8%AD%E6%96%AD/" style="font-size: 10px;">中断</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%BA%93so/" style="font-size: 10px;">动态库so</a> <a href="/tags/%E5%AD%98%E5%82%A8/" style="font-size: 10px;">存储</a> <a href="/tags/%E5%BC%B1%E7%AC%A6%E5%8F%B7/" style="font-size: 10px;">弱符号</a> <a href="/tags/%E6%AE%B5%E9%94%99%E8%AF%AF/" style="font-size: 10px;">段错误</a> <a href="/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" style="font-size: 10px;">科学上网</a> <a href="/tags/%E7%B3%BB%E7%BB%9F%E7%A7%BB%E6%A4%8D/" style="font-size: 10px;">系统移植</a> <a href="/tags/%E7%BC%96%E8%AF%91/" style="font-size: 10px;">编译</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">网络</a> <a href="/tags/%E8%B7%91%E6%AD%A5/" style="font-size: 10px;">跑步</a> <a href="/tags/%E8%B7%AF%E7%94%B1/" style="font-size: 10px;">路由</a> <a href="/tags/%E8%B8%A9%E5%9D%91/" style="font-size: 10px;">踩坑</a> <a href="/tags/%E8%BD%AF%E4%BB%B6%E6%BA%90/" style="font-size: 10px;">软件源</a> <a href="/tags/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/" style="font-size: 14px;">通信协议</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archiv</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">letzter Beitrag</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2021/04/02/hello-world/">Hello World</a>
-          </li>
-        
-          <li>
-            <a href="/2021/03/05/shell-test/">shell-test</a>
-          </li>
-        
-          <li>
-            <a href="/2021/03/02/sonic-testbed%E7%9A%84%E7%90%86%E8%A7%A3/">sonic-testbed的理解</a>
-          </li>
-        
-          <li>
-            <a href="/2021/02/25/%E5%AF%B9SONiC%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AE%A4%E8%AF%86/">对SONiC项目的认识</a>
-          </li>
-        
-          <li>
-            <a href="/2021/02/23/shell%E9%87%8D%E5%AE%9A%E5%90%91/">shell重定向</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2021 Rancho<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
 </footer>
 
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
+<script src="/js/custom.js"></script>
 
 
-<script src="/js/jquery-3.4.1.min.js"></script>
+    <script>onload_content();</script>
 
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
 </body>
 </html>
