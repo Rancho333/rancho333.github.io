@@ -1,238 +1,45 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    
-    <title>archives: 2020 | Rancho Blog</title>
-    
-        <meta name="description" content="No pain, no gain!">
-        <meta property="og:description" content="No pain, no gain!">
-    
-    
-        <meta property="og:site_name" content="Rancho Blog">
-    
-    
-        <meta property="article:author" content="Rancho">
-    
-    
-        <link rel="icon" href="/img/favicon.ico">
-    
-    
-<link rel="stylesheet" href="/css/minireset.min.css">
+{% extends '_layout.swig' %}
+{% import '_macro/post-collapse.swig' as post_template %}
+{% import '_macro/sidebar.swig' as sidebar_template %}
 
-    
-<link rel="stylesheet" href="/css/all.min.css">
+{% block title %}{{ __('title.archive') }} | {{ title }}{% endblock %}
 
-    
-<link rel="stylesheet" href="/css/csshake.min.css">
+{% block content %}
 
-    
-<link rel="stylesheet" href="/css/hljs/lioshi.css">
+  {#####################}
+  {### ARCHIVE BLOCK ###}
+  {#####################}
+  <div class="post-block archive">
+    <div id="posts" class="posts-collapse">
 
-    
-<link rel="stylesheet" href="/css/jquery.fancybox.min.css">
+      {%- if theme.cheers %}
+      <div class="collection-title">
+        {%- set cheers %}
+        {%- set posts_length = site.posts.length %}
+        {%- if posts_length > 210 %} {%- set cheers = 'excellent' %}
+          {% elif posts_length > 130 %} {%- set cheers = 'great' %}
+          {% elif posts_length > 80 %} {%- set cheers = 'good' %}
+          {% elif posts_length > 50 %} {%- set cheers = 'nice' %}
+          {% elif posts_length > 30 %} {%- set cheers = 'ok' %}
+        {% else %}
+          {%- set cheers = 'um' %}
+        {%- endif %}
+        <span class="collection-header">{{ __('cheers.' + cheers) }}! {{ _p("counter.archive_posts", site.posts.length) }} {{ __('keep_on') }}</span>
+      </div>
+      {%- endif %}
 
-    
-<link rel="stylesheet" href="/styl/main.css">
+      {{ post_template.render(page.posts) }}
 
-    
-<script src="/js/jquery.min.js"></script>
-
-    
-<script src="/js/highlight.min.js"></script>
-
-    
-<script src="/js/jquery.fancybox.min.js"></script>
-
-    
-<script src="/js/clipboard.min.js"></script>
-
-<meta name="generator" content="Hexo 5.4.0"></head>
-<body>
-    <header>
-  <div class="outer">
-    <div class="inner">
-      <h1 class="logo-wrap">
-        <a>Rancho Blog<b><sup>1.1</sup></b></a>
-      </h1>
-    </div>
-    <div class="inner">
-      <nav class="main-nav">
-        
-          <a href="/">首页</a>
-        
-          <a href="/archives">归档</a>
-        
-          <a href="/categories">分类</a>
-        
-          <a href="/tags">标签</a>
-        
-          <a href="/friends">友链</a>
-        
-          <a href="/about">关于</a>
-        
-          <a target="_blank" rel="noopener" href="https://www.baidu.com">百度</a>
-        
-      </nav>
     </div>
   </div>
-</header>
-    <div class="content">
-        <section class="outer">
-    
+  {#########################}
+  {### END ARCHIVE BLOCK ###}
+  {#########################}
 
+  {% include '_partials/pagination.swig' %}
 
+{% endblock %}
 
-
-    
-
-
-
-
-    
-    
-        
-        
-    
-
-<div class="turn_page">
-    
-
-
-    
-        <a href="/archives/2020/page/2">2</a>
-    
-
-    
-        <a class="page_current">1</a>
-    
-
-
-    
-</div>
-
-
-
-<link rel="stylesheet" href="/styl/archive.css">
-
-<div class="archive-wrapper">
-    
-    
-        
-            <div class="archive_year">
-                
-                <h2><a href="/archives/2020">2020</a></h2>
-                <hr>
-            </div>
-        
-        <div class="archive_post">
-            <a href="/archives/2020/12">12-31</a>
-            <a href="/2020/12/31/SONiC%E6%B7%BB%E5%8A%A0%E6%96%B0%E7%9A%84device/" class="shake shake-little">SONiC添加新的device</a>
-        </div>
-    
-        
-        <div class="archive_post">
-            <a href="/archives/2020/12">12-25</a>
-            <a href="/2020/12/25/ARP%E5%8D%8F%E8%AE%AE%E7%AE%80%E8%BF%B0%E5%8F%8A%E5%BA%94%E7%94%A8/" class="shake shake-little">ARP协议简述及应用</a>
-        </div>
-    
-        
-        <div class="archive_post">
-            <a href="/archives/2020/12">12-21</a>
-            <a href="/2020/12/21/%E5%8A%A0%E5%BC%98%E8%B7%91%E5%9B%A2/" class="shake shake-little">加弘跑团</a>
-        </div>
-    
-        
-        <div class="archive_post">
-            <a href="/archives/2020/12">12-18</a>
-            <a href="/2020/12/18/sonic-testbed/" class="shake shake-little">sonic-testbed</a>
-        </div>
-    
-        
-        <div class="archive_post">
-            <a href="/archives/2020/12">12-15</a>
-            <a href="/2020/12/15/SONiC%E7%BC%96%E8%AF%91%E7%AE%80%E8%BF%B0%E5%8F%8A%E4%BC%98%E5%8C%96/" class="shake shake-little">SONiC编译简述及优化</a>
-        </div>
-    
-        
-        <div class="archive_post">
-            <a href="/archives/2020/08">08-05</a>
-            <a href="/2020/08/05/Linux%E4%B8%8B%E7%A8%8B%E5%BA%8F%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95%E7%AE%80%E8%BF%B0/" class="shake shake-little">Linux下程序调试方法简述</a>
-        </div>
-    
-        
-        <div class="archive_post">
-            <a href="/archives/2020/03">03-16</a>
-            <a href="/2020/03/16/Linux%E7%B3%BB%E7%BB%9F%E7%A7%BB%E6%A4%8D%E7%AE%80%E8%BF%B0/" class="shake shake-little">Linux系统移植简述</a>
-        </div>
-    
-        
-        <div class="archive_post">
-            <a href="/archives/2020/03">03-11</a>
-            <a href="/2020/03/11/kernel%E7%BC%96%E8%AF%91%E7%AE%80%E8%BF%B0/" class="shake shake-little">kernel编译简述</a>
-        </div>
-    
-        
-        <div class="archive_post">
-            <a href="/archives/2020/03">03-10</a>
-            <a href="/2020/03/10/%E4%B8%AD%E6%96%AD%E5%AD%A6%E4%B9%A0/" class="shake shake-little">中断学习</a>
-        </div>
-    
-        
-        <div class="archive_post">
-            <a href="/archives/2020/03">03-09</a>
-            <a href="/2020/03/09/Linux%E5%AF%86%E7%A0%81%E4%BF%AE%E6%94%B9/" class="shake shake-little">Linux密码修改</a>
-        </div>
-    
-</div>
-
-
-
-
-
-
-    
-
-
-
-
-    
-    
-        
-        
-    
-
-<div class="turn_page">
-    
-
-
-    
-        <a href="/archives/2020/page/2">2</a>
-    
-
-    
-        <a class="page_current">1</a>
-    
-
-
-    
-</div>
-</section>
-    </div>
-    <footer>
-    <div class="outer">
-        <div class="inner">
-            Powered by <a href="http://prowiki.demopage.icu/" target="_blank">ProWiki</a>
-            &copy;2021 河东小伍<br>
-            <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/">冀ICP备00000000号</a>
-        </div>
-    </div>
-</footer>
-
-<script src="/js/custom.js"></script>
-
-
-    <script>onload_content();</script>
-
-</body>
-</html>
+{% block sidebar %}
+  {{ sidebar_template.render(false) }}
+{% endblock %}

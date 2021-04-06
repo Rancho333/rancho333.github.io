@@ -1,180 +1,45 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    
-    <title>archives: 2021/1 | Rancho Blog</title>
-    
-        <meta name="description" content="No pain, no gain!">
-        <meta property="og:description" content="No pain, no gain!">
-    
-    
-        <meta property="og:site_name" content="Rancho Blog">
-    
-    
-        <meta property="article:author" content="Rancho">
-    
-    
-        <link rel="icon" href="/img/favicon.ico">
-    
-    
-<link rel="stylesheet" href="/css/minireset.min.css">
+{% extends '_layout.swig' %}
+{% import '_macro/post-collapse.swig' as post_template %}
+{% import '_macro/sidebar.swig' as sidebar_template %}
 
-    
-<link rel="stylesheet" href="/css/all.min.css">
+{% block title %}{{ __('title.archive') }} | {{ title }}{% endblock %}
 
-    
-<link rel="stylesheet" href="/css/csshake.min.css">
+{% block content %}
 
-    
-<link rel="stylesheet" href="/css/hljs/lioshi.css">
+  {#####################}
+  {### ARCHIVE BLOCK ###}
+  {#####################}
+  <div class="post-block archive">
+    <div id="posts" class="posts-collapse">
 
-    
-<link rel="stylesheet" href="/css/jquery.fancybox.min.css">
+      {%- if theme.cheers %}
+      <div class="collection-title">
+        {%- set cheers %}
+        {%- set posts_length = site.posts.length %}
+        {%- if posts_length > 210 %} {%- set cheers = 'excellent' %}
+          {% elif posts_length > 130 %} {%- set cheers = 'great' %}
+          {% elif posts_length > 80 %} {%- set cheers = 'good' %}
+          {% elif posts_length > 50 %} {%- set cheers = 'nice' %}
+          {% elif posts_length > 30 %} {%- set cheers = 'ok' %}
+        {% else %}
+          {%- set cheers = 'um' %}
+        {%- endif %}
+        <span class="collection-header">{{ __('cheers.' + cheers) }}! {{ _p("counter.archive_posts", site.posts.length) }} {{ __('keep_on') }}</span>
+      </div>
+      {%- endif %}
 
-    
-<link rel="stylesheet" href="/styl/main.css">
+      {{ post_template.render(page.posts) }}
 
-    
-<script src="/js/jquery.min.js"></script>
-
-    
-<script src="/js/highlight.min.js"></script>
-
-    
-<script src="/js/jquery.fancybox.min.js"></script>
-
-    
-<script src="/js/clipboard.min.js"></script>
-
-<meta name="generator" content="Hexo 5.4.0"></head>
-<body>
-    <header>
-  <div class="outer">
-    <div class="inner">
-      <h1 class="logo-wrap">
-        <a>Rancho Blog<b><sup>1.1</sup></b></a>
-      </h1>
-    </div>
-    <div class="inner">
-      <nav class="main-nav">
-        
-          <a href="/">首页</a>
-        
-          <a href="/archives">归档</a>
-        
-          <a href="/categories">分类</a>
-        
-          <a href="/tags">标签</a>
-        
-          <a href="/friends">友链</a>
-        
-          <a href="/about">关于</a>
-        
-          <a target="_blank" rel="noopener" href="https://www.baidu.com">百度</a>
-        
-      </nav>
     </div>
   </div>
-</header>
-    <div class="content">
-        <section class="outer">
+  {#########################}
+  {### END ARCHIVE BLOCK ###}
+  {#########################}
 
+  {% include '_partials/pagination.swig' %}
 
-<link rel="stylesheet" href="/styl/archive.css">
+{% endblock %}
 
-<div class="archive-wrapper">
-    
-    
-        
-            <div class="archive_year">
-                
-                <h2><a href="/archives/2021">2021</a></h2>
-                <hr>
-            </div>
-        
-        <div class="archive_post">
-            <a href="/archives/2021/01">01-29</a>
-            <a href="/2021/01/29/SONiC%E5%90%AF%E5%8A%A8%E7%AE%80%E8%BF%B0/" class="shake shake-little">SONiC启动简述</a>
-        </div>
-    
-        
-        <div class="archive_post">
-            <a href="/archives/2021/01">01-26</a>
-            <a href="/2021/01/26/Systemd%E5%AD%A6%E4%B9%A0/" class="shake shake-little">Systemd学习</a>
-        </div>
-    
-        
-        <div class="archive_post">
-            <a href="/archives/2021/01">01-26</a>
-            <a href="/2021/01/26/Linux%E5%8F%8C%E7%BD%91%E5%8D%A1%E8%AE%BE%E7%BD%AE-%E5%86%85%E5%A4%96%E7%BD%91/" class="shake shake-little">Linux双网卡设置-内外网</a>
-        </div>
-    
-        
-        <div class="archive_post">
-            <a href="/archives/2021/01">01-19</a>
-            <a href="/2021/01/19/broadcom-sdk-cmd/" class="shake shake-little">broadcom_sdk_cmd</a>
-        </div>
-    
-        
-        <div class="archive_post">
-            <a href="/archives/2021/01">01-05</a>
-            <a href="/2021/01/05/%E5%85%B3%E4%BA%8E%E7%BB%88%E7%AB%AF%E5%9B%9E%E6%98%BE%E7%9A%84%E9%97%AE%E9%A2%98/" class="shake shake-little">关于终端回显的问题</a>
-        </div>
-    
-        
-        <div class="archive_post">
-            <a href="/archives/2021/01">01-04</a>
-            <a href="/2021/01/04/2021%E5%B9%B4%E5%A4%A9%E5%BC%98%E8%B7%91%E5%9B%A2%E6%95%B0%E6%8D%AE/" class="shake shake-little">2021年天弘跑团数据</a>
-        </div>
-    
-</div>
-
-
-
-
-
-
-    
-
-
-
-
-    
-    
-        
-        
-            
-        
-    
-
-<div class="turn_page">
-    
-
-
-    
-        <a class="page_current">1</a>
-    
-
-
-    
-</div>
-</section>
-    </div>
-    <footer>
-    <div class="outer">
-        <div class="inner">
-            Powered by <a href="http://prowiki.demopage.icu/" target="_blank">ProWiki</a>
-            &copy;2021 河东小伍<br>
-            <a target="_blank" rel="noopener" href="http://beian.miit.gov.cn/">冀ICP备00000000号</a>
-        </div>
-    </div>
-</footer>
-
-<script src="/js/custom.js"></script>
-
-
-    <script>onload_content();</script>
-
-</body>
-</html>
+{% block sidebar %}
+  {{ sidebar_template.render(false) }}
+{% endblock %}
