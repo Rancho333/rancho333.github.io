@@ -167,84 +167,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2020/03/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%98%E5%82%A8%E4%BD%93%E7%B3%BB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/Rancho.png">
-      <meta itemprop="name" content="Rancho">
-      <meta itemprop="description" content="No pain, no gain!">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Rancho Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%98%E5%82%A8%E4%BD%93%E7%B3%BB/" class="post-title-link" itemprop="url">计算机存储体系</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-03-08 17:00:34" itemprop="dateCreated datePublished" datetime="2020-03-08T17:00:34+00:00">2020-03-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>在没有接触过嵌入式之前，对于计算机存储的认知仅限于知道硬盘和内存，然后硬盘掉电可以保存数据，内存掉电丢失数据。后来逐渐听到更多的专业名词，什么ROM，RAM，SRAM，DRAM，FLASH,，NandFlash，NorFlash等等了。以前将自己的定位总是局限在协议工程师，对于和硬件和驱动相关的东西有些抵触，随着工作的深入，也时常会用到一些I2C,gpio之类的东东。本着沉下来，归零，再出发的心态，这篇文章用来梳理一下自己对于计算机存储体系的认知。</p>
-<h1 id="总体架构"><a href="#总体架构" class="headerlink" title="总体架构"></a>总体架构</h1><p>下面这张图大家应该都很熟悉了<br><img src="https://rancho333.gitee.io/uploads/storage.png"><br>生活中的大部分物品，基本都满足“好的不一定是最贵的，但是最贵的一定是好的”，在计算机存储体系中，基本满足了上面这句话。塔尖上的那一小撮是最贵的，最快的，存储空间最小的。在实际生产中需要做到价格与性能（或者说实际需求）的平衡。下面从上到下梳理一下吧。</p>
-<h2 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h2><p>恩，之前软考《网络工程师》的时候接触过一点点.哦，文章有点跑题了，但是还是想记录一下。CPU执行指令分为：取指令，分析指令，执行指令三部曲，这里面会用到一系列的寄存器，有分别属于控制器和运算器，列举几个常见的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">控制器</span><br><span class="line">    程序计数器PC：存放下一条指令的地址</span><br><span class="line">    指令寄存器IR:存放正在运行的指令</span><br></pre></td></tr></table></figure>
-<p>指令包括操作码和地址码（操作数所在的地址）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">运算器：</span><br><span class="line">    累加寄存器AC</span><br><span class="line">    数据缓冲寄存器</span><br><span class="line">    状态条件寄存器</span><br></pre></td></tr></table></figure>
-<p>具体见下图：<br><img src="https://rancho333.gitee.io/uploads/register.png"><br>寄存器是CPU的内部组成单元，是CPU运算是取指令和数据最快的地方。当然不仅仅是CPU了，比如交换芯片及很多其它的ASIC都是用寄存器来实现某些功能的，你会发现芯片SDK提供的API最底层就是读写某些寄存器来实现具体功能。</p>
-<h2 id="cache与主存"><a href="#cache与主存" class="headerlink" title="cache与主存"></a>cache与主存</h2><p>cache与主存都是RAM（Random-Access Memory, 随机访问存储器），cache使用的是静态SRAM，主存使用的是DRAM。这两种器件掉电数据都会丢失。</p>
-<p>SRAM只要存储器保持通电，里面存储的数据就可以保持不变。<br>DRAM需要周期性的充电刷新，主存也就是我们PC中的内存条了。</p>
-<h2 id="ROM与flash"><a href="#ROM与flash" class="headerlink" title="ROM与flash"></a>ROM与flash</h2><p>以前一直纳闷为啥只读存储还能改里面的数据。<br>ROM一般用来存放bootloader(一般叫做固件，firmware)，这里面的内容在程序运行期间是无法更改的，掉电数据依然存在。<br>早期ROM在工厂里用特殊方法烧录进去，一旦烧录进去，用户只能验证写入的资料是否正确，不能再做任何修改。<br>后来人们发明了PROM（Programmable ROM， 可编程ROM），工厂制作的PROM内部没有数据，用户可以使用专用的编程期间烧写资料进去，但只能写一次，一旦写入也无法修改。<br>再后来发明了EPROM（Erasable Programmable ROM, 可擦写可编程ROM），芯片可以重复擦除和写入，但是需要使用紫外线照射芯片，比较麻烦。<br>再后来发明了EEPROM（Electrically Erasable Programmable ROM，电可擦除可编程ROM）,用专门的烧录器和烧录软件就可以直接烧录了，很方便。现在用的ROM大部分是这种。</p>
-<p>至于flash，咱们常见的u盘，固态硬盘灯都是基于flash中的NandFlash。flash分为NorFlash和NandFlash两种类型。<br>Nor的读取速度比Nand快一些，Nand的写入速度比Nor快很多，Nand的成本低，哈，这是很重要的。<br>Nand的读写操作是以块为单位的，Nor是以字节为单位。<br>NorFlash一般用来替代ROM用来存放BootLoader，容量较小，支持芯片内执行（XIP, eXecute In Place），Nand就是用来做大容量数据存储的啦！</p>
-<p>顺带提一下eMMC，这玩意没见过。eMMC相当于NandFlash+主控IC ，对外的接口协议与SD、TF卡一样，主要是针对手机或平板电脑等产品的内嵌式存储器标准规格。eMMC的一个明显优势是在封装中集成了一个控制器。eMMC由一个嵌入式存储解决方案组成，带有MMC（多媒体卡）接口、快闪存储器设备（Nand Flash）及主控制器，所有都在一个小型的BGA 封装。</p>
-<h1 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h1><p>其实就是RAM的分类，ROM的分类，以及Flash的分类有点迷！搞清楚特性，对应上用途！</p>
-<p>参考资料：<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/iva_brother/article/details/80463578">计算机存储器结构体系详解</a><br><a target="_blank" rel="noopener" href="https://baijiahao.baidu.com/s?id=1610041455262486965&wfr=spider&for=pc">NorFlash、NandFlash、eMMC闪存的比较与区别</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_38880380/article/details/78884522">NAND flash和NOR flash的区别详解</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2020/03/06/%E4%B8%80%E4%BA%9Bshell%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1136,6 +1058,122 @@
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2019/07/14/Hexo%E4%BD%BF%E7%94%A8%E4%BC%98%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/Rancho.png">
+      <meta itemprop="name" content="Rancho">
+      <meta itemprop="description" content="No pain, no gain!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rancho Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/07/14/Hexo%E4%BD%BF%E7%94%A8%E4%BC%98%E5%8C%96/" class="post-title-link" itemprop="url">Hexo使用优化</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-07-14 21:45:48" itemprop="dateCreated datePublished" datetime="2019-07-14T21:45:48+00:00">2019-07-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-04-06 08:03:04" itemprop="dateModified" datetime="2021-04-06T08:03:04+00:00">2021-04-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hexo/" itemprop="url" rel="index"><span itemprop="name">Hexo</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">站点配置文件：位于站点根目录下，主要包含Hexo本身的配置</span><br><span class="line">主题配置文件：位于主题目录下，主要用于配置主题相关的选项</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用next主题"><a href="#使用next主题" class="headerlink" title="使用next主题"></a>使用next主题</h2><p>网上一搜大部分都是Hexo+next的使用，本着站在前人的肩膀上原则，使用next主题。<br>主题下载：<code>git clone https://github.com/iissnan/hexo-theme-next themes/next</code><br>启用主题，打开站点配置文件，找到<code>theme</code>字段，修改为如下：  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">theme: next</span><br></pre></td></tr></table></figure>
+
+<h3 id="选择scheme"><a href="#选择scheme" class="headerlink" title="选择scheme"></a>选择scheme</h3><p>next提供4种不同外观，找到<code>scheme</code>字段，启用其中一种scheme，这里我选择Gemini.  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Schemes                                  </span></span><br><span class="line"><span class="comment">#scheme: Muse</span></span><br><span class="line"><span class="comment">#scheme: Mist</span></span><br><span class="line"><span class="comment">#scheme: Pisces</span></span><br><span class="line">scheme: Gemini</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置语言"><a href="#设置语言" class="headerlink" title="设置语言"></a>设置语言</h3><p>找到<code>language</code>字段，修改为(中文，英文为：en)：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">language: zh-Hans</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改menu图标"><a href="#修改menu图标" class="headerlink" title="修改menu图标"></a>修改menu图标</h3><p>还没有研究清楚，后续补上</p>
+<h3 id="设置侧栏"><a href="#设置侧栏" class="headerlink" title="设置侧栏"></a>设置侧栏</h3><p>找到<code>sidebar</code>字段，修改如下：  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sidebar:</span><br><span class="line">  <span class="comment">#靠左放置</span></span><br><span class="line">  position: left</span><br><span class="line">  <span class="comment">#显示时机</span></span><br><span class="line">  display: always</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置头像"><a href="#设置头像" class="headerlink" title="设置头像"></a>设置头像</h3><p>在主题配置文件中，找到<code>avatar</code>字段，值设置成头像的链接地址</p>
+<h3 id="设置作者昵称"><a href="#设置作者昵称" class="headerlink" title="设置作者昵称"></a>设置作者昵称</h3><p>在站点配置文件中，找到<code>author</code>字段，进行设置  </p>
+<h2 id="修改标签图标"><a href="#修改标签图标" class="headerlink" title="修改标签图标"></a>修改标签图标</h2><p>可以在<code>https://www.iconfont.cn/</code>上找合适的图标，下载两个尺寸(16x16和32x32)的png格式图片，放到主题下的images文件夹中。在主题配置文件中找到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">favicon:                         </span><br><span class="line">  small: /images/R-16x16.png  </span><br><span class="line">  medium: /images/R-32x32.png </span><br></pre></td></tr></table></figure>
+<p>替换small和medium两项，分别对应两种尺寸的图标。</p>
+<h2 id="给文章添加”categories”属性"><a href="#给文章添加”categories”属性" class="headerlink" title="给文章添加”categories”属性"></a>给文章添加”categories”属性</h2><p>创建<code>categories</code>页面  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page categories</span><br></pre></td></tr></table></figure>
+<p>找到<code>source/categories/index.md</code>文件，里面的初始内容如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">---                                       </span><br><span class="line">title: categories</span><br><span class="line">date: 2019-07-12 12:14:44</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<p>添加<code>type: &quot;categories&quot;</code>到内容中，添加后内容如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---                                               </span><br><span class="line">title: categories</span><br><span class="line">date: 2019-07-12 12:14:44</span><br><span class="line"><span class="built_in">type</span>: <span class="string">&quot;categories&quot;</span></span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<p>给文章添加<code>categories</code>属性，打开任意一篇md文件，为其添加概述信，添加后内容如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">---                                              </span><br><span class="line">title: Linux查找so文件所在pkg </span><br><span class="line">date: 2019-07-14 20:17:03</span><br><span class="line">categories: </span><br><span class="line">- Linux相关</span><br><span class="line">tags:</span><br><span class="line">- Linux</span><br><span class="line">- so文件</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p>hexo一篇文章只能属于一个分类，如添加多个分类，则按照分类嵌套进行处理。</p>
+<h2 id="给文章添加”tags”属性"><a href="#给文章添加”tags”属性" class="headerlink" title="给文章添加”tags”属性"></a>给文章添加”tags”属性</h2><p>创建<code>tags</code>页面</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page tags</span><br></pre></td></tr></table></figure>
+
+<p>后面的操作与添加<code>categories</code>属性类似，一篇文章可以添加多个<code>tags</code>  </p>
+<h2 id="使用资源文件夹"><a href="#使用资源文件夹" class="headerlink" title="使用资源文件夹"></a>使用资源文件夹</h2><p>在站点配置文件找到<code>post_asset_folder</code>关键字,设置成如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">_config.yml</span><br><span class="line">post_asset_folder: <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>当资源管理功能打开后，Hexo将会在每一次通过hexo new创建md时在相同路径下面创建一个同名的文件夹，与该md相关的资源都可以放在该文件夹里面。之后即可使用标签通过相对路径引用资源。  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% asset_img image_name.jpg tag %&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="关于图片"><a href="#关于图片" class="headerlink" title="关于图片"></a>关于图片</h1><p>有时候会分享md文件给别人，这时候要求图片的标识是因特网可达的，而不能使用资源文件夹这种方式。可以将图片放在<code>public/uploads</code>文件夹中，如果更改主题，记得备份文件夹再更改，<code>hexo clean</code>命令会删除该文件夹。图片调用：<code>![](https://rancho333.gitee.io/uploads/arp_protocol.png) </code></p>
+<p><strong>参考资料：</strong><br><a target="_blank" rel="noopener" href="http://theme-next.iissnan.com/">NexT官方</a>  </p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -1207,7 +1245,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-count">43</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
