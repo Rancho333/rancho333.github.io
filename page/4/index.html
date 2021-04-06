@@ -200,376 +200,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2020/03/11/kernel%E7%BC%96%E8%AF%91%E7%AE%80%E8%BF%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/Rancho.png">
-      <meta itemprop="name" content="Rancho">
-      <meta itemprop="description" content="No pain, no gain!">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Rancho Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/11/kernel%E7%BC%96%E8%AF%91%E7%AE%80%E8%BF%B0/" class="post-title-link" itemprop="url">kernel编译简述</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-03-11 15:48:46" itemprop="dateCreated datePublished" datetime="2020-03-11T15:48:46+00:00">2020-03-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-06 10:47:07" itemprop="dateModified" datetime="2021-04-06T10:47:07+00:00">2021-04-06</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><ol>
-<li>内核配置系统浅析</li>
-<li>vmlinux,uImage,Image的关系或区别</li>
-</ol>
-<h1 id="内核配置系统浅析"><a href="#内核配置系统浅析" class="headerlink" title="内核配置系统浅析"></a>内核配置系统浅析</h1><p>Linux采用模块化的内核配置系统，保证了内核的可扩展性。Linux内核的配置系统由三个部分组成，分别是：</p>
-<ol>
-<li>Makefile：分部在Linux内核源码中的Makefile，定义Linux内核的编译规则
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/11/kernel%E7%BC%96%E8%AF%91%E7%AE%80%E8%BF%B0/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2020/03/10/%E4%B8%AD%E6%96%AD%E5%AD%A6%E4%B9%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/Rancho.png">
-      <meta itemprop="name" content="Rancho">
-      <meta itemprop="description" content="No pain, no gain!">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Rancho Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/10/%E4%B8%AD%E6%96%AD%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">中断学习</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-03-10 16:07:13" itemprop="dateCreated datePublished" datetime="2020-03-10T16:07:13+00:00">2020-03-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-06 10:47:07" itemprop="dateModified" datetime="2021-04-06T10:47:07+00:00">2021-04-06</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><h1 id="中断简介"><a href="#中断简介" class="headerlink" title="中断简介"></a>中断简介</h1><p>Linux内核需要对连接到计算机上的所有硬件设备进行管理，他们之间需要互相通信，一般有两种方案可以实现。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 轮询（polling）内核定期对设备的状态进行查询，然后做出相应的处理</span><br><span class="line">2. 中断（interrupt）让硬件在需要的时候向内核发出信号（变内核主动为硬件主动）</span><br><span class="line">&lt;!-- more --&gt;</span><br></pre></td></tr></table></figure>
-<p>轮询是周期性的重复执行，大量耗用CPU的时间，效率比较低，对于实时性比较高的操作，肯定是不适用的。</p>
-<p>从物理学的角度看，中断是一种电信号，由硬件设备产生，并直接送入中断控制器（如8259A）的输入引脚上，然后再由中断控制器向CPU发送相应的信号。处理器检测到该信号，便中断当前正在处理的工作，转而去处理中断。对于软件开发人员，一般需要用到的就是中断号和中断处理函数。</p>
-<p>提一下，PCIE可以通过MSI(message signaled interrupts)方式实现中断：<br><img src="https://rancho333.gitee.io/uploads/msi.png"><br>CPu里面有一段特殊的寄存器空间，往这个寄存器里面写数据，就会触发CPU中断。pci设备经过配置以后，一旦需要上报中断就会往cpu这种寄存器里面写一个值，触发cpu中断。</p>
-<p>中断的处理流程：</p>
-<ol>
-<li>保存现场</li>
-<li>执行中断</li>
-<li>恢复被中断进程的现场，继续执行</li>
-</ol>
-<h2 id="中断分类"><a href="#中断分类" class="headerlink" title="中断分类"></a>中断分类</h2><p>中断可分为同步（synchronous）中断和异步（asynchronous）中断：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. 同步中断是当指令执行时由CPU控制单元产生，之所以称为同步，是因为只有在一条指令执行完毕后CPU才会发出中断，而不是在代码指令执行期间，比如系统调用</span><br><span class="line">2. 异步中断是指由其他硬件设备依照CPU时钟信号随机产生，即意味着中断能够在指令之间产生，例如键盘中断</span><br></pre></td></tr></table></figure>
-<p>同步中断称为异常（exception），异常可分为故障（fault）、陷阱（trap）、终止（abort）三类。<br>异步中断被称为中断（interrupt）,中断可分为可屏蔽中断（Maskable interrupt，外部设备产生的）和非屏蔽中断（Nomaskable interrupt，计算机内部硬件产生的）<br>异常是CPU发出的中断信号，与中断控制器无关，不能被屏蔽。</p>
-<p>广义上讲中断可分为四类：中断、故障、陷阱、终止。它们之间的异同点参照下表。</p>
-<table>
-<thead>
-<tr>
-<th align="left">类别</th>
-<th align="left">原因</th>
-<th align="left">异步/同步</th>
-<th align="left">返回行为</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">中断</td>
-<td align="left">来自I/O设备的信号</td>
-<td align="left">异步</td>
-<td align="left">总是返回到下一条指令</td>
-</tr>
-<tr>
-<td align="left">陷阱</td>
-<td align="left">有意的异常</td>
-<td align="left">同步</td>
-<td align="left">总是返回到下一条指令</td>
-</tr>
-<tr>
-<td align="left">故障</td>
-<td align="left">潜在可恢复的错误</td>
-<td align="left">同步</td>
-<td align="left">返回到当前指令</td>
-</tr>
-<tr>
-<td align="left">终止</td>
-<td align="left">不可恢复的错误</td>
-<td align="left">同步</td>
-<td align="left">不会返回</td>
-</tr>
-</tbody></table>
-<h2 id="中断控制器"><a href="#中断控制器" class="headerlink" title="中断控制器"></a>中断控制器</h2><p>常见的中断控制器有两种，两片8259A外部芯片’级联’和多级I/O APIC系统，见下图：<br><img src="https://rancho333.gitee.io/uploads/interrupt_ctl.png"><br>至于硬件实现细节这里不做过多描述。辨别一个系统是否正在使用I/O APIC，可以使用如下命令查看：<br><img src="https://rancho333.gitee.io/uploads/interrupts.png"><br>可以看到第6列上显示的是IO-APIC,如果上面显示的是XY-APIC，说明系统正在使用8259A芯片。<br>对上面文件的输出，解释如下：</p>
-<ol>
-<li>第一列表示IRQ中断号</li>
-<li>第二、三、四、五列表示相应的CPu核心被中断的次数</li>
-<li>第六列表示使用控制器</li>
-<li>第七列表示硬件中断号和中断触发方式（电平或边沿）</li>
-<li>第八列表示中断名称</li>
-<li>有一些IRQ号会表示为NMI，LOC之类的，这是系统保留的，用户无法访问和配置</li>
-</ol>
-<p>此外，<code>/proc/interrupts</code>文件中列出的是当前系统使用的中断情况，如果某个中断处理没有安装（包括安装后卸载的），是不会显示的。但是<code>/proc/stat</code>会记录机器从启动开始各个中断序号发生中断的次数。</p>
-<h2 id="中断向量"><a href="#中断向量" class="headerlink" title="中断向量"></a>中断向量</h2><p>x86中支持256种中断，将这些中断源按照0到255的顺序对没中中断进行编号，这个标号叫做中断向量，通常用8位无符号整数来存储这个向量。中断号与中断向量一一映射。<br>中断号和中断向量概念不同。当I/O设备把中断信号发送个中断控制器时，与之关联的是一个中断号；而当中断控制器将该中断信号传递给CPU时，与之关联的是一个中断向量。中断号是以中断控制器的角度而言的；中断向量则是以CPU的角度而言的。<br>通常，Intel将编号为0～31的向量分配给异常和非屏蔽中断。</p>
-<h2 id="中断服务例程"><a href="#中断服务例程" class="headerlink" title="中断服务例程"></a>中断服务例程</h2><p>在响应一个具体的中断时，内核会执行一个函数，这个函数被称为中断服务例程（interrupt service routine, ISR）。每一个设备的驱动程序中都会定义相关的中断服务例程。</p>
-<p>现今的中断处理流程都会分为两部分:上半部分（top half）和下半部分（bottom half），原因如下：</p>
-<ol>
-<li>中断可以随时打断CPU对其它程序的执行，如果被打断的代码对系统很重要，那么此时中断处理程序的执行时间应该越短越好</li>
-<li>中断处理程序在执行时，会屏蔽同条中断线上的中断请求；如果设置了IRQF_DISABLE，那么该中断服务程序执行时是会屏蔽其他所有其它的中断请求。那么此时应该让中断处理程序执行的越快越好。</li>
-</ol>
-<p>这样划分是有一定原因的，因为我们必须有一个快速、异步而且简单的处理程序专门来负责对硬件的中断请求作出快速响应，与此同时也要完成那些对时间要求很严格的操作。而那些对时间要求相对宽松，其它的剩余工作则会在稍后的任意时间执行，也就是所谓的下半部分执行。</p>
-<p>上半部分只能通过中断处理程序实现，下半部分可以通过多种机制来完成：小任务（tasklet），工作队列，软中断，不管是哪种机制，他们均为下半部分提供了一种执行机制，比上半部分灵活多了，至于何时执行，则由内核负责。</p>
-<h1 id="第一个中断测试程序"><a href="#第一个中断测试程序" class="headerlink" title="第一个中断测试程序"></a>第一个中断测试程序</h1><p>了解了下中断的基本概念，下面就写一个小demo来实际测试一下吧。代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;linux&#x2F;init.h&gt;                 </span><br><span class="line">#include &lt;linux&#x2F;kernel.h&gt;          </span><br><span class="line">#include &lt;linux&#x2F;module.h&gt;               </span><br><span class="line">#include &lt;linux&#x2F;moduleparam.h&gt;          </span><br><span class="line">#include &lt;linux&#x2F;interrupt.h&gt;       </span><br><span class="line">#include &lt;linux&#x2F;stat.h&gt;                 </span><br><span class="line">#include &lt;linux&#x2F;slab.h&gt;                                                                                                                                                                                           </span><br><span class="line">                                   </span><br><span class="line">static int irq &#x3D; 1;                 &#x2F;&#x2F;保存中断号irq</span><br><span class="line">static char *devname &#x3D; NULL;        &#x2F;&#x2F;保存中断名称*devname</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;利用宏module_param来接受参数</span><br><span class="line">module_param(irq, int, 00644);      &#x2F;&#x2F;S_IRUGO&#x3D;00644</span><br><span class="line">module_param(devname, charp, 00644);</span><br><span class="line">                                   </span><br><span class="line">&#x2F;&#x2F;定义一个结构体，在request_irq函数中的void *dev_id经常设置为结构体或NULL</span><br><span class="line">struct dev_info&#123;                   </span><br><span class="line">    int irq_id;                    </span><br><span class="line">    char *dev_name;                </span><br><span class="line">&#125;;                                 </span><br><span class="line">                                   </span><br><span class="line">struct dev_info *mydev_info &#x3D; NULL;</span><br><span class="line">                                   </span><br><span class="line">&#x2F;&#x2F;声明中断处理函数（上半部分）  </span><br><span class="line">static irqreturn_t myirq_handler(int irq, void *dev);</span><br><span class="line">                                   </span><br><span class="line">static int __init myirq_init(void)</span><br><span class="line">&#123;                                  </span><br><span class="line">    printk(&quot;zhw test:Module is working ...\n&quot;);</span><br><span class="line">    &#x2F;&#x2F;分配struct dev_info结构体内存</span><br><span class="line">    mydev_info &#x3D; kmalloc(sizeof(struct dev_info), GFP_KERNEL);</span><br><span class="line">    if(!mydev_info)                </span><br><span class="line">    &#123;                              </span><br><span class="line">        printk(&quot;kmalloc failed!\n&quot;);</span><br><span class="line">        return -1;                 </span><br><span class="line">    &#125;                              </span><br><span class="line">    memset(mydev_info, 0, sizeof(struct dev_info));</span><br><span class="line">    mydev_info-&gt;irq_id &#x3D; irq;   </span><br><span class="line">    &#x2F;&#x2F;分配结构体struct dev_info-&gt;char *dev_name内存</span><br><span class="line">    mydev_info-&gt;dev_name &#x3D; kmalloc(10, GFP_KERNEL);</span><br><span class="line">    if(!mydev_info-&gt;dev_name)   </span><br><span class="line">    &#123;                              </span><br><span class="line">        printk(&quot;kmalloc 1 failed!\n&quot;);</span><br><span class="line">        return -1;                 </span><br><span class="line">    &#125;                              </span><br><span class="line">    mydev_info-&gt;dev_name &#x3D; devname;</span><br><span class="line"></span><br><span class="line">    if(request_irq(irq, &amp;myirq_handler, IRQF_SHARED, devname, mydev_info))</span><br><span class="line">    &#123;</span><br><span class="line">        printk(&quot;%s request IRQ:%d failed\n&quot;, devname, irq);</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line">    printk(&quot;%s request IRQ:%d success..\n&quot;, devname ,irq);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">static void __exit myirq_exit(void)</span><br><span class="line">&#123;</span><br><span class="line">    printk(&quot;unloading my module ..\n&quot;);</span><br><span class="line">    free_irq(irq, mydev_info);</span><br><span class="line">    printk(&quot;freeing IRQ %d\n&quot;, irq);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">static irqreturn_t myirq_handler(int irq, void *dev)</span><br><span class="line">&#123;</span><br><span class="line">    struct dev_info mydev;</span><br><span class="line">    static int count &#x3D; 1;</span><br><span class="line">    mydev &#x3D; *(struct dev_info *)dev;</span><br><span class="line"> </span><br><span class="line">    printk(&quot;key:%d\n&quot;, count);</span><br><span class="line">    printk(&quot;devname:%s. devid:%d\n is working..\n&quot;, mydev.dev_name, mydev.irq_id);</span><br><span class="line">    printk(&quot;ISR is leaving\n&quot;);</span><br><span class="line">    count++;</span><br><span class="line">    return IRQ_HANDLED;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">module_init(myirq_init);</span><br><span class="line">module_exit(myirq_exit);</span><br><span class="line"> </span><br><span class="line">MODULE_LICENSE(&quot;GPL&quot;);</span><br></pre></td></tr></table></figure>
-<p>因为中断程序一般包含在某个设备的驱动程序中，所以这个程序本质就是一个内核模块。这里面主要就是驱动的初始化，退出，以及中断服务例程（ISR）。这里共享键盘的中断号，x86下键盘的中断号是1.<br>Makefile如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">obj-m:&#x3D;first_interrupt.o                                                                                                                                                                                          </span><br><span class="line">KDIR:&#x3D;&#x2F;lib&#x2F;modules&#x2F;$(shell uname -r)&#x2F;build</span><br><span class="line">PWD:&#x3D;$(shell pwd)</span><br><span class="line"> </span><br><span class="line">default:</span><br><span class="line">    $(MAKE) -C $(KDIR) M&#x3D;$(PWD) modules</span><br><span class="line"> </span><br><span class="line">clean:</span><br><span class="line">    rm -rf .*.cmd *.o *.mod.c *.ko .tmp_versions</span><br></pre></td></tr></table></figure>
-
-<p>使用方法：</p>
-<ol>
-<li>cat /proc/interrupts查看中断号，注意如果是使用ssh或telent到linux上的是不会响应键盘中断的，需要使用虚拟机来实验</li>
-<li>加载驱动<code>sudo insmod ./first_interrupt.ko irq=1 devname=zhwirq</code></li>
-<li>查看驱动<code>lsmod | grep first</code>,查看中断<code>cat /proc/interrupts | grep zhw</code></li>
-<li>dmesg查看内核日志文件，dmesg | tail -20<br><img src="https://rancho333.gitee.io/uploads/dmesg.png"></li>
-<li>卸载驱动<code>sudo rmmod first_interrupt</code></li>
-</ol>
-<p>加载驱动后，先进行驱动初始化，之后每当有键盘中断触发后，都会进入ISR，卸载驱动后不会再触发。</p>
-<p>参考资料：<br><a target="_blank" rel="noopener" href="https://www.linuxidc.com/Linux/2014-03/98012.htm">Linux下的中断（interrupt） 简介</a><br><a target="_blank" rel="noopener" href="http://edsionte.com/techblog/archives/1495">中断入门</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/wordwarwordwar/article/details/81182910">PCI&amp;PCIE MSI中断</a><br><a target="_blank" rel="noopener" href="http://control.blog.chinaunix.net/uid-22666248-id-3052413.html">第一个中断驱动程序</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/yzytr/article/details/77659302">如何编译内核ko</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2020/03/09/Linux%E5%AF%86%E7%A0%81%E4%BF%AE%E6%94%B9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/Rancho.png">
-      <meta itemprop="name" content="Rancho">
-      <meta itemprop="description" content="No pain, no gain!">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Rancho Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/09/Linux%E5%AF%86%E7%A0%81%E4%BF%AE%E6%94%B9/" class="post-title-link" itemprop="url">Linux密码修改</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-03-09 17:20:27" itemprop="dateCreated datePublished" datetime="2020-03-09T17:20:27+00:00">2020-03-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-06 10:47:07" itemprop="dateModified" datetime="2021-04-06T10:47:07+00:00">2021-04-06</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p><img src="https://rancho333.gitee.io/uploads/inittab.png"><br>这里是不进入shell的，而是直接进入klish作为交换机的命令行交互界面，类似于quagga的vtysh。之后在<code>configure</code>视图下面执行<code>start shell</code>进入linux shell的。<br><img src="https://rancho333.gitee.io/uploads/shell.png"><br>在fnconvert里面会获取用户<code>root</code>的密码，其实就是使用<code>getspnam</code>获取<code>passwd或者shadow</code>的口令。既然这玩意使用的是Linux的账户和密码，那就是修改<code>/etc/passwd</code>文件了。<br><img src="https://rancho333.gitee.io/uploads/spnam.png"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/09/Linux%E5%AF%86%E7%A0%81%E4%BF%AE%E6%94%B9/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2020/03/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%98%E5%82%A8%E4%BD%93%E7%B3%BB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/Rancho.png">
-      <meta itemprop="name" content="Rancho">
-      <meta itemprop="description" content="No pain, no gain!">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Rancho Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%98%E5%82%A8%E4%BD%93%E7%B3%BB/" class="post-title-link" itemprop="url">计算机存储体系</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-03-08 17:00:34" itemprop="dateCreated datePublished" datetime="2020-03-08T17:00:34+00:00">2020-03-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-06 10:47:07" itemprop="dateModified" datetime="2021-04-06T10:47:07+00:00">2021-04-06</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在没有接触过嵌入式之前，对于计算机存储的认知仅限于知道硬盘和内存，然后硬盘掉电可以保存数据，内存掉电丢失数据。后来逐渐听到更多的专业名词，什么ROM，RAM，SRAM，DRAM，FLASH,，NandFlash，NorFlash等等了。以前将自己的定位总是局限在协议工程师，对于和硬件和驱动相关的东西有些抵触，随着工作的深入，也时常会用到一些I2C,gpio之类的东东。本着沉下来，归零，再出发的心态，这篇文章用来梳理一下自己对于计算机存储体系的认知。</p>
-<h1 id="总体架构"><a href="#总体架构" class="headerlink" title="总体架构"></a>总体架构</h1><p>下面这张图大家应该都很熟悉了<br><img src="https://rancho333.gitee.io/uploads/storage.png"><br>生活中的大部分物品，基本都满足“好的不一定是最贵的，但是最贵的一定是好的”，在计算机存储体系中，基本满足了上面这句话。塔尖上的那一小撮是最贵的，最快的，存储空间最小的。在实际生产中需要做到价格与性能（或者说实际需求）的平衡。下面从上到下梳理一下吧。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%98%E5%82%A8%E4%BD%93%E7%B3%BB/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2020/03/06/%E4%B8%80%E4%BA%9Bshell%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -601,7 +231,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-06 10:47:07" itemprop="dateModified" datetime="2021-04-06T10:47:07+00:00">2021-04-06</time>
+                <time title="Modified: 2021-04-06 10:52:32" itemprop="dateModified" datetime="2021-04-06T10:52:32+00:00">2021-04-06</time>
               </span>
 
           
@@ -615,21 +245,52 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><ol>
+          <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>最开始接触到的命令行是windows的cmd，一次用它来查ip感觉很神奇。后来接触到Linux，vim，从起初的抵触不适应，到后来的得心应手。使用命令行，离计算机更近。这篇文章记录一下shell下面的一些细节。分为</p>
+<ol>
 <li>标准输入和命令参数的区别</li>
 <li>在后台运行的命令退出终端也就全部退出了</li>
 <li>单引号和双引号表示字符串的区别</li>
 <li>有的命令和<code>sudo</code>一起用就<code>command not found</code></li>
 </ol>
-<h1 id="标准输入和参数的区别"><a href="#标准输入和参数的区别" class="headerlink" title="标准输入和参数的区别"></a>标准输入和参数的区别</h1>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/06/%E4%B8%80%E4%BA%9Bshell%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
+<h1 id="标准输入和参数的区别"><a href="#标准输入和参数的区别" class="headerlink" title="标准输入和参数的区别"></a>标准输入和参数的区别</h1><p>最初遇到这个问题的时候是在shell下面使用<code>管道</code>操作，例如：<code>find ./ -name &quot;*.c&quot; | xargs grep -rn zhw</code>,这条命令的含义是：在当前路径下的所有<code>.c</code>文件中查找<code>zhw</code>关键字，注意这里在管道的右侧加了关键字<code>xargs</code>，表示将<code>find</code>找到的结果作为<em>参数</em>传递给<code>grep</code>，grep是不接受标准输入的。</p>
+<p>标准输入就是编程语言中诸如<code>scanf</code>或者<code>readline</code>获取到的信息；而参数是指程序的<code>main</code>函数传入的<code>args</code>字符串数组。管道符和重定向符都是将数据作为程序的标准输入，下面这个示例：</p>
+
+<ol>
+<li>grep要搜索的文件作为参数是可选的，<code>-r</code>可以在当前路径下递归查找</li>
+<li>find不加xargs和直接grep效果是一样的，说明没有指定查找文件，而使用xargs则指定了查找文件作为参数传递给grep</li>
+</ol>
+<p>这里多说一点：</p>
+
+<p>通常使用find命令查找特定的文件，然后再这些文件中用grep去匹配关键字，但是如果find的结果是空，那么通过xargs方式就相当于没有给grep指明特定查找文件（它就会在当前目录递归）,而通过<code>-exec</code>则表示对匹配的文件执行该参数所给出的shell命令，此时grep实际并没有执行，这才符合我们的预期结果。</p>
+<p>上面两个小例子，理解问题的本质是多么的重要，基础打牢固，花哨的东西就随便玩了！<br>除了<code>xargs</code>可以读取数据作为命令参数外，通过<code>$(cmd)</code>形式也能达到同样的效果，例如：</p>
+
+
+<p><code>$(cmd)</code>读取<code>cmd</code>命令输出的数据作为参数。</p>
+<p>最后说一下如何区分命令能够接受标准输入还是参数：如果命令能够让终端阻塞，说明该命令能接受标准输入，反之就是不接受。<code>rm</code>命令是不接受标准输入的。</p>
+
+
+<h1 id="后台运行程序"><a href="#后台运行程序" class="headerlink" title="后台运行程序"></a>后台运行程序</h1><p>如果一些服务需要长时间运行，比如main函数里面有个<code>while(1)</code>的死循环，程序运行后命令行会阻塞。在命令后加上<code>&amp;</code>后程序就可以在后台运行而不会阻塞命令行。底层的原理或者说这是怎么实现的呢？</p>
+<p>每一个命令行终端都是一个shell进程，每当有命令需要执行是shell会fork一个子进程去执行命令，而shell进程会阻塞，等待子shell进程退出才重新响应。写一个很简单的demo</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">void main()                                                                                           </span><br><span class="line">&#123;</span><br><span class="line">    while(1)</span><br><span class="line">    &#123;&#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>加上<code>&amp;</code>后，只是让shell进程不再阻塞，可以继续响应你的新命令，但是当你关掉这个shell命令行中终端后，依附于它的所有子进程都会退出。如下：</p>
+
+<p>但是如果<code>(cmd &amp;)</code>这样来运行命令，则是将<code>cmd</code>挂到一个<code>systemd</code>系统守护进程下，这样即使当终端退出后，对于刚才的命令也没有影响。如下：</p>
+
+<p>不过<code>nohup cmd &amp;</code>的做法似乎常见一些，原理类似。此外还可以试试<code>tmux</code>这个小工具，如果利用晚上的时候在服务器编译大型项目，这玩意挺好用的，不用担心断网（终端被kill）。</p>
+<h1 id="单引号和双引号的区别"><a href="#单引号和双引号的区别" class="headerlink" title="单引号和双引号的区别"></a>单引号和双引号的区别</h1><p>使用<code>set -x</code>命令，可以开启shell的命令回显。</p>
+<p>对于单引号：所见即所得，会将单引号内的内容原样输出</p>
+<p>对于双引号：把双引号内的内容输出出来；如果内容中有命令、变量等，会先把变量、命令解析出结果，然后在输出最终内容来。</p>
+<p>不加引号：不会将含有空格的字符串视为一个整体输出, 如果内容中有命令、变量等，会先把变量、命令解析出结果，然后在输出最终内容来，如果字符串中带有空格等特殊字符，则不能完整的输出，需要改加双引号，一般连续的字符串，数字，路径等可以用。所以在写shell脚本的时候一定注意使用小括号和双引号哈！</p>
+<p>示例如下：</p>
+
+
+<h1 id="sudo-找不到命令"><a href="#sudo-找不到命令" class="headerlink" title="sudo 找不到命令"></a>sudo 找不到命令</h1><p>有时候普通用户可以印的命令，加上<code>sudo</code>之后却报错<code>command not found</code>，原因在于这个命令仅存在与该用户的环境变量PATH中。解决方法是：</p>
+<ol>
+<li>使用绝对路径调用命令</li>
+<li>将命令添加到需要使用的用户的环境变量中<br>同样的道理，root用户或其他用户的命令另外一些用户也可能找不到。</li>
+</ol>
+<p>参考资料：<br><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Nj58VYQc955bFukrt4Jm2Q">关于Linux shell你必须知道的</a></p>
+
       
     </div>
 
@@ -679,7 +340,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-06 10:47:07" itemprop="dateModified" datetime="2021-04-06T10:47:07+00:00">2021-04-06</time>
+                <time title="Modified: 2021-04-06 10:52:32" itemprop="dateModified" datetime="2021-04-06T10:52:32+00:00">2021-04-06</time>
               </span>
 
           
@@ -693,15 +354,58 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><h1 id="weak弱符号定义"><a href="#weak弱符号定义" class="headerlink" title="weak弱符号定义"></a>weak弱符号定义</h1><p>网上找了下weak符号的定义：#pragma weak to define a weakglobal symbol. This pragma is used mainly in source files for building libraries. The linker does not produce an error if it is unable to resolve a weak symbol.<br>对于全局的函数和变量，能不能重命名是有一定的规矩的，强、弱符号就是针对这些全局函数和变量来说的。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/03/C%E8%AF%AD%E8%A8%80%E5%BC%B1%E7%AC%A6%E5%8F%B7weak/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
+          <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>上一篇文章《ENOS上段错调试记录》中有提到弱符号<code>weak</code>引发的段错，这篇文章来学习一下weak的用法。说来惭愧，工作了快4年，第一次见到这个语法。</p>
+<h1 id="weak弱符号定义"><a href="#weak弱符号定义" class="headerlink" title="weak弱符号定义"></a>weak弱符号定义</h1><p>网上找了下weak符号的定义：#pragma weak to define a weakglobal symbol. This pragma is used mainly in source files for building libraries. The linker does not produce an error if it is unable to resolve a weak symbol.<br>对于全局的函数和变量，能不能重命名是有一定的规矩的，强、弱符号就是针对这些全局函数和变量来说的。</p>
+<table>
+<thead>
+<tr>
+<th align="left">符号类型</th>
+<th align="left">对象</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">强</td>
+<td align="left">函数名，赋初值的全局变量</td>
+</tr>
+<tr>
+<td align="left">弱</td>
+<td align="left">未初始化的全局变量</td>
+</tr>
+</tbody></table>
+<p>当代码中存在多个强或弱的全局变量时，规则如下：</p>
+<ol>
+<li>强符号只能定义一次，否则编译error(未使用weak修饰的都是强符号)</li>
+<li>强弱符号同时存在，以强符号为准</li>
+<li>没有强符号，从多个弱符号中选一个，<code>-fno-common</code>这种情况下可以打出<code>warning</code><br>这玩意的用途有点类似于<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ifndef name</span><br><span class="line">    #define name</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="代码演示"><a href="#代码演示" class="headerlink" title="代码演示"></a>代码演示</h1><h2 id="弱符号声明"><a href="#弱符号声明" class="headerlink" title="弱符号声明"></a>弱符号声明</h2><p>两种方式，第一种 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">extern void weak0();</span><br><span class="line">#pragma weak weak0</span><br></pre></td></tr></table></figure>
+<p>第二种方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void __attribute__((weak)) weak0();</span><br></pre></td></tr></table></figure>
+
+<h2 id="规则演示"><a href="#规则演示" class="headerlink" title="规则演示"></a>规则演示</h2><p>下面通过三段代码来演示上诉的3条规则。</p>
+<h3 id="main-c"><a href="#main-c" class="headerlink" title="main.c"></a>main.c</h3><p><code>main.c</code>里面调用了2个声明为弱符号的函数，分别是<code>weak0</code>和<code>weak1</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;                                                                                                                                                                                              </span><br><span class="line">&#x2F;&#x2F;void __attribute__((weak)) weak0(void);</span><br><span class="line">&#x2F;&#x2F;void __attribute__((weak)) weak1(void);</span><br><span class="line">extern void weak0();</span><br><span class="line">extern void weak1();</span><br><span class="line">#pragma weak weak0</span><br><span class="line">#pragma weak weak1</span><br><span class="line"> </span><br><span class="line">int main(int argc, char **argv)&#123;</span><br><span class="line">    &#x2F;&#x2F;尝试调用弱符号函数weak0</span><br><span class="line">    if (weak0)&#123;</span><br><span class="line">        weak0();</span><br><span class="line">    &#125;   </span><br><span class="line">    else&#123;</span><br><span class="line">        printf(&quot;weak0&#x3D;%p\n&quot;, weak0);</span><br><span class="line">    &#125;   </span><br><span class="line">    &#x2F;&#x2F;尝试调用弱符号函数weak1</span><br><span class="line">    if (weak1)&#123;</span><br><span class="line">        weak1();</span><br><span class="line">    &#125;   </span><br><span class="line">    else&#123;</span><br><span class="line">        printf(&quot;weak1&#x3D;%p\n&quot;, weak1);</span><br><span class="line">    &#125;   </span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="weak-c"><a href="#weak-c" class="headerlink" title="weak.c"></a>weak.c</h3><p><code>weak.c</code>中定义了两个函数（weak0和weak1），并将之声明为弱符号</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;标记weak0为弱符号</span><br><span class="line">#pragma weak weak0</span><br><span class="line">&#x2F;&#x2F;标记weak1为弱符号</span><br><span class="line">void __attribute__((weak)) weak1(void);</span><br><span class="line"></span><br><span class="line">static char *label &#x3D; &quot;weak&quot;;</span><br><span class="line"></span><br><span class="line">void weak0(void)&#123;</span><br><span class="line">    printf(&quot;[%s]%s is called\n&quot;, label, __FUNCTION__);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void weak1(void)&#123;</span><br><span class="line">    printf(&quot;[%s]%s is called\n&quot;, label, __FUNCTION__);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="strong-c"><a href="#strong-c" class="headerlink" title="strong.c"></a>strong.c</h3><p><code>strong.c</code>中重复定义了这两个函数，不做声明。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;两个函数都[不]声明为弱符号</span><br><span class="line">&#x2F;&#x2F;#pragma weak weak0</span><br><span class="line">&#x2F;&#x2F;void __attribute__((weak)) weak1(void);</span><br><span class="line"></span><br><span class="line">static char *label &#x3D; &quot;strong&quot;;</span><br><span class="line"></span><br><span class="line">void weak0(void)&#123;</span><br><span class="line">    printf(&quot;[%s]%s is called\n&quot;, label, __FUNCTION__);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void weak1(void)&#123;</span><br><span class="line">    printf(&quot;[%s]%s is called\n&quot;, label, __FUNCTION__);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="不同编译组合及其输出情况"><a href="#不同编译组合及其输出情况" class="headerlink" title="不同编译组合及其输出情况"></a>不同编译组合及其输出情况</h2><h3 id="单独编译main-c"><a href="#单独编译main-c" class="headerlink" title="单独编译main.c"></a>单独编译main.c</h3><p>此处弱符号函数链接不成功，但是不会报编译错误，函数名所代表的地址为<code>nil</code></p>
+
+<p>如果这里依然调用它，那么便会如前面文章中提到的一样产生段错。</p>
+
+
+<h3 id="编译main-c-weak-c"><a href="#编译main-c-weak-c" class="headerlink" title="编译main.c+weak.c"></a>编译main.c+weak.c</h3><p>弱符号链接成功，可以正常调用。</p>
+
+
+<h3 id="编译main-c-weak-c-strong-c"><a href="#编译main-c-weak-c-strong-c" class="headerlink" title="编译main.c+weak.c+strong.c"></a>编译main.c+weak.c+strong.c</h3><p>当出现强符号定义时，弱符号定义不起作用</p>
+
+
+
+
       
     </div>
 
@@ -751,7 +455,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-06 10:47:07" itemprop="dateModified" datetime="2021-04-06T10:47:07+00:00">2021-04-06</time>
+                <time title="Modified: 2021-04-06 10:52:32" itemprop="dateModified" datetime="2021-04-06T10:52:32+00:00">2021-04-06</time>
               </span>
 
           
@@ -765,16 +469,29 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>移植ENOS过程中发现某些系统编译生成的命令运行过程中报<code>segmentation fault</code>,报错信息如下。这里记录一下调试过程中遇到的问题，涉及到<code>weak</code>属性，<code>-pthread</code>，<code>strace</code>等。<br><img src="https://rancho333.gitee.io/uploads/fault.png"></p>
-<h2 id="段错调试手段记录"><a href="#段错调试手段记录" class="headerlink" title="段错调试手段记录"></a>段错调试手段记录</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/02/ENOS%E4%B8%8A%E6%AE%B5%E9%94%99%E8%B0%83%E8%AF%95%E8%AE%B0%E5%BD%95/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
+          <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>移植ENOS过程中发现某些系统编译生成的命令运行过程中报<code>segmentation fault</code>,报错信息如下。这里记录一下调试过程中遇到的问题，涉及到<code>weak</code>属性，<code>-pthread</code>，<code>strace</code>等。</p>
+
+
+
+<h2 id="段错调试手段记录"><a href="#段错调试手段记录" class="headerlink" title="段错调试手段记录"></a>段错调试手段记录</h2><p>产生段错首先想到的自然是通过<code>gdb</code>进行错误分析，由于toolchain中并没有提供，所以自行下载了一个gdb源码，通过经典<code>configure, make, make install</code>三部曲后移到板子上，gdb调试信息如下：</p>
+
+
+<p>gdb中并不能看出什么有效的信息，但看起来函数栈的调用还没有到ccs的main函数中（没有与ccs相关的打印），上一篇文章《关于动态库以及constructor属性的使用》中有提到。<br>通过<code>dmesg</code>查看内核报错信息：</p>
+
+<p>可以看到<code>pc</code>寄存器取址的地址为全0 ，这一般是因为空指针导致，我们知道cpu指令的执行顺序为取址，分析，执行三个步骤，没取到指令后续自然是啥都没有了。</p>
+<p>通过<code>strace ccs</code>命令来查看ccs的详细调用过程关于动态库的调用过程就不表了，这里直接看报错的位置：</p>
+
+<p>发现执行完write指令之后就挂了，经过一番曲折之后定位到代码中：</p>
+
+<p><code>iv_fd_set_cloexec</code>中有两次<code>fnctl</code>的调用，与strace中的4次fnctl调用刚好对上，而函数<code>iv_signal_init</code>被<code>constructor</code>属性修饰，而该函数所在模块（libtask）是被编译成so供其它模块调用的，即所有调用该动态库的模块在执行main函数之前都会执行一遍<code>iv_signal_init</code>，进一步追查Makefile发现报错的命令全部都依赖与该动态库，一切都说通了，没有玄学。</p>
+<p>在进一步排查，init中最可疑的就是<code>pthr_atfork</code>这个函数了，查看该函数定义，发现一个从没见过的用法<code>#pragma weak pthread_atfork</code>：</p>
+
+<p>后面会再写一篇关于这个属性的用法，简单说就是被<code>weak</code>修饰的符号即使不存在编译也不会报错。</p>
+<h2 id="weak之后的调试"><a href="#weak之后的调试" class="headerlink" title="weak之后的调试"></a>weak之后的调试</h2><p>这里发现libtask中既没有自己实现<code>pthread_atfork</code>,也没有在Makefile中链接<code>-pthread</code>，而是使用<code>ifdef HAVE_PRAGMA_WEAK</code>(后来我改成ifndef了)来进行屏蔽，在运行过程中自然会报错，在调用之前打印该函数的地址，不出意料的是<code>NULL</code>，维护人员最初的用意已经不可考证了，直接去掉<code>HAVE_PRAGMA_WEAK</code>,编译中加上<code>-pthread</code>。</p>
+
+
+<p>这里有必要顺嘴提一下<code>-lpthread</code>和<code>-pthread</code>，如果使用<code>-lpthread</code>的时候会报一些<code>undefined reference to</code>的错误，错误原因可以自行百度，换成<code>-pthread</code>即可。</p>
+
       
     </div>
 
@@ -824,7 +541,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-06 10:47:07" itemprop="dateModified" datetime="2021-04-06T10:47:07+00:00">2021-04-06</time>
+                <time title="Modified: 2021-04-06 10:52:32" itemprop="dateModified" datetime="2021-04-06T10:52:32+00:00">2021-04-06</time>
               </span>
 
           
@@ -838,26 +555,280 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>在做linux系统移植的过程中逐步加深了对动态编译和静态编译的理解，今天这里记录一下如何将自己的代码编译成动态库供其他程序使用。顺道记录一下遇到的一个好玩的东西：C语言中的constructor属性，是<code>__attribute__</code>的attr_list中的一员。</p>
+          <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>在做linux系统移植的过程中逐步加深了对动态编译和静态编译的理解，今天这里记录一下如何将自己的代码编译成动态库供其他程序使用。顺道记录一下遇到的一个好玩的东西：C语言中的constructor属性，是<code>__attribute__</code>的attr_list中的一员。</p>
 <h2 id="将自己的模块编译生成so"><a href="#将自己的模块编译生成so" class="headerlink" title="将自己的模块编译生成so"></a>将自己的模块编译生成so</h2><p>示例模块分成两个部分，cons.c和cons.h,cons.c的代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#include &quot;cons.h&quot;</span><br><span class="line">&lt;!-- more --&gt;</span><br><span class="line"></span><br><span class="line">void before_main()</span><br><span class="line">&#123;</span><br><span class="line">        printf(&quot;%s\n&quot;, __FUNCTION__);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void after_main()</span><br><span class="line">&#123;</span><br><span class="line">        printf(&quot;after main!\n&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#include &quot;cons.h&quot;</span><br><span class="line"></span><br><span class="line">void before_main()</span><br><span class="line">&#123;</span><br><span class="line">        printf(&quot;%s\n&quot;, __FUNCTION__);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void after_main()</span><br><span class="line">&#123;</span><br><span class="line">        printf(&quot;after main!\n&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>cons.h的代码如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">void before_main() __attribute__((constructor)); </span><br><span class="line">void after_main();</span><br></pre></td></tr></table></figure>
 <p>使用命令<code>gcc cons.c -fPIC -shared -o  libcons.so</code>编译生成动态库文件。</p>
 <h2 id="使用动态进行编译"><a href="#使用动态进行编译" class="headerlink" title="使用动态进行编译"></a>使用动态进行编译</h2><p>动态库一般是封装了一些常用的模块或功能，我们在需要调用动态库的代码中先加入需要调用函数所在的头文件（这些头文件是与动态库一起发布的），然后在编译的时候链接该库就可以了。调用库的示例代码demo.c:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#include &quot;cons.h&quot;</span><br><span class="line"></span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">        printf(&quot;%s\n&quot;, __FUNCTION__);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>使用命令<code>gcc demo.c -o demo -L./ -lcons</code>进行编译，其中<code>-L</code>指明了查找动态库的路径，<code>-lcons</code>指明动态库的名字，它的组成是<code>-l</code>加上动态库真实名字的<code>lib</code>与<code>.so</code>之间的字符串，如<code>libcons.so</code>就是<code>-l+cons</code>。<br>使用<code>ldd demo</code>查看程序所依赖动态库的具体情况（是否存在，查找路径等）：<br><img src="https://rancho333.gitee.io/uploads/ldd.png"></p>
+<p>使用命令<code>gcc demo.c -o demo -L./ -lcons</code>进行编译，其中<code>-L</code>指明了查找动态库的路径，<code>-lcons</code>指明动态库的名字，它的组成是<code>-l</code>加上动态库真实名字的<code>lib</code>与<code>.so</code>之间的字符串，如<code>libcons.so</code>就是<code>-l+cons</code>。<br>使用<code>ldd demo</code>查看程序所依赖动态库的具体情况（是否存在，查找路径等）：</p>
+
+
 <p>发现demo与libcons.so之间并未产生依赖关系，这里猜测是demo.c中并没有显示的使用到libcons.so中的资源，所以即使加上<code>-lcons</code>编译选项，编译器也会对之进行优化。那么我们修改demo.c中的代码为：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#include &quot;cons.h&quot;</span><br><span class="line"></span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">        printf(&quot;%s\n&quot;, __FUNCTION__);</span><br><span class="line">        after_main();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里加上对函数<code>after_main</code>的调用，再使用ldd查看：<br><img src="https://rancho333.gitee.io/uploads/ldd_2.png"></p>
+<p>这里加上对函数<code>after_main</code>的调用，再使用ldd查看：</p>
+
+
 <p>发现ldd中虽然已经有了libcons.so的信息，但是是<code>not found</code>，执行<code>demo</code>当然也会报这个库找不到。这是因为我们的库所在的路径并没有加到<em>查找库所在路径</em>的环境中，类似于shell的命令查找规则<em>PATH</em>环境变量，这里可以将路径添加到环境变量中或者将库拷贝到已知的查找路径中。用户添加的一般拷到<code>/usr/lib</code>下，这里再回到上面编译demo.c的地方，如果事先将库拷到系统路径中，那么久不用加<code>-L</code>指定路径了。如果是做嵌入式开发，记得一定要把库拷到开发板上哦。动态库在程序编译和执行的时候都会用的。</p>
-<p>再次ldd看下并执行：<br><img src="https://rancho333.gitee.io/uploads/ldd_3.png"></p>
+<p>再次ldd看下并执行：</p>
+
+
 <p>可以正常执行打印出函数名字了，但是有点奇怪的是没有调用befor_main函数为什么也会打印出来呢。</p>
 <h2 id="constructor关键字"><a href="#constructor关键字" class="headerlink" title="constructor关键字"></a>constructor关键字</h2><p>回到上面去看看before_main函数的声明，发现有个<code>__attribute__((constructor))</code>。</p>
 <h3 id="attribute-介绍"><a href="#attribute-介绍" class="headerlink" title="__attribute__介绍"></a>__attribute__介绍</h3><p>__attribute__可以设置函数属性(Function Attribute)、变量属性(Variable Attribute)和类型属性(Type Attribute)。__attribute__前后都有两个下划线，并且后面会紧跟一对原括弧，括弧里面是相应的__attribute__参数<br><em><strong>attribute__语法格式为：__attribute</strong> ( ( attribute-list ) )</em></p>
 <p>若函数被设定为constructor属性，则该函数会在main（）函数执行之前被自动的执行。类似的，若函数被设定为destructor属性，则该函数会在main（）函数执行之后或者exit（）被调用后被自动的执行。</p>
 <p>所以记得了before_main在main函数之前执行的哦，以前一直只记得main函数是程序的入口。这次移植调试发现在main函数之前就coredump了，查了好半天才定位出来。</p>
 <p>好玩的东西很多，遇到奇怪的东西很多时候心里会打鼓，但越来越坚定：代码里没有玄学！</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2019/09/10/igmp-snooping%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/Rancho.png">
+      <meta itemprop="name" content="Rancho">
+      <meta itemprop="description" content="No pain, no gain!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rancho Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/09/10/igmp-snooping%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">igmp-snooping学习</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-09-10 06:07:29" itemprop="dateCreated datePublished" datetime="2019-09-10T06:07:29+00:00">2019-09-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-04-06 10:52:32" itemprop="dateModified" datetime="2021-04-06T10:52:32+00:00">2021-04-06</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>恩，18年做了半年的组播，算入门吧！最近有个igmp snooping（下面简称igsp）的bug，是个机缘接触一下igsp！</p>
+<h2 id="使用需求简述"><a href="#使用需求简述" class="headerlink" title="使用需求简述"></a>使用需求简述</h2><p>很多情况下，组播报文要不可避免的经过一些二层交换设备，尤其是在局域网环境里。如下图：</p>
+
+
+<p>上图中switch会将组播报文当做广播在vlan内进行flood，这是因为组播报文的目的地址为组播地址，在二层设备上学习不到这一类的MAC表项，这样不但浪费网络带宽，而且影响网络信息安全。配置igsp后，二层组播设备可以侦听和分析组播用户和上游路由器之间的IGMP报文，根据这些信息建立二层组播转发表项，控制组播数据报文的转发。</p>
+<h2 id="IGSP基本原理"><a href="#IGSP基本原理" class="headerlink" title="IGSP基本原理"></a>IGSP基本原理</h2><p>IGSP是二层组播的基本功能，可以实现组播数据在链路层的转发和控制。当主机和上游三层设备之间传递IGMP协议报文通过二层组播设备时，IGSP分析报文携带的信息，根据这些信息建立和维护组播转发表，从而指导组播数据在数据链路层按需转发。</p>
+
+
+<h2 id="IGSP相关概念"><a href="#IGSP相关概念" class="headerlink" title="IGSP相关概念"></a>IGSP相关概念</h2>
+<p>如上图所示，三层设备router从组播源接收数据并向下游转发，在二层组播涉笔Switch A和Switch B上分别运行IGSP，Host A,B,C为组播成员。下面说下IGSP中的几个重要概念。</p>
+<ul>
+<li><p>路由器端口（Router Port）<br>如Switch A和Switch B上蓝色圆圈表示的接口。<br>路由器端口指二层组播设备上 <em><strong>朝向</strong></em> 组播路由器的接口。二层组播设备从该接口接受IGMP和PIM协议报文以及组播数据报文。<br>由协议生成的路由器端口叫做动态路由器端口，手动配置的路由器端口叫做静态路由器端口。<br>收到源地址不为0.0.0.0的IGMP普遍组查询报文或PIM Hello报文的接口都被视为动态路由器端口（呃，ENOS中IGSP貌似没有处理PIM报文的地方）。</p>
+</li>
+<li><p>成员端口（Member port）<br>如Switch A，B上黄色方框表示的接口。又被称为组播成员端口，表示二层组播设备上朝向组播成员一侧的端口，二层组播设备往此接口发送组播数据报文。<br>由协议生成的成员端口叫做动态成员端口，手动配置的成员端口叫做静态成员端口。<br>收到IGMP report报文的接口，二层组播设备会将其标识为动态成员端口。</p>
+</li>
+</ul>
+<p>路由器端口，成员端口，组播地址和vlan编号是二层组播转发表项的基本信息。</p>
+<p>如果使用了组播vlan功能，入vlan为组播vlan，出vlan为主机所在的用户vlan。否则入vlan和出vlan均为主机所在的vlan。<br>哈，后面在ENOS中添加组播vlan功能，这里先了解一下了！</p>
+<h2 id="IGSP工作机制"><a href="#IGSP工作机制" class="headerlink" title="IGSP工作机制"></a>IGSP工作机制</h2><p>这里说明IGSP对不同协议报文的处理。</p>
+<ul>
+<li><p>IGMP普遍组查询报文<br>IGMP querier定期向本地网段内的所有主机与路由器（目的地址为224.0.0.1）发送IGMP普遍组查询报文，以查询该网段有哪些组播组成员。处理方式：</p>
+<ul>
+<li>向VLAN内除接收接口意外的其它所有接口转发，并对接收接口做如下处理：<ul>
+<li>如果路由器端口列表中尚未包含该接口，则将其添加进去，并启动老化定时器</li>
+<li>如果路由器端口列表中已包含该动态路由器端口，则重置老化定时器</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>IGMP成员报告报文<br>两种情况：</p>
+<ul>
+<li>成员收到IGMP普遍组查询报文后，回应IGMP报告报文</li>
+<li>成员主动向IGMP查询器发送IGMP报告报文以声明加入该组播组<br>处理方式：<br>向vlan内所有的路由器端口转发。（注意，其它主机不会收到IGMP成员报告报文，需要在二层组播设备上使能report suppres抑制report和leave报文。）从报文中解析出主机要加入的组播组地址，并对接收接口做如下处理：<ul>
+<li>如果不存在该组对应的转发表项，则创建转发表，将该接口作为成员端口添加到出接口列表中，并启动老化定时器。</li>
+<li>如果已存在该组对应的转发表，且出接口列表中已包含该动态成员端口，则重置其老化定时器。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>IGMP成员离开报文<br>两个阶段：</p>
+<ul>
+<li>运行IGMPv2或IGMPv3的成员发送IGMP leave报文，通知IGMP查询器自己离开某个组播组</li>
+<li>IGMP查询器向该组播组发送特定组查询报文<br>处理方式：<br>判断离开的组是否存在对应的转发表象，以及转发表象出接口列表是否包含报文的接收接口：</li>
+<li>如果不存在该组对应的转发表象，或者该组对应转发表项的出接口列表中不包含接收接口，二层组播设备不转发该报文，直接丢弃。</li>
+<li>如果存在对应的转发表项并且表项包含该接口，向vlan内的所有路由器端口转发。</li>
+</ul>
+</li>
+</ul>
+<p>对于IGMP离开报文的接收接口，二层组播设备在其老化时间内：<br>    * 如果从该接口收到了主机响应IGMP特定组查询报文的报告报文，表示接口下还有该组成员，重置老化时间。<br>    * 如果没有收到，则在老化超时后，将接口从该组的转发表项出接口列表中删除。</p>
+<p>参考资料：<br><a target="_blank" rel="noopener" href="https://support.huawei.com/enterprise/zh/doc/EDOC1000141440/cabd652a">华为IGSP配置</a><br><a target="_blank" rel="noopener" href="https://blog.51cto.com/lifulin/2073218">组播IGMP Snooping理论知识详解</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2019/09/06/Linux%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%E8%AE%B0%E5%BD%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/Rancho.png">
+      <meta itemprop="name" content="Rancho">
+      <meta itemprop="description" content="No pain, no gain!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rancho Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/09/06/Linux%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%E8%AE%B0%E5%BD%95/" class="post-title-link" itemprop="url">Linux科学上网记录</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-09-06 05:52:04" itemprop="dateCreated datePublished" datetime="2019-09-06T05:52:04+00:00">2019-09-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-04-06 10:52:32" itemprop="dateModified" datetime="2021-04-06T10:52:32+00:00">2021-04-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>之前在AWS部署了自己的shadowsocks的服务端，这个比较简单，参见ss的<a target="_blank" rel="noopener" href="https://github.com/shadowsocks/shadowsocks/tree/master">github</a>上面介绍就可以很容易的部署起来了，之后在windows上Android安装了对应的客户端，可以顺利科学上网，此处对这一部分就不多做说明了。最近做SONiC（哈，又是SONiC），编译过程中需要在google上下载一些资源，那么就需要在Linux服务器上翻墙，并且在docker中可以访问google。</p>
+<h2 id="在linux上安装ss"><a href="#在linux上安装ss" class="headerlink" title="在linux上安装ss"></a>在linux上安装ss</h2><p>Linux环境是ubuntu 16.04 server，没有图形界面，纯命令行。<br>使用pip安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install python-pip</span><br><span class="line">sudo apt-get install python-setuptools m2crypto</span><br><span class="line">pip install shadowsocks</span><br></pre></td></tr></table></figure>
+<p>或者直接用apt安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install shadowsocks</span><br></pre></td></tr></table></figure>
+<p>中间可能会提示需要安装一些依赖，按提示安装即可。</p>
+<h2 id="启动ss"><a href="#启动ss" class="headerlink" title="启动ss"></a>启动ss</h2><p>ss的服务端和客户端的程序其实是同一个（找ss的客户端找了半天），只是启动的命令不一样。客户端是sslocal命令，服务端是ssserver命令。有兴趣的同学可以<code>sslocal --help</code>看一下，这是一个很好的习惯。</p>
+<p>这里我们直接使用配置文件的方式启动客户端，配置如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;                                                                                                     </span><br><span class="line">    &quot;server&quot;:&quot;x.x.x.x&quot;,</span><br><span class="line">    &quot;server_port&quot;:443,</span><br><span class="line">    &quot;local_address&quot;:&quot;127.0.0.1&quot;,</span><br><span class="line">    &quot;local_port&quot;:1080,</span><br><span class="line">    &quot;password&quot;:&quot;xxxx123456&quot;,</span><br><span class="line">    &quot;timeout&quot;:300,</span><br><span class="line">    &quot;method&quot;:&quot;aes-256-cfb&quot;,</span><br><span class="line">    &quot;fast_open&quot;:false</span><br><span class="line">&#125;</span><br><span class="line">server  服务端vps的公网IP地址</span><br><span class="line">server_port     服务端的端口</span><br><span class="line">local_address   本地ip，一般localhost</span><br><span class="line">local_port      本地端口</span><br><span class="line">password        服务端密码</span><br><span class="line">timeout         超时时间，应和服务端一致</span><br><span class="line">method          加密方式，和服务端一致</span><br></pre></td></tr></table></figure>
+<p>这里一定注意配置文件的信息，请参照服务端配置文件，之后可以启动客户端：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sslocal -c &#x2F;home&#x2F;mudao&#x2F;shadowsocks.json -d -start</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置privoxy代理"><a href="#配置privoxy代理" class="headerlink" title="配置privoxy代理"></a>配置privoxy代理</h2><p>ss是sock5代理，需要在local配置privoxy将http、https转换成sock5流量才能走到vps。</p>
+<ul>
+<li><p>安装privoxy</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install privoxy</span><br></pre></td></tr></table></figure></li>
+<li><p>配置privoxy</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;privoxy&#x2F;config</span><br><span class="line">forward-socks5t &#x2F; 127.0.0.1:1080 .</span><br><span class="line">listen-address 127.0.0.1:8118</span><br><span class="line">确保这两行的存在</span><br></pre></td></tr></table></figure></li>
+<li><p>启动privoxy</p>
+<ul>
+<li>开启privoxy服务<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service privoxy start</span><br></pre></td></tr></table></figure></li>
+<li>设置http和https全局代理<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export http_proxy&#x3D;&#39;http:&#x2F;&#x2F;localhost:8118&#39;</span><br><span class="line">export https_proxy&#x3D;&#39;https:&#x2F;&#x2F;localhost:8118&#39;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl cip.cc</span><br></pre></td></tr></table></figure>
+<p>会显示出你配置文件中vps的地址：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">IP      : x.x.x.x</span><br><span class="line">地址    : 日本  东京都  东京</span><br><span class="line">运营商  : amazon.com</span><br><span class="line"></span><br><span class="line">数据二  : 美国 | Amazon数据中心</span><br><span class="line"></span><br><span class="line">数据三  : 日本东京都东京 | 亚马逊</span><br><span class="line"></span><br><span class="line">URL     : http:&#x2F;&#x2F;www.cip.cc&#x2F;x.x.x.x</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>然后再可以这样玩下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl &quot;http:&#x2F;&#x2F;pv.sohu.com&#x2F;cityjson?ie&#x3D;utf-8&quot;</span><br></pre></td></tr></table></figure>
+<p>搜狐的这个接口可以返回你的IP地址</p>
+<h2 id="配置PAC"><a href="#配置PAC" class="headerlink" title="配置PAC"></a>配置PAC</h2><p>很明显的，我们不想没被墙的网站也走代理，这时就需要PAC了。</p>
+<ul>
+<li><p>安装GFWList2Privoxy</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install --user gfwlist2privoxy</span><br></pre></td></tr></table></figure></li>
+<li><p>获取gfwlist文件，生成actionsfile</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;tmp</span><br><span class="line">wget https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;gfwlist&#x2F;gfwlist&#x2F;master&#x2F;gfwlist.txt</span><br><span class="line">~&#x2F;.local&#x2F;bin&#x2F;gfwlist2privoxy -i gfwlist.txt -f gfwlist.action -p 127.0.0.1:1080 -t socks5</span><br><span class="line">sudo cp gfwlist.action &#x2F;etc&#x2F;privoxy&#x2F;</span><br></pre></td></tr></table></figure>
+<p>哈，可以在gfwlist.action中找一下google，很多，是不是。恩，大名鼎鼎的facebook，youtube，netflix都在里面哦，天朝的GFW将这些全部墙了。<br>如果访问某些国外网站速度慢的话（比如时常抽疯的github），就将它加到里面去吧！</p>
+</li>
+</ul>
+<p>有了配置文件之后，在<code>/etc/privoxy/config</code>文件中加上<code>actionsfile gfwlist.action</code>就可以了</p>
+<ul>
+<li>重启Privoxy，测试代理是否走pac模式<ul>
+<li>是否能google<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget www.google.com</span><br></pre></td></tr></table></figure></li>
+<li>是否能pac(显示自己ip)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl &quot;http:&#x2F;&#x2F;pv.sohu.com&#x2F;cityjson?ie&#x3D;utf-8&quot;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>注意<br>如果还是显示代理服务器的IP，则把/etc/privoxy/config中的forward-socks5 / 127.0.0.1:1080 .这一行注释了，然后重启privoxy<br>如果不注释这行，所有的流量都走代理，我们刚才做的pac模式，它就不走了。</li>
+</ul>
+<h2 id="docker中使用代理流量"><a href="#docker中使用代理流量" class="headerlink" title="docker中使用代理流量"></a>docker中使用代理流量</h2><p>嗯嗯，我的初心是为了在docker中编译sonic，自然需要让docker也能科学上网了。<br>创建docker的配置文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">vim  ~&#x2F;.docker&#x2F;config.json</span><br><span class="line">&#123;                  </span><br><span class="line">&quot;proxies&quot;:</span><br><span class="line">&#123;</span><br><span class="line">   &quot;default&quot;:</span><br><span class="line">   &#123;</span><br><span class="line">     &quot;httpProxy&quot;: &quot;http:&#x2F;&#x2F;localhost:8118&quot;,</span><br><span class="line">     &quot;httpsProxy&quot;: &quot;http:&#x2F;&#x2F;localhost:8118&quot;,</span><br><span class="line">     &quot;noProxy&quot;: &quot;localhost&quot;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>或者使用<code>docker run -e &quot;http_proxy=http://localhost:8118&quot; -e &quot;https_proxy=http://localhost:8118&quot;</code></p>
+<p>docker默认是bridge的网络模式，端口是需要做转发映射的。为了直接用宿主机的ip和端口，我们换成用host的网络模式，让她和宿主机可以用同一个Network Namespace<br>也就是使用<code>docker run -e &quot;http_proxy=http://localhost:8118&quot; -e &quot;https_proxy=http://localhost:8118&quot; --net host</code>来启动一个container</p>
+<p>注意到上面<code>https_proxy</code>使用的代理和<code>http_proxy</code>是一样的，这是因为我在使用中发现有如下报错：</p>
+
+<p>更改完之后就好了，原理暂时不清楚，看机缘更新吧！</p>
+<p>参考资料：</p>
+<p><a target="_blank" rel="noopener" href="https://huangweitong.com/229.html">Linux 使用 ShadowSocks + Privoxy 实现 PAC 代理</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.diosfun.com/2018/09/21/Ubuntu18-04%E5%AE%89%E8%A3%85shadowsocks%E5%AE%A2%E6%88%B7%E7%AB%AF/">Ubuntu18.04安装shadowsocks客户端</a></p>
+<p><a target="_blank" rel="noopener" href="https://kebingzao.com/2019/02/22/docker-container-proxy/">docker 容器内使用宿主机的代理配置</a></p>
 
       
     </div>
@@ -908,7 +879,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-06 10:47:07" itemprop="dateModified" datetime="2021-04-06T10:47:07+00:00">2021-04-06</time>
+                <time title="Modified: 2021-04-06 10:52:32" itemprop="dateModified" datetime="2021-04-06T10:52:32+00:00">2021-04-06</time>
               </span>
 
           
@@ -922,16 +893,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>会不会写makefile从一个侧面说明一个人是否具备完成大型工程的能力。</p>
+          <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>学软件的时候接触过一些makefile，但是之后的工作中一直没怎么用上。最近在做白盒交换机SONiC以及ONL的编译工作，里面用makefile和python完成整个工程的编译，有些宏大与震撼，关键很多地方看不懂哇。系统的学习一下，这里作为笔记，参考的是陈皓的《跟我一起写Makefile》。</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>会不会写makefile从一个侧面说明一个人是否具备完成大型工程的能力。</p>
 <p>makefile关系到了整个工程的编译规则。源文件（类型、功能、模块）放在若干目录，makefile是编译规则，指定那些文件需要先编译，后编译，重新编译。其中也可以执行操作系统的命令。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/08/26/Makefile%E5%AD%A6%E4%B9%A0/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
+<p>make是解释makefile中指令的命令工具。</p>
+<h2 id="关于程序的编译与链接"><a href="#关于程序的编译与链接" class="headerlink" title="关于程序的编译与链接"></a>关于程序的编译与链接</h2><p>编译流程：预处理（.i），编译(.s)，汇编(.o)，链接(binary)。</p>
+<p>编译时，编译器需要的是语法的正确，函数与变量的声明的正确（告诉头文件所在的位置，定义应该放在C文件中）。一般来说，每个源文件都应该对应于一个中间目标文件（.o文件）。如果函数未被声明，编译器可以生成Obiect File。</p>
+<p>链接时，主要链接函数与全局变量。将中间目标文件链接成应用程序。中间目标文件太多，将其打包，windows下这种包叫“库文件”(library file)，也就是.lib文件，在UNIX下是Archive File,也就是.a文件。在Object File中寻找函数的实现，如果找不到，就报错。</p>
+<h2 id="Makefile介绍"><a href="#Makefile介绍" class="headerlink" title="Makefile介绍"></a>Makefile介绍</h2><p>Makefile规则：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">target ... : prerequisites ...</span><br><span class="line">    command</span><br><span class="line">    ...</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p>target是目标文件，可以是Object File，也可以是执行文件，还可以是一个标签（Lablel）。<br>prerequisites即依赖。<br>command是make需要执行的命令，任意shell命令。</p>
+<p>Makefile中核心内容：<br><em><strong>prerequisites中如果有一个以上的文件必target文件要新（或者target不存在）的话，command所定义的命令就会被执行</strong></em></p>
+<p>Makefile自动推导功能，对于[.o]文件，他会把[.c]文件自动加在依赖关系中，并且[command]gcc -c file.c也会被推导出来。</p>
+<h2 id="Makefile总述"><a href="#Makefile总述" class="headerlink" title="Makefile总述"></a>Makefile总述</h2>
       
     </div>
 
@@ -981,8 +955,17 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-06 10:47:07" itemprop="dateModified" datetime="2021-04-06T10:47:07+00:00">2021-04-06</time>
+                <time title="Modified: 2021-04-06 10:52:32" itemprop="dateModified" datetime="2021-04-06T10:52:32+00:00">2021-04-06</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hexo/" itemprop="url" rel="index"><span itemprop="name">Hexo</span></a>
+                </span>
+            </span>
 
           
 
@@ -996,15 +979,276 @@
 
       
           <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我们都是站在前人的肩膀上看的更远，走的更高。在这里记录下通过Hexo搭建个人博客，通过markdown写博客的过程中踩的一些坑，希望对看到这篇文章的你有些帮助！</p>
-<h3 id="关于代码块"><a href="#关于代码块" class="headerlink" title="关于代码块"></a>关于代码块</h3>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/07/25/hexo%E4%B8%AD%E8%B8%A9%E8%BF%87%E7%9A%84%E5%9D%91/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
+<h3 id="关于代码块"><a href="#关于代码块" class="headerlink" title="关于代码块"></a>关于代码块</h3><p>```后面不要留空格，不然不会把它当做代码块的定界符来处理，会把后面的内容都当做代码块来处理。</p>
+<h3 id="关于表格"><a href="#关于表格" class="headerlink" title="关于表格"></a>关于表格</h3><p>在表格开头留个空行，不然可能不对表格进行渲染。<br>在表格结束留个空行，不然可能对表格之后的内容进行越界渲染。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2019/07/25/%E5%85%B3%E4%BA%8EUbuntu%E7%9A%84%E8%BD%AF%E4%BB%B6%E6%BA%90source-list%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/Rancho.png">
+      <meta itemprop="name" content="Rancho">
+      <meta itemprop="description" content="No pain, no gain!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rancho Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/07/25/%E5%85%B3%E4%BA%8EUbuntu%E7%9A%84%E8%BD%AF%E4%BB%B6%E6%BA%90source-list%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">关于Ubuntu的软件源source.list学习</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-07-25 03:02:19" itemprop="dateCreated datePublished" datetime="2019-07-25T03:02:19+00:00">2019-07-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-04-06 10:52:32" itemprop="dateModified" datetime="2021-04-06T10:52:32+00:00">2021-04-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">Linux相关</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="背景说明"><a href="#背景说明" class="headerlink" title="背景说明"></a>背景说明</h2><p>最近参与到公司的白盒交换机项目中，需要编译ONL和sonic，其中软件源的设置让我非常头疼，编译依赖有很大的问题。决定深入学习一下Linux软件源.主机环境为ubuntu16.04.  </p>
+<h2 id="软件库存储文件-list"><a href="#软件库存储文件-list" class="headerlink" title="软件库存储文件*.list"></a>软件库存储文件*.list</h2><p>ubuntu使用apt来管理软件包，apt将软件库存储在如下文件中:  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;etc&#x2F;apt&#x2F;sources.list</span><br><span class="line">&#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;目录中带.list后缀的文件</span><br></pre></td></tr></table></figure>
+<p>可以通过man sources.lis来查看apt的完整存储机制。  </p>
+<h2 id="sources-list格式和写法"><a href="#sources-list格式和写法" class="headerlink" title="sources.list格式和写法"></a>sources.list格式和写法</h2><ol>
+<li>以<code>#</code>开头的行是注释行  </li>
+<li>以deb或deb-src开头的是<code>apt respository</code>，具体格式为：  </li>
+<li>deb：二进制包仓库  </li>
+<li>deb-src：二进制包的源码库,不自己看程序或者编译，deb-src可以不要。  </li>
+<li>URI: 库所在的地址，可以是网络地址，也可以是本地的镜像地址  </li>
+<li>codename：ubuntu版本的代号，可以通过命令<code>lsb_release -a</code>来查看当前系统的代号  </li>
+<li>components：软件的性质(free或non-free等)  </li>
+</ol>
+<h3 id="ubuntu系统代号"><a href="#ubuntu系统代号" class="headerlink" title="ubuntu系统代号"></a>ubuntu系统代号</h3><p>codename是ubuntu不同版本的代号</p>
+<table>
+<thead>
+<tr>
+<th align="center">版本号</th>
+<th align="center">代号(codename)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">10.04</td>
+<td align="center">lucid</td>
+</tr>
+<tr>
+<td align="center">12.04</td>
+<td align="center">precise</td>
+</tr>
+<tr>
+<td align="center">14.04</td>
+<td align="center">trusty</td>
+</tr>
+<tr>
+<td align="center">14.10</td>
+<td align="center">utopic</td>
+</tr>
+<tr>
+<td align="center">16.04</td>
+<td align="center">xenial</td>
+</tr>
+<tr>
+<td align="center">18.04</td>
+<td align="center">bionic</td>
+</tr>
+</tbody></table>
+<h3 id="deb说明"><a href="#deb说明" class="headerlink" title="deb说明"></a>deb说明</h3><p>deb后面的内容有三大部分：deb URI section1 section2<br>以<code>deb http://us.archive.ubuntu.com/ubuntu/ xenial main restricted</code>为例进行说明。<br>URI是库所在的地址，支持http，fpt以及本地路径,访问<code>http://us.archive.ubuntu.com/ubuntu/</code>可以看到如下信息：</p>
+  
+<p><code>dists</code>和<code>pool</code>这两个目录比较重要。<code>dists</code>目录包含了当前库的所有软件包的索引。这些索引通过codename分布在不同的文件夹中。例如<code>xenial</code>所在的目录。  </p>
+
+<p>上图中的文件夹名其实就是对应了section1，我们可以根据需要填写不同的section1.<br>这里面的文件都是用以下格式命名的：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">codename</span><br><span class="line">codename-backports    #unsupported updates</span><br><span class="line">codename-proposed	  #pre-released updates</span><br><span class="line">codename-security	  #important security updates</span><br><span class="line">codename-updates	  #recommanded updates</span><br></pre></td></tr></table></figure>
+
+<p>打开其中一个任一文件夹，例如<code>xenial-updates</code>:  </p>
+  
+<p>里面有<code>main,multiverse,restricted,universe</code>文件夹，这些文件夹对应deb后面的section2,里面包含了不同软件包的索引。它们的区别在于：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">main：完全的自由软件</span><br><span class="line">restricted: 不完全的自由软件</span><br><span class="line">universe: ubuntu官方不提供支持与补丁，全靠社区支持</span><br><span class="line">multiverse: 非自由软件，完全不提供支持和补丁</span><br></pre></td></tr></table></figure>
+
+<p>打开main目录下的binary-i386子目录下的Packages.gz文件，可以看到如下内容：  </p>
+
+<p>说明：Packages.gz这个文件其实就是一个“索引”文件,里面记录了各种包的包名(Package)、运行平台(Architecture)、版本号（Version）、依赖关系(Depends)、deb包地址(Filename)等。Filename指向的是源服务器pool目录下的某个deb。猜测：<code>apt-get install</code>某个软件是，其实就是基于这些Packages.gz来计算依赖关系，然后根据其中的filename地址来下载所需的deb，最后执行<code>dpkg -i pacckage.deb</code>来完成软件包的安装。  </p>
+<h2 id="替换源"><a href="#替换源" class="headerlink" title="替换源"></a>替换源</h2><p>先将默认的sources.list进行备份，然后仿照下表修改源：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释</span><br><span class="line">deb https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic main restricted universe multiverse</span><br><span class="line"># deb-src https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic main restricted universe multiverse</span><br><span class="line">deb https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-updates main restricted universe multiverse</span><br><span class="line"># deb-src https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-updates main restricted universe multiverse</span><br><span class="line">deb https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-backports main restricted universe multiverse</span><br><span class="line"># deb-src https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F; bionic-backports main restricted universe multiverse</span><br><span class="line">deb https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-security main restricted universe multiverse</span><br><span class="line"># deb-src https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-security main restricted universe multiverse</span><br><span class="line"></span><br><span class="line"># 预发布软件源，不建议启用</span><br><span class="line"># deb https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-proposed main restricted universe multiverse</span><br><span class="line"># deb-src https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-proposed main restricted universe multiverse</span><br></pre></td></tr></table></figure>
+
+<h2 id="国内镜像网站"><a href="#国内镜像网站" class="headerlink" title="国内镜像网站"></a>国内镜像网站</h2><p>这里推荐两个国内镜像网站，一个是<a target="_blank" rel="noopener" href="http://mirrors.tuna.tsinghua.edu.cn/">清华源</a>，一个是<a target="_blank" rel="noopener" href="https://mirrors.aliyun.com/">阿里源</a><br>找到对应的源后，清华源可以点击源名称后的问号获取源路径，阿里源可以点击源名称所在行的帮助获取源路径。<br>注意事项：<br>    清华源中源路径默认使用https,需要安装apt-transport-https软件包，否则修改为http进行使用</p>
+<h2 id="unmet-dependencies"><a href="#unmet-dependencies" class="headerlink" title="unmet dependencies"></a>unmet dependencies</h2><p>在执行命令<code>apt-get -y build-dep linux</code>时出现<code>unmet dependencies</code>错误，如下图所示：</p>
+
+<p>解决方法：<br>    在镜像服务器上可以查询到2.99版本存在，将<code>apt-get</code>命令换成<code>aptitude</code>命令，使用<code>apt-get install -y apt-utils aptitude</code>安装<code>aptitude</code></p>
+<h2 id="Hash-Sum-Mismatch"><a href="#Hash-Sum-Mismatch" class="headerlink" title="Hash Sum Mismatch"></a>Hash Sum Mismatch</h2><p>在使用阿里源编译sonic源码的时候(debian:stretch)，出现<code>Hash Sum Mismatch</code>的报错。如下图所示：</p>
+
+
+<p>有些网络服务商，特别是一些小区网络的服务商，为了减少流量费用和提高对常见网络资源的访问速度，很多都搞了这么个东西出来<br>但是他们的缓存策略有问题，只比对文件路径，不考虑域名/IP地址，也没怎么考虑过文件内容更新后的同步，即缓存服务器上的内容和实际文件的内容可能不一致。<br>即对于<a target="_blank" rel="noopener" href="http://example.com/a/b/c.dat%E8%BF%99%E4%B9%88%E4%B8%80%E4%B8%AA%E6%96%87%E4%BB%B6%EF%BC%8C%E5%A6%82%E6%9E%9C%E8%A2%AB%E6%94%B6%E5%85%A5%E7%BC%93%E5%AD%98%EF%BC%8C%E9%82%A3%E4%B9%88%E4%BD%A0%E8%AE%BF%E9%97%AE%E5%85%B6%E4%BB%96%E4%BB%BB%E6%84%8F%E5%9F%9F%E5%90%8D%E4%B8%8B%E7%9A%84/a/b/c.dat%E6%96%87%E4%BB%B6%E9%83%BD%E4%BC%9A%E5%8E%BB%E8%AF%BB%E5%8F%96%E8%A2%AB%E7%BC%93%E5%AD%98%E7%9A%84%E6%96%87%E4%BB%B6%E3%80%82%E5%A6%82%E6%9E%9Chttp://example.com/a/b/c.dat%E6%9C%89%E4%BA%86%E6%94%B9%E5%8F%98%EF%BC%8C%E7%BC%93%E5%AD%98%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84%E5%AF%B9%E5%BA%94%E6%96%87%E4%BB%B6%E4%B8%8D%E4%B8%80%E5%AE%9A%E8%83%BD%E8%B7%9F%E7%9D%80%E6%9B%B4%E6%96%B0%E3%80%82">http://example.com/a/b/c.dat这么一个文件，如果被收入缓存，那么你访问其他任意域名下的/a/b/c.dat文件都会去读取被缓存的文件。如果http://example.com/a/b/c.dat有了改变，缓存服务器上的对应文件不一定能跟着更新。</a><br>而ubuntu大部分源的文件路径是一致的，所以如果163源中的 <a target="_blank" rel="noopener" href="http://mirrors.163.com/ubuntu/dists/tru">http://mirrors.163.com/ubuntu/dists/tru</a> … ources.bz2 被收入缓存，那么你访问官方源 <a target="_blank" rel="noopener" href="http://archive.ubuntu.com/ubuntu/dists/">http://archive.ubuntu.com/ubuntu/dists/</a> … ources.bz2 时，由于路径都是/ubuntu/dists/trusty/main/source/Sources.bz2，还是获取的是缓存服务器上的缓存文件。这个可用wget验证。如果缓存服务器上文件过时了，就会出现Hash Sum Mismatch。<br>解决方法：<br>    1.更换源，换成清华源就没问题了<br>    2.使用https协议</p>
+<h2 id="关于pypi国内源"><a href="#关于pypi国内源" class="headerlink" title="关于pypi国内源"></a>关于pypi国内源</h2><p>哈，顺便在这里提一下pip的国内源啦，就不单独写篇文章了。<br>python使用pip作为包管理工具，类似于debian/ubuntu的apt-get/aptitude和redhat的yum。国内镜像网站可以在上面找到。替换方法如下：<br>临时使用：<br>    <code>pip install -i https://pypi.tuna.tsinghua.edu.cn/simple some-package</code><br>设为默认：<br>升级 pip 到最新的版本 (&gt;=10.0.0) 后进行配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install pip -U</span><br><span class="line">pip config set global.index-url https:&#x2F;&#x2F;pypi.tuna.tsinghua.edu.cn&#x2F;simple</span><br></pre></td></tr></table></figure>
+<p>如果您到 pip 默认源的网络连接较差，临时使用本镜像站来升级 pip：<br><code>pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pip -U</code></p>
+<p>如果不升级pip,那么可以修改pip的配置文件：<br>修改 ~/.pip/pip.conf (没有就创建一个文件夹及文件)<br>内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[global]</span><br><span class="line">index-url &#x3D; https:&#x2F;&#x2F;pypi.tuna.tsinghua.edu.cn&#x2F;simple</span><br><span class="line">[install]</span><br><span class="line">trusted-host &#x3D; https:&#x2F;&#x2F;pypi.tuna.tsinghua.edu.cn</span><br></pre></td></tr></table></figure>
+
+<p><strong>参考资料：</strong><br><a target="_blank" rel="noopener" href="https://forum.ubuntu.org.cn/viewtopic.php?t=465499">ubuntu论坛</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2019/07/14/Hexo%E4%BD%BF%E7%94%A8%E4%BC%98%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/Rancho.png">
+      <meta itemprop="name" content="Rancho">
+      <meta itemprop="description" content="No pain, no gain!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rancho Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/07/14/Hexo%E4%BD%BF%E7%94%A8%E4%BC%98%E5%8C%96/" class="post-title-link" itemprop="url">Hexo使用优化</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-07-14 21:45:48" itemprop="dateCreated datePublished" datetime="2019-07-14T21:45:48+00:00">2019-07-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-04-06 10:52:32" itemprop="dateModified" datetime="2021-04-06T10:52:32+00:00">2021-04-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hexo/" itemprop="url" rel="index"><span itemprop="name">Hexo</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">站点配置文件：位于站点根目录下，主要包含Hexo本身的配置</span><br><span class="line">主题配置文件：位于主题目录下，主要用于配置主题相关的选项</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用next主题"><a href="#使用next主题" class="headerlink" title="使用next主题"></a>使用next主题</h2><p>网上一搜大部分都是Hexo+next的使用，本着站在前人的肩膀上原则，使用next主题。<br>主题下载：<code>git clone https://github.com/iissnan/hexo-theme-next themes/next</code><br>启用主题，打开站点配置文件，找到<code>theme</code>字段，修改为如下：  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">theme: next</span><br></pre></td></tr></table></figure>
+
+<h3 id="选择scheme"><a href="#选择scheme" class="headerlink" title="选择scheme"></a>选择scheme</h3><p>next提供4种不同外观，找到<code>scheme</code>字段，启用其中一种scheme，这里我选择Gemini.  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Schemes                                  </span></span><br><span class="line"><span class="comment">#scheme: Muse</span></span><br><span class="line"><span class="comment">#scheme: Mist</span></span><br><span class="line"><span class="comment">#scheme: Pisces</span></span><br><span class="line">scheme: Gemini</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置语言"><a href="#设置语言" class="headerlink" title="设置语言"></a>设置语言</h3><p>找到<code>language</code>字段，修改为(中文，英文为：en)：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">language: zh-Hans</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改menu图标"><a href="#修改menu图标" class="headerlink" title="修改menu图标"></a>修改menu图标</h3><p>还没有研究清楚，后续补上</p>
+<h3 id="设置侧栏"><a href="#设置侧栏" class="headerlink" title="设置侧栏"></a>设置侧栏</h3><p>找到<code>sidebar</code>字段，修改如下：  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sidebar:</span><br><span class="line">  <span class="comment">#靠左放置</span></span><br><span class="line">  position: left</span><br><span class="line">  <span class="comment">#显示时机</span></span><br><span class="line">  display: always</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置头像"><a href="#设置头像" class="headerlink" title="设置头像"></a>设置头像</h3><p>在主题配置文件中，找到<code>avatar</code>字段，值设置成头像的链接地址</p>
+<h3 id="设置作者昵称"><a href="#设置作者昵称" class="headerlink" title="设置作者昵称"></a>设置作者昵称</h3><p>在站点配置文件中，找到<code>author</code>字段，进行设置  </p>
+<h2 id="修改标签图标"><a href="#修改标签图标" class="headerlink" title="修改标签图标"></a>修改标签图标</h2><p>可以在<code>https://www.iconfont.cn/</code>上找合适的图标，下载两个尺寸(16x16和32x32)的png格式图片，放到主题下的images文件夹中。在主题配置文件中找到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">favicon:                         </span><br><span class="line">  small: /images/R-16x16.png  </span><br><span class="line">  medium: /images/R-32x32.png </span><br></pre></td></tr></table></figure>
+<p>替换small和medium两项，分别对应两种尺寸的图标。</p>
+<h2 id="给文章添加”categories”属性"><a href="#给文章添加”categories”属性" class="headerlink" title="给文章添加”categories”属性"></a>给文章添加”categories”属性</h2><p>创建<code>categories</code>页面  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page categories</span><br></pre></td></tr></table></figure>
+<p>找到<code>source/categories/index.md</code>文件，里面的初始内容如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">---                                       </span><br><span class="line">title: categories</span><br><span class="line">date: 2019-07-12 12:14:44</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<p>添加<code>type: &quot;categories&quot;</code>到内容中，添加后内容如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---                                               </span><br><span class="line">title: categories</span><br><span class="line">date: 2019-07-12 12:14:44</span><br><span class="line"><span class="built_in">type</span>: <span class="string">&quot;categories&quot;</span></span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<p>给文章添加<code>categories</code>属性，打开任意一篇md文件，为其添加概述信，添加后内容如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">---                                              </span><br><span class="line">title: Linux查找so文件所在pkg </span><br><span class="line">date: 2019-07-14 20:17:03</span><br><span class="line">categories: </span><br><span class="line">- Linux相关</span><br><span class="line">tags:</span><br><span class="line">- Linux</span><br><span class="line">- so文件</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p>hexo一篇文章只能属于一个分类，如添加多个分类，则按照分类嵌套进行处理。</p>
+<h2 id="给文章添加”tags”属性"><a href="#给文章添加”tags”属性" class="headerlink" title="给文章添加”tags”属性"></a>给文章添加”tags”属性</h2><p>创建<code>tags</code>页面</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page tags</span><br></pre></td></tr></table></figure>
+
+<p>后面的操作与添加<code>categories</code>属性类似，一篇文章可以添加多个<code>tags</code>  </p>
+<h2 id="使用资源文件夹"><a href="#使用资源文件夹" class="headerlink" title="使用资源文件夹"></a>使用资源文件夹</h2><p>在站点配置文件找到<code>post_asset_folder</code>关键字,设置成如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">_config.yml</span><br><span class="line">post_asset_folder: <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>当资源管理功能打开后，Hexo将会在每一次通过hexo new创建md时在相同路径下面创建一个同名的文件夹，与该md相关的资源都可以放在该文件夹里面。之后即可使用标签通过相对路径引用资源。  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% asset_img image_name.jpg tag %&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>参考资料：</strong><br><a target="_blank" rel="noopener" href="http://theme-next.iissnan.com/">NexT官方</a>  </p>
+
       
     </div>
 
@@ -1097,13 +1341,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
