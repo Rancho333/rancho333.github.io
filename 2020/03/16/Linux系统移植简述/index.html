@@ -1,16 +1,491 @@
-{% extends '_layout.swig' %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
-{% block title %}{{ page.title }} | {{ title }}{% endblock %}
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ partial('_macro/post.swig', {post: page}) }}
+
+
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="写在前面之前也做过一些移植性的东西，不过都是别人搭好框架，自己填充一些模块，这次有机会完成系统级的移植，非常感谢张总以及胡老师的指点帮助，收获良多！ 移植总述嵌入式系统移植分为四个大块，分别是构建交叉编译工具，rootfs的制作，kernel的配置、编译、移植，BootLoader的移植。需要移植的系统可以在MIPS上跑起来，我只需要顺着原有的编译框架完成ARM64的编译，之后再上板子做具体的调试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux系统移植简述">
+<meta property="og:url" content="https://rancho333.gitee.io/2020/03/16/Linux%E7%B3%BB%E7%BB%9F%E7%A7%BB%E6%A4%8D%E7%AE%80%E8%BF%B0/index.html">
+<meta property="og:site_name" content="Rancho Blog">
+<meta property="og:description" content="写在前面之前也做过一些移植性的东西，不过都是别人搭好框架，自己填充一些模块，这次有机会完成系统级的移植，非常感谢张总以及胡老师的指点帮助，收获良多！ 移植总述嵌入式系统移植分为四个大块，分别是构建交叉编译工具，rootfs的制作，kernel的配置、编译、移植，BootLoader的移植。需要移植的系统可以在MIPS上跑起来，我只需要顺着原有的编译框架完成ARM64的编译，之后再上板子做具体的调试">
+<meta property="og:locale">
+<meta property="og:image" content="https://rancho333.gitee.io/uploads/buildroot.png">
+<meta property="og:image" content="https://rancho333.gitee.io/uploads/toolchain.png">
+<meta property="og:image" content="https://rancho333.gitee.io/uploads/nat.png">
+<meta property="og:image" content="https://rancho333.gitee.io/uploads/veth.png">
+<meta property="og:image" content="https://rancho333.gitee.io/uploads/rootfs.png">
+<meta property="og:image" content="https://rancho333.gitee.io/uploads/panic.png">
+<meta property="article:published_time" content="2020-03-16T14:12:38.000Z">
+<meta property="article:modified_time" content="2021-04-02T12:15:18.918Z">
+<meta property="article:author" content="Rancho">
+<meta property="article:tag" content="系统移植">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://rancho333.gitee.io/uploads/buildroot.png">
+  <link rel="canonical" href="https://rancho333.gitee.io/2020/03/16/Linux%E7%B3%BB%E7%BB%9F%E7%A7%BB%E6%A4%8D%E7%AE%80%E8%BF%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Linux系统移植简述 | Rancho Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Rancho Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">知行合一，致良知！</p>
+      
   </div>
 
-{% endblock %}
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-home&quot;&gt;&lt;&#x2F;i&gt; &lt;br&gt;Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-archive&quot;&gt;&lt;&#x2F;i&gt; &lt;br&gt;Archives</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2020/03/16/Linux%E7%B3%BB%E7%BB%9F%E7%A7%BB%E6%A4%8D%E7%AE%80%E8%BF%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rancho">
+      <meta itemprop="description" content="No pain, no gain!">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rancho Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Linux系统移植简述
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2020-03-16 14:12:38" itemprop="dateCreated datePublished" datetime="2020-03-16T14:12:38+00:00">2020-03-16</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>之前也做过一些移植性的东西，不过都是别人搭好框架，自己填充一些模块，这次有机会完成系统级的移植，非常感谢张总以及胡老师的指点帮助，收获良多！</p>
+<h1 id="移植总述"><a href="#移植总述" class="headerlink" title="移植总述"></a>移植总述</h1><p>嵌入式系统移植分为四个大块，分别是构建交叉编译工具，rootfs的制作，kernel的配置、编译、移植，BootLoader的移植。需要移植的系统可以在MIPS上跑起来，我只需要顺着原有的编译框架完成ARM64的编译，之后再上板子做具体的调试。</p>
+<h2 id="构建交叉编译工具"><a href="#构建交叉编译工具" class="headerlink" title="构建交叉编译工具"></a>构建交叉编译工具</h2><p>toolchain一般芯片厂家会提供，当然自己通过buildroot构建也是可以的。<br>使用buildroot构建交叉编译工具，下载buildroot2015</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;buildroot.uclibc.org&#x2F;downloads&#x2F;buildroot-2015.08.tar.gz</span><br></pre></td></tr></table></figure>
+<p><code>make menuconfig ARCH=arm64</code>配置buildroot，将target和toolchain两项配置成如下所示<br><img src="https://rancho333.gitee.io/uploads/buildroot.png"><br>之后<code>make</code>等待完成即可，buildroot有些源码下载速度很慢，下载网站也不尽相同，比较麻烦，不像Linux发行版可以改成国内镜像软件源，有的可能会等待比较长的时间。<br>将生成的toolchain打包，释放到服务器docker编译环境中，如下所示：<br><img src="https://rancho333.gitee.io/uploads/toolchain.png"><br>之后可以根据container构建image将编译环境发布出去，大家就可以直接使用了。</p>
+<h2 id="kernel的配置、编译、移植"><a href="#kernel的配置、编译、移植" class="headerlink" title="kernel的配置、编译、移植"></a>kernel的配置、编译、移植</h2><p>kernel的配置结果保存在<code>.config</code>文件中，根据实际的需求会选配一些内核选项，如开启nat以及veth相关的配置<br><img src="https://rancho333.gitee.io/uploads/nat.png"><br><img src="https://rancho333.gitee.io/uploads/veth.png"><br>这些配置实际上是系统构建完成后跑起来报错才知道需要的，只需要在<code>make menuconfig</code>中搜索对应关键字即可找到编译选项。<br>关于内核编译的一些说明，可以参考这篇文章<br><a href="https://rancho333.gitee.io/2020/03/11/kernel%E7%BC%96%E8%AF%91%E7%AE%80%E8%BF%B0/">kernel编译简述</a></p>
+<h2 id="rootfs的制作"><a href="#rootfs的制作" class="headerlink" title="rootfs的制作"></a>rootfs的制作</h2><p>在这一步其实花的时间是最多的，因为这里涉及到大量的上层应用模块的编译，然后这些模块的依赖库在交叉工具链中是不存在的，还有部分是需要编译一些独立的Linux命令。解决办法很简单，下载源码，编译出库，之后放到交叉工具链和文件系统中即可。<br>这里说下开源代码交叉编译的经典三部曲<code>configure, make, make install</code>，在configure中会指定交叉编译工具，编译生成文件的install路径,关于动态库的一些理解可以查看这篇文章<br><a href="https://rancho333.gitee.io/2020/02/26/%E5%85%B3%E4%BA%8E%E5%8A%A8%E6%80%81%E5%BA%93%E4%BB%A5%E5%8F%8Aconstructor%E5%B1%9E%E6%80%A7%E7%9A%84%E4%BD%BF%E7%94%A8/">关于动态库以及constructor属性的使用</a><br>嗯，rootfs以前一直用buildroot来制作，这里发现一个不一样的方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. 使用mktemp命令创建一个临时文件</span><br><span class="line">2. 使用shell命令构建文件系统，就是echo命令然后重定向到临时文件</span><br><span class="line">3. 使用gen_init_cpio和压缩软件构建cpio格式的压缩包</span><br><span class="line">4. 删除临时文件</span><br></pre></td></tr></table></figure>
+<p><img src="https://rancho333.gitee.io/uploads/rootfs.png"></p>
+<h2 id="BootLoader的移植"><a href="#BootLoader的移植" class="headerlink" title="BootLoader的移植"></a>BootLoader的移植</h2><p>给的开发板上直接烧有uboot，所以这里不涉及自己构建bootloader了。在bring up的过程中遇到一个问题卡了很久：<br><img src="https://rancho333.gitee.io/uploads/panic.png"><br>返回错误8的含义<code>文件没有可执行权限</code>,确认过busybox的执行权限，并且是静态编译，并且可以在同平台的其它机器上执行。<br>真实的错误是kernel在rootfs中没有找到文件系统，比较详细的描述见上文提到的<code>kernel编译简述</code>。</p>
+<p>参考资料：<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/kernel-style/p/3397705.html">linux init启动分析</a></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/%E7%B3%BB%E7%BB%9F%E7%A7%BB%E6%A4%8D/" rel="tag"># 系统移植</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2020/03/11/kernel%E7%BC%96%E8%AF%91%E7%AE%80%E8%BF%B0/" rel="next" title="kernel编译简述">
+                  <i class="fa fa-chevron-left"></i> kernel编译简述
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2020/08/05/Linux%E4%B8%8B%E7%A8%8B%E5%BA%8F%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95%E7%AE%80%E8%BF%B0/" rel="prev" title="Linux下程序调试方法简述">
+                  Linux下程序调试方法简述 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A7%BB%E6%A4%8D%E6%80%BB%E8%BF%B0"><span class="nav-number">2.</span> <span class="nav-text">移植总述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7"><span class="nav-number">2.1.</span> <span class="nav-text">构建交叉编译工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kernel%E7%9A%84%E9%85%8D%E7%BD%AE%E3%80%81%E7%BC%96%E8%AF%91%E3%80%81%E7%A7%BB%E6%A4%8D"><span class="nav-number">2.2.</span> <span class="nav-text">kernel的配置、编译、移植</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rootfs%E7%9A%84%E5%88%B6%E4%BD%9C"><span class="nav-number">2.3.</span> <span class="nav-text">rootfs的制作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BootLoader%E7%9A%84%E7%A7%BB%E6%A4%8D"><span class="nav-number">2.4.</span> <span class="nav-text">BootLoader的移植</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rancho</p>
+  <div class="site-description" itemprop="description">No pain, no gain!</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/%20%7C%7C%20archive">
+        
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span>
+        
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">tags</span>
+        
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rancho</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+<script src="/js/utils.js?v=7.4.0.js"></script>
+
+<script src="/js/motion.js?v=7.4.0.js"></script>
+
+
+<script src="/js/schemes/muse.js?v=7.4.0.js"></script>
+
+
+<script src="/js/next-boot.js?v=7.4.0.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
