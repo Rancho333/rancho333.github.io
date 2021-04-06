@@ -1832,6 +1832,8 @@
     <title>ARP协议简述及应用</title>
     <url>/2020/12/25/ARP%E5%8D%8F%E8%AE%AE%E7%AE%80%E8%BF%B0%E5%8F%8A%E5%BA%94%E7%94%A8/</url>
     <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>这篇文章分为两个部分ARP协议简介以及ARP协议的实际应用。</p>
+<span id="more"></span>
+
 <h1 id="ARP协议简介"><a href="#ARP协议简介" class="headerlink" title="ARP协议简介"></a>ARP协议简介</h1><h2 id="ARP的作用"><a href="#ARP的作用" class="headerlink" title="ARP的作用"></a>ARP的作用</h2><p>ARP(Address Resolution Protocol，地址解析协议)是将IP地址解析为以太网MAC地址的协议。与之相对的，将MAC地址解析为IP地址的协议称为RARP。</p>
 <p>在局域网中，当终端设备需要将数据发送给另一个终端设备时，它必须知道对方网络的IP地址。但是仅仅有IP地址是不够的，因为IP数据必须封装成帧才能通过物理网络发送，因此发送端还必须有接收端的MAC地址，所以需要一个从IP地址到物理地址的映射。ARP就是实现这个功能的协议。</p>
 <h2 id="ARP报文的结构"><a href="#ARP报文的结构" class="headerlink" title="ARP报文的结构"></a>ARP报文的结构</h2><p><img src="https://rancho333.gitee.io/uploads/arp_protocol.png"> </p>
