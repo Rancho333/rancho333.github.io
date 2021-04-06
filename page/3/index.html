@@ -1,59 +1,24 @@
 <!DOCTYPE html>
-
-
-
-
-
 <html lang="zh-Hans">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.4.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
-  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+<link rel="stylesheet" href="/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
-
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Muse',
-    version: '7.4.0',
-    exturl: false,
-    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
-    copycode: {"enable":false,"show_result":false,"style":null},
-    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
-    bookmark: {"enable":false,"color":"#222","save":"auto"},
-    fancybox: false,
-    mediumzoom: false,
-    lazyload: false,
-    pangu: false,
-    algolia: {
-      appID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    },
-    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
-    path: '',
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    translation: {
-      copy_button: 'Copy',
-      copy_success: 'Copied',
-      copy_failure: 'Copy failed'
-    },
-    sidebarPadding: 40
-  };
-</script>
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"rancho333.gitee.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
 
   <meta name="description" content="No pain, no gain!">
 <meta property="og:type" content="website">
@@ -65,24 +30,22 @@
 <meta property="article:author" content="Rancho">
 <meta property="article:tag" content="Racncho, Rancho Blog, 嵌入式">
 <meta name="twitter:card" content="summary">
-  <link rel="canonical" href="https://rancho333.gitee.io/page/3/">
+
+<link rel="canonical" href="https://rancho333.gitee.io/page/3/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome: true,
-    isPost: false,
-    isPage: false,
-    isArchive: false
+    isHome : true,
+    isPost : false,
+    lang   : 'zh-Hans'
   };
 </script>
 
   <title>Rancho Blog</title>
   
-
-
 
 
 
@@ -101,7 +64,6 @@
   .use-motion .post-body,
   .use-motion .collection-header { opacity: initial; }
 
-  .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
@@ -115,65 +77,57 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
-  <div class="site-meta">
-
-    <div>
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Rancho Blog</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
-        <p class="site-subtitle">知行合一，致良知！</p>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button aria-label="Toggle navigation bar">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Rancho Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">知行合一，致良知！</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
   </div>
 </div>
 
 
-<nav class="site-nav">
-  
-  <ul id="menu" class="menu">
-      
-      
-      
-        
-        <li class="menu-item menu-item-home">
-      
-    
 
-    <a href="/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-home&quot;&gt;&lt;&#x2F;i&gt; &lt;br&gt;Home</a>
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
 
   </li>
-      
-      
-      
-        
         <li class="menu-item menu-item-archives">
-      
-    
 
-    <a href="/archives/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-archive&quot;&gt;&lt;&#x2F;i&gt; &lt;br&gt;Archives</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
 
   </li>
   </ul>
-
-    
-
 </nav>
+
+
+
+
 </div>
     </header>
 
@@ -184,61 +138,50 @@
   </div>
 
 
-    <main id="main" class="main">
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          <div id="content" class="content">
+          
+
+          <div class="content index posts-expand">
             
-  <div id="posts" class="posts-expand">
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2020/12/25/ARP%E5%8D%8F%E8%AE%AE%E7%AE%80%E8%BF%B0%E5%8F%8A%E5%BA%94%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rancho">
       <meta itemprop="description" content="No pain, no gain!">
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Rancho Blog">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2020/12/25/ARP%E5%8D%8F%E8%AE%AE%E7%AE%80%E8%BF%B0%E5%8F%8A%E5%BA%94%E7%94%A8/" class="post-title-link" itemprop="url">ARP协议简述及应用</a>
+        <h2 class="post-title" itemprop="name headline">
           
-        </h1>
+            <a href="/2020/12/25/ARP%E5%8D%8F%E8%AE%AE%E7%AE%80%E8%BF%B0%E5%8F%8A%E5%BA%94%E7%94%A8/" class="post-title-link" itemprop="url">ARP协议简述及应用</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              
-                
-              
-
               <time title="Created: 2020-12-25 13:22:08" itemprop="dateCreated datePublished" datetime="2020-12-25T13:22:08+00:00">2020-12-25</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
               </span>
-            
-          
 
           
 
@@ -484,7 +427,6 @@
 <p>对于主机而言，网关是虚拟的，所以使用虚拟网关ip进行通信<br>对于交换机而言，自己与外界通信需要使用自己真实的ip和mac, 这样对方才能根据真实的ip和mac定位到自己。</p>
 <p>当MLAG交换机配置了VARP之后，host通过arp去请求VARP虚拟网关ip的mac地址，则MLAG-VARP交换机回应的自然是虚拟网关的mac;host发送icmp request给虚拟网关，虚拟网关使用真实的router-mac去回复。</p>
 
-        
       
     </div>
 
@@ -492,65 +434,50 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2020/12/21/%E5%8A%A0%E5%BC%98%E8%B7%91%E5%9B%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rancho">
       <meta itemprop="description" content="No pain, no gain!">
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Rancho Blog">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2020/12/21/%E5%8A%A0%E5%BC%98%E8%B7%91%E5%9B%A2/" class="post-title-link" itemprop="url">加弘跑团</a>
+        <h2 class="post-title" itemprop="name headline">
           
-        </h1>
+            <a href="/2020/12/21/%E5%8A%A0%E5%BC%98%E8%B7%91%E5%9B%A2/" class="post-title-link" itemprop="url">加弘跑团</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              
-                
-              
-
               <time title="Created: 2020-12-21 13:12:08" itemprop="dateCreated datePublished" datetime="2020-12-21T13:12:08+00:00">2020-12-21</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
               </span>
-            
-          
 
           
 
@@ -590,7 +517,6 @@
 </ol>
 <p>为了跑团的良好运行，请大家以任何形式联系我提供建议。关于知识分享，请大佬主动认领！<br>期待大家越跑越健康；期待大家跑一个冬天，帅一个夏天；期待有一天在马拉松的赛道上看到加弘跑团的旗帜！</p>
 
-        
       
     </div>
 
@@ -598,65 +524,50 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2020/12/18/sonic-testbed/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rancho">
       <meta itemprop="description" content="No pain, no gain!">
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Rancho Blog">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2020/12/18/sonic-testbed/" class="post-title-link" itemprop="url">sonic-testbed</a>
+        <h2 class="post-title" itemprop="name headline">
           
-        </h1>
+            <a href="/2020/12/18/sonic-testbed/" class="post-title-link" itemprop="url">sonic-testbed</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              
-                
-              
-
               <time title="Created: 2020-12-18 15:29:56" itemprop="dateCreated datePublished" datetime="2020-12-18T15:29:56+00:00">2020-12-18</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
               </span>
-            
-          
 
           
 
@@ -976,7 +887,6 @@
 
 <p>问题：任务设置失败。SSH Error：data could not be sent to the remote host<br>解决方式：导致这个现象的问题可能有很多。<br>    1. 确保这台主机可以通过SSH到达<br>    2. group_vars/all/lab_info.json文件中包含了正确的凭证吗？<br>    3. 设备在files/sonic_lab_devices.cav中有正确的hwsku吗？<br>    4. 确保lab文件中在IPs后面没有”/“，INI文件无法识别<br>    5. 重新检查testbed.yaml配置文件，是否获取了IPs和正确的凭证</p>
 
-        
       
     </div>
 
@@ -984,78 +894,59 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2020/12/15/SONiC%E7%BC%96%E8%AF%91%E7%AE%80%E8%BF%B0%E5%8F%8A%E4%BC%98%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rancho">
       <meta itemprop="description" content="No pain, no gain!">
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Rancho Blog">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2020/12/15/SONiC%E7%BC%96%E8%AF%91%E7%AE%80%E8%BF%B0%E5%8F%8A%E4%BC%98%E5%8C%96/" class="post-title-link" itemprop="url">SONiC编译简述及优化</a>
+        <h2 class="post-title" itemprop="name headline">
           
-        </h1>
+            <a href="/2020/12/15/SONiC%E7%BC%96%E8%AF%91%E7%AE%80%E8%BF%B0%E5%8F%8A%E4%BC%98%E5%8C%96/" class="post-title-link" itemprop="url">SONiC编译简述及优化</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              
-                
-              
-
               <time title="Created: 2020-12-15 09:58:41" itemprop="dateCreated datePublished" datetime="2020-12-15T09:58:41+00:00">2020-12-15</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
               </span>
-            
-          
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">In</span>
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/SONiC/" itemprop="url" rel="index"><span itemprop="name">SONiC</span></a></span>
-
-                
-                
-              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SONiC/" itemprop="url" rel="index"><span itemprop="name">SONiC</span></a>
+                </span>
             </span>
-          
 
           
 
@@ -1128,7 +1019,6 @@
 7. service bgp如果找不到对应的container，则会根据docker-fpm-frr:latest重新创建一个，所以如果需要版本回退，重4,5,6的动作即可
 </code></pre>
 
-        
       
     </div>
 
@@ -1136,65 +1026,50 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2020/08/05/Linux%E4%B8%8B%E7%A8%8B%E5%BA%8F%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95%E7%AE%80%E8%BF%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rancho">
       <meta itemprop="description" content="No pain, no gain!">
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Rancho Blog">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2020/08/05/Linux%E4%B8%8B%E7%A8%8B%E5%BA%8F%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95%E7%AE%80%E8%BF%B0/" class="post-title-link" itemprop="url">Linux下程序调试方法简述</a>
+        <h2 class="post-title" itemprop="name headline">
           
-        </h1>
+            <a href="/2020/08/05/Linux%E4%B8%8B%E7%A8%8B%E5%BA%8F%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95%E7%AE%80%E8%BF%B0/" class="post-title-link" itemprop="url">Linux下程序调试方法简述</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              
-                
-              
-
               <time title="Created: 2020-08-05 14:58:02" itemprop="dateCreated datePublished" datetime="2020-08-05T14:58:02+00:00">2020-08-05</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
               </span>
-            
-          
 
           
 
@@ -1300,7 +1175,6 @@
 <li>有些文件不必须，可以注释掉，参考<br>根据不同的情况处理之。</li>
 </ol>
 
-        
       
     </div>
 
@@ -1308,65 +1182,50 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2020/03/16/Linux%E7%B3%BB%E7%BB%9F%E7%A7%BB%E6%A4%8D%E7%AE%80%E8%BF%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rancho">
       <meta itemprop="description" content="No pain, no gain!">
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Rancho Blog">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2020/03/16/Linux%E7%B3%BB%E7%BB%9F%E7%A7%BB%E6%A4%8D%E7%AE%80%E8%BF%B0/" class="post-title-link" itemprop="url">Linux系统移植简述</a>
+        <h2 class="post-title" itemprop="name headline">
           
-        </h1>
+            <a href="/2020/03/16/Linux%E7%B3%BB%E7%BB%9F%E7%A7%BB%E6%A4%8D%E7%AE%80%E8%BF%B0/" class="post-title-link" itemprop="url">Linux系统移植简述</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              
-                
-              
-
               <time title="Created: 2020-03-16 14:12:38" itemprop="dateCreated datePublished" datetime="2020-03-16T14:12:38+00:00">2020-03-16</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
               </span>
-            
-          
 
           
 
@@ -1391,7 +1250,6 @@
 <h2 id="BootLoader的移植"><a href="#BootLoader的移植" class="headerlink" title="BootLoader的移植"></a>BootLoader的移植</h2><p>给的开发板上直接烧有uboot，所以这里不涉及自己构建bootloader了。在bring up的过程中遇到一个问题卡了很久：<br><img src="https://rancho333.gitee.io/uploads/panic.png"><br>返回错误8的含义<code>文件没有可执行权限</code>,确认过busybox的执行权限，并且是静态编译，并且可以在同平台的其它机器上执行。<br>真实的错误是kernel在rootfs中没有找到文件系统，比较详细的描述见上文提到的<code>kernel编译简述</code>。</p>
 <p>参考资料：<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/kernel-style/p/3397705.html">linux init启动分析</a></p>
 
-        
       
     </div>
 
@@ -1399,65 +1257,50 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2020/03/11/kernel%E7%BC%96%E8%AF%91%E7%AE%80%E8%BF%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rancho">
       <meta itemprop="description" content="No pain, no gain!">
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Rancho Blog">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2020/03/11/kernel%E7%BC%96%E8%AF%91%E7%AE%80%E8%BF%B0/" class="post-title-link" itemprop="url">kernel编译简述</a>
+        <h2 class="post-title" itemprop="name headline">
           
-        </h1>
+            <a href="/2020/03/11/kernel%E7%BC%96%E8%AF%91%E7%AE%80%E8%BF%B0/" class="post-title-link" itemprop="url">kernel编译简述</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              
-                
-              
-
               <time title="Created: 2020-03-11 15:48:46" itemprop="dateCreated datePublished" datetime="2020-03-11T15:48:46+00:00">2020-03-11</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
               </span>
-            
-          
 
           
 
@@ -1534,7 +1377,6 @@
 </ol>
 <p>参考资料：<br><a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/cn/linux/kernel/l-kerconf/">Linux内核配置系统浅析</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/ultraman_hs/article/details/52838989">zImage和uImage的区别联系</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/rikeyone/article/details/52048972">ramfs,rootfs,initramfs,initrd</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/sunjing_/article/details/53081306">initramfs的使用方法</a></p>
 
-        
       
     </div>
 
@@ -1542,65 +1384,50 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2020/03/10/%E4%B8%AD%E6%96%AD%E5%AD%A6%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rancho">
       <meta itemprop="description" content="No pain, no gain!">
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Rancho Blog">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2020/03/10/%E4%B8%AD%E6%96%AD%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">中断学习</a>
+        <h2 class="post-title" itemprop="name headline">
           
-        </h1>
+            <a href="/2020/03/10/%E4%B8%AD%E6%96%AD%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">中断学习</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              
-                
-              
-
               <time title="Created: 2020-03-10 16:07:13" itemprop="dateCreated datePublished" datetime="2020-03-10T16:07:13+00:00">2020-03-10</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
               </span>
-            
-          
 
           
 
@@ -1698,7 +1525,6 @@
 <p>加载驱动后，先进行驱动初始化，之后每当有键盘中断触发后，都会进入ISR，卸载驱动后不会再触发。</p>
 <p>参考资料：<br><a target="_blank" rel="noopener" href="https://www.linuxidc.com/Linux/2014-03/98012.htm">Linux下的中断（interrupt） 简介</a><br><a target="_blank" rel="noopener" href="http://edsionte.com/techblog/archives/1495">中断入门</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/wordwarwordwar/article/details/81182910">PCI&amp;PCIE MSI中断</a><br><a target="_blank" rel="noopener" href="http://control.blog.chinaunix.net/uid-22666248-id-3052413.html">第一个中断驱动程序</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/yzytr/article/details/77659302">如何编译内核ko</a></p>
 
-        
       
     </div>
 
@@ -1706,65 +1532,50 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2020/03/09/Linux%E5%AF%86%E7%A0%81%E4%BF%AE%E6%94%B9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rancho">
       <meta itemprop="description" content="No pain, no gain!">
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Rancho Blog">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2020/03/09/Linux%E5%AF%86%E7%A0%81%E4%BF%AE%E6%94%B9/" class="post-title-link" itemprop="url">Linux密码修改</a>
+        <h2 class="post-title" itemprop="name headline">
           
-        </h1>
+            <a href="/2020/03/09/Linux%E5%AF%86%E7%A0%81%E4%BF%AE%E6%94%B9/" class="post-title-link" itemprop="url">Linux密码修改</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              
-                
-              
-
               <time title="Created: 2020-03-09 17:20:27" itemprop="dateCreated datePublished" datetime="2020-03-09T17:20:27+00:00">2020-03-09</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
               </span>
-            
-          
 
           
 
@@ -1787,7 +1598,6 @@
 <p>我看自己的linux服务器上面都是使用SHA-512加密的，而嵌入式系统上面用的是MD5，使用命令<br><img src="https://rancho333.gitee.io/uploads/openssl.png"><br>就可以生成密码了，将原来的口令字段替换掉即可完成密码的修改。</p>
 <p>有个小问题，实验过程中，发现在嵌入式系统上直接在命令行中修改密码不是按照<code>$id$salt$hashed</code>模式生成的口令，而是：<br><img src="https://rancho333.gitee.io/uploads/abnormal.png"><br>但是在发行版Linux上面是符合预期的，有可能是嵌入式系统的某些差异吧，这里留个记录！</p>
 
-        
       
     </div>
 
@@ -1795,65 +1605,50 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2020/03/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%98%E5%82%A8%E4%BD%93%E7%B3%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rancho">
       <meta itemprop="description" content="No pain, no gain!">
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Rancho Blog">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2020/03/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%98%E5%82%A8%E4%BD%93%E7%B3%BB/" class="post-title-link" itemprop="url">计算机存储体系</a>
+        <h2 class="post-title" itemprop="name headline">
           
-        </h1>
+            <a href="/2020/03/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%98%E5%82%A8%E4%BD%93%E7%B3%BB/" class="post-title-link" itemprop="url">计算机存储体系</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              
-                
-              
-
               <time title="Created: 2020-03-08 17:00:34" itemprop="dateCreated datePublished" datetime="2020-03-08T17:00:34+00:00">2020-03-08</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
               </span>
-            
-          
 
           
 
@@ -1881,7 +1676,6 @@
 <h1 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h1><p>其实就是RAM的分类，ROM的分类，以及Flash的分类有点迷！搞清楚特性，对应上用途！</p>
 <p>参考资料：<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/iva_brother/article/details/80463578">计算机存储器结构体系详解</a><br><a target="_blank" rel="noopener" href="https://baijiahao.baidu.com/s?id=1610041455262486965&wfr=spider&for=pc">NorFlash、NandFlash、eMMC闪存的比较与区别</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_38880380/article/details/78884522">NAND flash和NOR flash的区别详解</a></p>
 
-        
       
     </div>
 
@@ -1889,36 +1683,53 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-  </div>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/">&lt;i class&#x3D;&quot;fa fa-angle-left&quot; aria-label&#x3D;&quot;Previous page&quot;&gt;&lt;&#x2F;i&gt;</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/">&lt;i class&#x3D;&quot;fa fa-angle-right&quot; aria-label&#x3D;&quot;Next page&quot;&gt;&lt;&#x2F;i&gt;</a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
+
 
 
           </div>
           
 
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
         </div>
           
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
   </div>
 
   <aside class="sidebar">
@@ -1943,35 +1754,25 @@
   <p class="site-author-name" itemprop="name">Rancho</p>
   <div class="site-description" itemprop="description">No pain, no gain!</div>
 </div>
-  <nav class="site-state motion-element">
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
       <div class="site-state-item site-state-posts">
-        
-          <a href="/archives/%20%7C%7C%20archive">
+          <a href="/archives/">
         
           <span class="site-state-item-count">43</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
-    
-      
-      
       <div class="site-state-item site-state-categories">
-        
         <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">categories</span>
-        
       </div>
-    
-      
-      
       <div class="site-state-item site-state-tags">
-        
         <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">tags</span>
-        
       </div>
-    
   </nav>
+</div>
 
 
 
@@ -1985,17 +1786,23 @@
       </div>
     </main>
 
-    <footer id="footer" class="footer">
+    <footer class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Rancho</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0</div>
-  <span class="post-meta-divider">|</span>
-  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
 
         
 
@@ -2006,58 +1813,43 @@
 
 
 
-
-
-
-
-        
       </div>
     </footer>
   </div>
 
   
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
 
 
-  <script src="/lib/anime.min.js?v=3.1.0"></script>
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-<script src="/js/utils.js?v=7.4.0.js"></script>
-
-<script src="/js/motion.js?v=7.4.0.js"></script>
+<script src="/js/schemes/muse.js"></script>
 
 
-<script src="/js/schemes/muse.js?v=7.4.0.js"></script>
-
-
-<script src="/js/next-boot.js?v=7.4.0.js"></script>
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<script src="/js/next-boot.js"></script>
 
 
 
 
   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
 

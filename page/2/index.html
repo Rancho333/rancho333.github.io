@@ -1,59 +1,24 @@
 <!DOCTYPE html>
-
-
-
-
-
 <html lang="zh-Hans">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.4.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
-  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+<link rel="stylesheet" href="/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
-
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Muse',
-    version: '7.4.0',
-    exturl: false,
-    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
-    copycode: {"enable":false,"show_result":false,"style":null},
-    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
-    bookmark: {"enable":false,"color":"#222","save":"auto"},
-    fancybox: false,
-    mediumzoom: false,
-    lazyload: false,
-    pangu: false,
-    algolia: {
-      appID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    },
-    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
-    path: '',
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    translation: {
-      copy_button: 'Copy',
-      copy_success: 'Copied',
-      copy_failure: 'Copy failed'
-    },
-    sidebarPadding: 40
-  };
-</script>
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"rancho333.gitee.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
 
   <meta name="description" content="No pain, no gain!">
 <meta property="og:type" content="website">
@@ -65,24 +30,22 @@
 <meta property="article:author" content="Rancho">
 <meta property="article:tag" content="Racncho, Rancho Blog, 嵌入式">
 <meta name="twitter:card" content="summary">
-  <link rel="canonical" href="https://rancho333.gitee.io/page/2/">
+
+<link rel="canonical" href="https://rancho333.gitee.io/page/2/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome: true,
-    isPost: false,
-    isPage: false,
-    isArchive: false
+    isHome : true,
+    isPost : false,
+    lang   : 'zh-Hans'
   };
 </script>
 
   <title>Rancho Blog</title>
   
-
-
 
 
 
@@ -101,7 +64,6 @@
   .use-motion .post-body,
   .use-motion .collection-header { opacity: initial; }
 
-  .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
@@ -115,65 +77,57 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
-  <div class="site-meta">
-
-    <div>
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Rancho Blog</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
-        <p class="site-subtitle">知行合一，致良知！</p>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button aria-label="Toggle navigation bar">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Rancho Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">知行合一，致良知！</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
   </div>
 </div>
 
 
-<nav class="site-nav">
-  
-  <ul id="menu" class="menu">
-      
-      
-      
-        
-        <li class="menu-item menu-item-home">
-      
-    
 
-    <a href="/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-home&quot;&gt;&lt;&#x2F;i&gt; &lt;br&gt;Home</a>
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
 
   </li>
-      
-      
-      
-        
         <li class="menu-item menu-item-archives">
-      
-    
 
-    <a href="/archives/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-archive&quot;&gt;&lt;&#x2F;i&gt; &lt;br&gt;Archives</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
 
   </li>
   </ul>
-
-    
-
 </nav>
+
+
+
+
 </div>
     </header>
 
@@ -184,61 +138,50 @@
   </div>
 
 
-    <main id="main" class="main">
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          <div id="content" class="content">
+          
+
+          <div class="content index posts-expand">
             
-  <div id="posts" class="posts-expand">
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2021/02/08/Linux%E8%B7%AF%E7%94%B1%E4%BF%A1%E6%81%AF%E5%AD%A6%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rancho">
       <meta itemprop="description" content="No pain, no gain!">
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Rancho Blog">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2021/02/08/Linux%E8%B7%AF%E7%94%B1%E4%BF%A1%E6%81%AF%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">Linux路由信息学习</a>
+        <h2 class="post-title" itemprop="name headline">
           
-        </h1>
+            <a href="/2021/02/08/Linux%E8%B7%AF%E7%94%B1%E4%BF%A1%E6%81%AF%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">Linux路由信息学习</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              
-                
-              
-
               <time title="Created: 2021-02-08 14:14:57" itemprop="dateCreated datePublished" datetime="2021-02-08T14:14:57+00:00">2021-02-08</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
               </span>
-            
-          
 
           
 
@@ -268,7 +211,6 @@
 <h2 id="查询路由信息"><a href="#查询路由信息" class="headerlink" title="查询路由信息"></a>查询路由信息</h2><p>route -nee</p>
 <p>ee选项表示详细信息</p>
 
-        
       
     </div>
 
@@ -276,65 +218,50 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2021/02/03/vxlan%E5%AD%A6%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rancho">
       <meta itemprop="description" content="No pain, no gain!">
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Rancho Blog">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2021/02/03/vxlan%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">vxlan学习</a>
+        <h2 class="post-title" itemprop="name headline">
           
-        </h1>
+            <a href="/2021/02/03/vxlan%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">vxlan学习</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              
-                
-              
-
               <time title="Created: 2021-02-03 10:24:44" itemprop="dateCreated datePublished" datetime="2021-02-03T10:24:44+00:00">2021-02-03</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
               </span>
-            
-          
 
           
 
@@ -619,7 +546,6 @@
 </ol>
 <h1 id="EVPN学习"><a href="#EVPN学习" class="headerlink" title="EVPN学习"></a>EVPN学习</h1><h2 id="EVPN的作用"><a href="#EVPN的作用" class="headerlink" title="EVPN的作用"></a>EVPN的作用</h2><p>最初的vxlan方案(RFC7348)中没有定义控制平面，是手工配置隧道，然后通过流量泛洪的方式进行主机地址的学习。这会导致网络中存在很多泛洪流量、网络扩展起来很难。</p>
 
-        
       
     </div>
 
@@ -627,65 +553,50 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2021/02/02/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%81%9A%E4%B8%B2%E5%8F%A3%E6%9C%8D%E5%8A%A1%E5%99%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rancho">
       <meta itemprop="description" content="No pain, no gain!">
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Rancho Blog">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2021/02/02/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%81%9A%E4%B8%B2%E5%8F%A3%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="post-title-link" itemprop="url">树莓派做串口服务器</a>
+        <h2 class="post-title" itemprop="name headline">
           
-        </h1>
+            <a href="/2021/02/02/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%81%9A%E4%B8%B2%E5%8F%A3%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="post-title-link" itemprop="url">树莓派做串口服务器</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              
-                
-              
-
               <time title="Created: 2021-02-02 10:32:51" itemprop="dateCreated datePublished" datetime="2021-02-02T10:32:51+00:00">2021-02-02</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
               </span>
-            
-          
 
           
 
@@ -710,7 +621,6 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Ctrl-A x        退出minicom</span><br><span class="line">Ctrl-A z        显示快捷键帮助信息</span><br></pre></td></tr></table></figure>
 
 
-        
       
     </div>
 
@@ -718,65 +628,50 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2021/01/29/SONiC%E5%90%AF%E5%8A%A8%E7%AE%80%E8%BF%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rancho">
       <meta itemprop="description" content="No pain, no gain!">
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Rancho Blog">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2021/01/29/SONiC%E5%90%AF%E5%8A%A8%E7%AE%80%E8%BF%B0/" class="post-title-link" itemprop="url">SONiC启动简述</a>
+        <h2 class="post-title" itemprop="name headline">
           
-        </h1>
+            <a href="/2021/01/29/SONiC%E5%90%AF%E5%8A%A8%E7%AE%80%E8%BF%B0/" class="post-title-link" itemprop="url">SONiC启动简述</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              
-                
-              
-
               <time title="Created: 2021-01-29 10:28:18" itemprop="dateCreated datePublished" datetime="2021-01-29T10:28:18+00:00">2021-01-29</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
               </span>
-            
-          
 
           
 
@@ -795,7 +690,6 @@
 <h2 id="chassis相关"><a href="#chassis相关" class="headerlink" title="chassis相关"></a>chassis相关</h2><p>以pmon的docker的psud为例，先获取<code>platform_chassis</code>，对于chassis的初始化，关注platform_base.py、platform.py以及chassis.py这三个文件，其中chassis.py中完成chassis的实例化，一般包括syseeprom、watchdog、fan、thermal、psu、sfp、component。</p>
 <p>chassis.py是厂商的sonic_platform包里面提供的文件，pmon的docker创建的时候会根据platform挂载对应的sonic_platform包，所以能保证加载正确的板子的外设。</p>
 
-        
       
     </div>
 
@@ -803,65 +697,50 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2021/01/26/Systemd%E5%AD%A6%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rancho">
       <meta itemprop="description" content="No pain, no gain!">
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Rancho Blog">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2021/01/26/Systemd%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">Systemd学习</a>
+        <h2 class="post-title" itemprop="name headline">
           
-        </h1>
+            <a href="/2021/01/26/Systemd%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">Systemd学习</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              
-                
-              
-
               <time title="Created: 2021-01-26 13:32:42" itemprop="dateCreated datePublished" datetime="2021-01-26T13:32:42+00:00">2021-01-26</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
               </span>
-            
-          
 
           
 
@@ -1002,7 +881,6 @@
 <h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>一般而言，配置文件存放在<code>/lib/systemd/system</code>和<code>/usr/lib/systemd/system</code>目录下，通过<code>systemctl enable</code>在<code>/etc/systemd/system</code>创建符号链接指向前者，Systemd会执行etc下的文件，前提是文件中的Install配对了Target。</p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2016/03/systemd-tutorial-commands.html">Systemd入门教程：命令篇</a><br><a target="_blank" rel="noopener" href="https://linux.cn/article-5926-1.html">systemctl 命令完全指南</a></p>
 
-        
       
     </div>
 
@@ -1010,65 +888,50 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2021/01/26/Linux%E5%8F%8C%E7%BD%91%E5%8D%A1%E8%AE%BE%E7%BD%AE-%E5%86%85%E5%A4%96%E7%BD%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rancho">
       <meta itemprop="description" content="No pain, no gain!">
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Rancho Blog">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2021/01/26/Linux%E5%8F%8C%E7%BD%91%E5%8D%A1%E8%AE%BE%E7%BD%AE-%E5%86%85%E5%A4%96%E7%BD%91/" class="post-title-link" itemprop="url">Linux双网卡设置-内外网</a>
+        <h2 class="post-title" itemprop="name headline">
           
-        </h1>
+            <a href="/2021/01/26/Linux%E5%8F%8C%E7%BD%91%E5%8D%A1%E8%AE%BE%E7%BD%AE-%E5%86%85%E5%A4%96%E7%BD%91/" class="post-title-link" itemprop="url">Linux双网卡设置-内外网</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              
-                
-              
-
               <time title="Created: 2021-01-26 10:39:15" itemprop="dateCreated datePublished" datetime="2021-01-26T10:39:15+00:00">2021-01-26</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
               </span>
-            
-          
 
           
 
@@ -1096,7 +959,6 @@
 <p>可以看到10.204网段走的是10.204.123.1网关，其余的网段走的都是外网192.168.3.254网关。</p>
 <p>如果设备上使能了dhcpcd功能，则需要在获取到ip、路由之后手动配置路由。可以通过wlan0网络（外网）配置eth0（内网）的路由。</p>
 
-        
       
     </div>
 
@@ -1104,65 +966,50 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2021/01/19/broadcom-sdk-cmd/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rancho">
       <meta itemprop="description" content="No pain, no gain!">
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Rancho Blog">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2021/01/19/broadcom-sdk-cmd/" class="post-title-link" itemprop="url">broadcom_sdk_cmd</a>
+        <h2 class="post-title" itemprop="name headline">
           
-        </h1>
+            <a href="/2021/01/19/broadcom-sdk-cmd/" class="post-title-link" itemprop="url">broadcom_sdk_cmd</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              
-                
-              
-
               <time title="Created: 2021-01-19 14:58:33" itemprop="dateCreated datePublished" datetime="2021-01-19T14:58:33+00:00">2021-01-19</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
               </span>
-            
-          
 
           
 
@@ -1240,7 +1087,6 @@
 
 <h2 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h2><p>高级命令可以对协议等复杂功能进行设置，如ACL，OAM等。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">l2 show                                             显示mac地址表</span><br><span class="line">l2 add port&#x3D;ge2 macaddress&#x3D;0x000000000001 vlan&#x3D;1   在ge2端口静态添加mac地址</span><br></pre></td></tr></table></figure>
-        
       
     </div>
 
@@ -1248,65 +1094,50 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2021/01/05/%E5%85%B3%E4%BA%8E%E7%BB%88%E7%AB%AF%E5%9B%9E%E6%98%BE%E7%9A%84%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rancho">
       <meta itemprop="description" content="No pain, no gain!">
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Rancho Blog">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2021/01/05/%E5%85%B3%E4%BA%8E%E7%BB%88%E7%AB%AF%E5%9B%9E%E6%98%BE%E7%9A%84%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">关于终端回显的问题</a>
+        <h2 class="post-title" itemprop="name headline">
           
-        </h1>
+            <a href="/2021/01/05/%E5%85%B3%E4%BA%8E%E7%BB%88%E7%AB%AF%E5%9B%9E%E6%98%BE%E7%9A%84%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">关于终端回显的问题</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              
-                
-              
-
               <time title="Created: 2021-01-05 14:14:01" itemprop="dateCreated datePublished" datetime="2021-01-05T14:14:01+00:00">2021-01-05</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
               </span>
-            
-          
 
           
 
@@ -1326,7 +1157,6 @@
 <h1 id="对于ssh或telent连接"><a href="#对于ssh或telent连接" class="headerlink" title="对于ssh或telent连接"></a>对于ssh或telent连接</h1><p>为什么使用ssh或者telnet连接时不会出现这种终端显示的问题呢，因为ssh当窗口大小发生变化后，会自动的调整stty的数值。可以尝试调整窗口大小，然后<code>stty size</code>查看终端大小与软件显示的窗口大小进行比较。</p>
 <h1 id="写在后面"><a href="#写在后面" class="headerlink" title="写在后面"></a>写在后面</h1><p>Linux的TTY子系统其实是一个很复杂的点。其中包括的知识点有<code>行编辑</code>、<code>进程组</code>、<code>会话组</code>、<code>信号控制</code>、<code>流控制与I/O阻塞</code>、<code>TTY配置</code>等。</p>
 
-        
       
     </div>
 
@@ -1334,65 +1164,50 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2021/01/04/2021%E5%B9%B4%E5%A4%A9%E5%BC%98%E8%B7%91%E5%9B%A2%E6%95%B0%E6%8D%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rancho">
       <meta itemprop="description" content="No pain, no gain!">
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Rancho Blog">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2021/01/04/2021%E5%B9%B4%E5%A4%A9%E5%BC%98%E8%B7%91%E5%9B%A2%E6%95%B0%E6%8D%AE/" class="post-title-link" itemprop="url">2021年天弘跑团数据</a>
+        <h2 class="post-title" itemprop="name headline">
           
-        </h1>
+            <a href="/2021/01/04/2021%E5%B9%B4%E5%A4%A9%E5%BC%98%E8%B7%91%E5%9B%A2%E6%95%B0%E6%8D%AE/" class="post-title-link" itemprop="url">2021年天弘跑团数据</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              
-                
-              
-
               <time title="Created: 2021-01-04 11:54:59" itemprop="dateCreated datePublished" datetime="2021-01-04T11:54:59+00:00">2021-01-04</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
               </span>
-            
-          
 
           
 
@@ -1549,7 +1364,6 @@
 </tr>
 </tbody></table>
 
-        
       
     </div>
 
@@ -1557,65 +1371,50 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-        <article itemscope itemtype="http://schema.org/Article">
+      
   
   
-  
-  <div class="post-block home">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2020/12/31/SONiC%E6%B7%BB%E5%8A%A0%E6%96%B0%E7%9A%84device/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rancho">
       <meta itemprop="description" content="No pain, no gain!">
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Rancho Blog">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/2020/12/31/SONiC%E6%B7%BB%E5%8A%A0%E6%96%B0%E7%9A%84device/" class="post-title-link" itemprop="url">SONiC添加新的device</a>
+        <h2 class="post-title" itemprop="name headline">
           
-        </h1>
+            <a href="/2020/12/31/SONiC%E6%B7%BB%E5%8A%A0%E6%96%B0%E7%9A%84device/" class="post-title-link" itemprop="url">SONiC添加新的device</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              
-                
-              
-
               <time title="Created: 2020-12-31 11:16:17" itemprop="dateCreated datePublished" datetime="2020-12-31T11:16:17+00:00">2020-12-31</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
               </span>
-            
-          
 
           
 
@@ -1676,7 +1475,6 @@
 <p>对于从SONiC下面直接安装SONiC，修改grub，暂不做深入研究。</p>
 <p>对于systemd的初始化，SDK的初始化，platform/chassis的初始化，后续有需要在继续研究。</p>
 
-        
       
     </div>
 
@@ -1684,36 +1482,53 @@
     
     
       <footer class="post-footer">
-          <div class="post-eof"></div>
-        
+        <div class="post-eof"></div>
       </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-    
-  </div>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/">&lt;i class&#x3D;&quot;fa fa-angle-left&quot; aria-label&#x3D;&quot;Previous page&quot;&gt;&lt;&#x2F;i&gt;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">&lt;i class&#x3D;&quot;fa fa-angle-right&quot; aria-label&#x3D;&quot;Next page&quot;&gt;&lt;&#x2F;i&gt;</a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
+
 
 
           </div>
           
 
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
         </div>
           
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
   </div>
 
   <aside class="sidebar">
@@ -1738,35 +1553,25 @@
   <p class="site-author-name" itemprop="name">Rancho</p>
   <div class="site-description" itemprop="description">No pain, no gain!</div>
 </div>
-  <nav class="site-state motion-element">
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
       <div class="site-state-item site-state-posts">
-        
-          <a href="/archives/%20%7C%7C%20archive">
+          <a href="/archives/">
         
           <span class="site-state-item-count">43</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
-    
-      
-      
       <div class="site-state-item site-state-categories">
-        
         <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">categories</span>
-        
       </div>
-    
-      
-      
       <div class="site-state-item site-state-tags">
-        
         <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">tags</span>
-        
       </div>
-    
   </nav>
+</div>
 
 
 
@@ -1780,17 +1585,23 @@
       </div>
     </main>
 
-    <footer id="footer" class="footer">
+    <footer class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Rancho</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0</div>
-  <span class="post-meta-divider">|</span>
-  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
 
         
 
@@ -1801,58 +1612,43 @@
 
 
 
-
-
-
-
-        
       </div>
     </footer>
   </div>
 
   
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
 
 
-  <script src="/lib/anime.min.js?v=3.1.0"></script>
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-<script src="/js/utils.js?v=7.4.0.js"></script>
-
-<script src="/js/motion.js?v=7.4.0.js"></script>
+<script src="/js/schemes/muse.js"></script>
 
 
-<script src="/js/schemes/muse.js?v=7.4.0.js"></script>
-
-
-<script src="/js/next-boot.js?v=7.4.0.js"></script>
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<script src="/js/next-boot.js"></script>
 
 
 
 
   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
 

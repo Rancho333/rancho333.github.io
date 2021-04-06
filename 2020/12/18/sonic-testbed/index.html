@@ -1,59 +1,24 @@
 <!DOCTYPE html>
-
-
-
-
-
 <html lang="zh-Hans">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.4.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
-  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+<link rel="stylesheet" href="/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
-
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Muse',
-    version: '7.4.0',
-    exturl: false,
-    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
-    copycode: {"enable":false,"show_result":false,"style":null},
-    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
-    bookmark: {"enable":false,"color":"#222","save":"auto"},
-    fancybox: false,
-    mediumzoom: false,
-    lazyload: false,
-    pangu: false,
-    algolia: {
-      appID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    },
-    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
-    path: '',
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    translation: {
-      copy_button: 'Copy',
-      copy_success: 'Copied',
-      copy_failure: 'Copy failed'
-    },
-    sidebarPadding: 40
-  };
-</script>
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"rancho333.gitee.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
 
   <meta name="description" content="写在前面最初，SONiC的所有测试用例都是用ansible playbook写的。2019年开始使用pytest， 2020年9月份之后，只有用pytest写的测试用例才被采纳。但是ansible依然很重要，pytest-ansible插件连接pytest与ansible。pytest通过ansible进行多设备协同工作。 物理拓扑  DUT和leaf fanout的端口一一互联 leaf fan">
 <meta property="og:type" content="article">
@@ -77,24 +42,22 @@
 <meta property="article:tag" content="SONiC">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://rancho333.gitee.io/uploads/physical-topology.png">
-  <link rel="canonical" href="https://rancho333.gitee.io/2020/12/18/sonic-testbed/">
+
+<link rel="canonical" href="https://rancho333.gitee.io/2020/12/18/sonic-testbed/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome: false,
-    isPost: true,
-    isPage: false,
-    isArchive: false
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
   };
 </script>
 
   <title>sonic-testbed | Rancho Blog</title>
   
-
-
 
 
 
@@ -113,7 +76,6 @@
   .use-motion .post-body,
   .use-motion .collection-header { opacity: initial; }
 
-  .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
@@ -127,65 +89,57 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
-  <div class="site-meta">
-
-    <div>
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Rancho Blog</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
-        <p class="site-subtitle">知行合一，致良知！</p>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button aria-label="Toggle navigation bar">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Rancho Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">知行合一，致良知！</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
   </div>
 </div>
 
 
-<nav class="site-nav">
-  
-  <ul id="menu" class="menu">
-      
-      
-      
-        
-        <li class="menu-item menu-item-home">
-      
-    
 
-    <a href="/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-home&quot;&gt;&lt;&#x2F;i&gt; &lt;br&gt;Home</a>
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
 
   </li>
-      
-      
-      
-        
         <li class="menu-item menu-item-archives">
-      
-    
 
-    <a href="/archives/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-archive&quot;&gt;&lt;&#x2F;i&gt; &lt;br&gt;Archives</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
 
   </li>
   </ul>
-
-    
-
 </nav>
+
+
+
+
 </div>
     </header>
 
@@ -196,61 +150,50 @@
   </div>
 
 
-    <main id="main" class="main">
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          <div id="content" class="content">
+          
+
+          <div class="content post posts-expand">
             
 
-  <div id="posts" class="posts-expand">
-      <article itemscope itemtype="http://schema.org/Article">
+    
   
   
-  
-  <div class="post-block post">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2020/12/18/sonic-testbed/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rancho">
       <meta itemprop="description" content="No pain, no gain!">
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Rancho Blog">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">sonic-testbed
-
-          
+        <h1 class="post-title" itemprop="name headline">
+          sonic-testbed
         </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              
-                
-              
-
               <time title="Created: 2020-12-18 15:29:56" itemprop="dateCreated datePublished" datetime="2020-12-18T15:29:56+00:00">2020-12-18</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
               </span>
-            
-          
 
           
 
@@ -575,74 +518,71 @@
     
     
     
-        
-      
 
       <footer class="post-footer">
-          
-            
-          
           <div class="post-tags">
-            
               <a href="/tags/SONiC/" rel="tag"># SONiC</a>
-            
           </div>
-        
 
         
 
-          <div class="post-nav">
-            <div class="post-nav-next post-nav-item">
-              
-                <a href="/2020/12/15/SONiC%E7%BC%96%E8%AF%91%E7%AE%80%E8%BF%B0%E5%8F%8A%E4%BC%98%E5%8C%96/" rel="next" title="SONiC编译简述及优化">
-                  <i class="fa fa-chevron-left"></i> SONiC编译简述及优化
-                </a>
-              
-            </div>
 
-            <span class="post-nav-divider"></span>
-
-            <div class="post-nav-prev post-nav-item">
-              
-                <a href="/2020/12/21/%E5%8A%A0%E5%BC%98%E8%B7%91%E5%9B%A2/" rel="prev" title="加弘跑团">
-                  加弘跑团 <i class="fa fa-chevron-right"></i>
-                </a>
-              
-            </div>
-          </div>
         
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/15/SONiC%E7%BC%96%E8%AF%91%E7%AE%80%E8%BF%B0%E5%8F%8A%E4%BC%98%E5%8C%96/" rel="prev" title="SONiC编译简述及优化">
+      <i class="fa fa-chevron-left"></i> SONiC编译简述及优化
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/21/%E5%8A%A0%E5%BC%98%E8%B7%91%E5%9B%A2/" rel="next" title="加弘跑团">
+      加弘跑团 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
       </footer>
     
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-  </div>
 
 
           </div>
           
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
 
         </div>
           
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
   </div>
 
   <aside class="sidebar">
     <div class="sidebar-inner">
-        
-        
-        
-        
-      
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
@@ -656,7 +596,6 @@
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
           <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E6%8B%93%E6%89%91"><span class="nav-number">1.1.</span> <span class="nav-text">物理拓扑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Fanout-switch"><span class="nav-number">1.1.1.</span> <span class="nav-text">Fanout switch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Testbed-server"><span class="nav-number">1.1.2.</span> <span class="nav-text">Testbed server</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E8%BF%9E%E6%8E%A5"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">网络连接</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VMs"><span class="nav-number">1.1.3.</span> <span class="nav-text">VMs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PTF"><span class="nav-number">1.1.4.</span> <span class="nav-text">PTF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SONiC-Tested-with-keysight-IxNetwork-as-Traffic-Generator"><span class="nav-number">1.1.5.</span> <span class="nav-text">SONiC Tested with keysight IxNetwork as Traffic Generator</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Testbed%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.2.</span> <span class="nav-text">Testbed设置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%86%E5%A4%87testbed%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">1.2.1.</span> <span class="nav-text">准备testbed服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BAdocker-pth%E8%AE%BE%E7%BD%AEdocker%E4%BB%93%E5%BA%93"><span class="nav-number">1.2.2.</span> <span class="nav-text">为docker-pth设置docker仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%B9%B6%E4%B8%94%E8%BF%90%E8%A1%8Cdocker-sonic-mgmt"><span class="nav-number">1.2.3.</span> <span class="nav-text">创建并且运行docker-sonic-mgmt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%86%E5%A4%87Testbed%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.4.</span> <span class="nav-text">准备Testbed配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AEVMs"><span class="nav-number">1.2.5.</span> <span class="nav-text">设置VMs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2Fanout%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%9A%84Vlan"><span class="nav-number">1.2.6.</span> <span class="nav-text">部署Fanout交换机的Vlan</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2%E6%8B%93%E6%89%91"><span class="nav-number">1.2.7.</span> <span class="nav-text">部署拓扑</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker%E5%AE%B9%E5%99%A8%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.3.</span> <span class="nav-text">Docker容器设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#KVM-testbed%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.4.</span> <span class="nav-text">KVM testbed设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cEOS"><span class="nav-number">1.5.</span> <span class="nav-text">cEOS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.5.1.</span> <span class="nav-text">网络设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE"><span class="nav-number">1.5.2.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%99%BB%E5%BD%95"><span class="nav-number">1.5.3.</span> <span class="nav-text">登录</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#testbed%E8%B7%AF%E7%94%B1%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.6.</span> <span class="nav-text">testbed路由设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%93%E6%89%91"><span class="nav-number">1.7.</span> <span class="nav-text">拓扑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#testbed%E6%8B%93%E6%89%91%E9%85%8D%E7%BD%AE"><span class="nav-number">1.7.1.</span> <span class="nav-text">testbed拓扑配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%93%E5%89%8D%E7%9A%84%E6%8B%93%E6%89%91"><span class="nav-number">1.7.2.</span> <span class="nav-text">当前的拓扑</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#t1"><span class="nav-number">1.7.2.1.</span> <span class="nav-text">t1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#t1-lag"><span class="nav-number">1.7.2.2.</span> <span class="nav-text">t1-lag</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ptf32"><span class="nav-number">1.7.2.3.</span> <span class="nav-text">ptf32</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ptf64"><span class="nav-number">1.7.2.4.</span> <span class="nav-text">ptf64</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#t0"><span class="nav-number">1.7.2.5.</span> <span class="nav-text">t0</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#testbed%E9%85%8D%E7%BD%AE"><span class="nav-number">1.8.</span> <span class="nav-text">testbed配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#testbed%E6%B8%85%E5%8D%95"><span class="nav-number">1.8.1.</span> <span class="nav-text">testbed清单</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">1.8.2.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sonic-Mgmt-testbed%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.9.</span> <span class="nav-text">Sonic-Mgmt testbed设置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87"><span class="nav-number">1.9.1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E8%BF%81%E7%A7%BB%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.9.2.</span> <span class="nav-text">预迁移设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9-Testbed-yaml%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.9.3.</span> <span class="nav-text">修改 Testbed.yaml配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89testbed-config%E9%83%A8%E5%88%86%EF%BC%9A"><span class="nav-number">1.9.3.1.</span> <span class="nav-text">（可选）testbed_config部分：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#device-groups%E9%83%A8%E5%88%86"><span class="nav-number">1.9.3.1.1.</span> <span class="nav-text">device_groups部分</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#devices%E9%83%A8%E5%88%86"><span class="nav-number">1.9.3.2.</span> <span class="nav-text">devices部分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#host-vars%E9%83%A8%E5%88%86"><span class="nav-number">1.9.3.3.</span> <span class="nav-text">host_vars部分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#veos-groups%E9%83%A8%E5%88%86"><span class="nav-number">1.9.3.4.</span> <span class="nav-text">veos_groups部分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#veos%E9%83%A8%E5%88%86"><span class="nav-number">1.9.3.5.</span> <span class="nav-text">veos部分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#testbed%E9%83%A8%E5%88%86"><span class="nav-number">1.9.3.6.</span> <span class="nav-text">testbed部分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8B%93%E6%89%91%E9%83%A8%E5%88%86"><span class="nav-number">1.9.3.7.</span> <span class="nav-text">拓扑部分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker-registry%E9%83%A8%E5%88%86"><span class="nav-number">1.9.3.8.</span> <span class="nav-text">docker_registry部分</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#testbed%E8%BF%90%E8%A1%8C%E8%84%9A%E6%9C%AC"><span class="nav-number">1.9.4.</span> <span class="nav-text">testbed运行脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#VMS%E5%91%BD%E4%BB%A4"><span class="nav-number">1.9.4.1.</span> <span class="nav-text">VMS命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2%EF%BC%88PTF32%EF%BC%89%E6%8B%93%E6%89%91%E5%AE%B9%E5%99%A8"><span class="nav-number">1.9.5.</span> <span class="nav-text">部署（PTF32）拓扑容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B%EF%BC%88Neighbour%EF%BC%89"><span class="nav-number">1.9.6.</span> <span class="nav-text">运行第一个测试用例（Neighbour）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E9%94%99"><span class="nav-number">1.10.</span> <span class="nav-text">排错</span></a></li></ol></li></ol></div>
-        
       </div>
       <!--/noindex-->
 
@@ -665,35 +604,25 @@
   <p class="site-author-name" itemprop="name">Rancho</p>
   <div class="site-description" itemprop="description">No pain, no gain!</div>
 </div>
-  <nav class="site-state motion-element">
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
       <div class="site-state-item site-state-posts">
-        
-          <a href="/archives/%20%7C%7C%20archive">
+          <a href="/archives/">
         
           <span class="site-state-item-count">43</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
-    
-      
-      
       <div class="site-state-item site-state-categories">
-        
         <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">categories</span>
-        
       </div>
-    
-      
-      
       <div class="site-state-item site-state-tags">
-        
         <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">tags</span>
-        
       </div>
-    
   </nav>
+</div>
 
 
 
@@ -707,17 +636,23 @@
       </div>
     </main>
 
-    <footer id="footer" class="footer">
+    <footer class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Rancho</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0</div>
-  <span class="post-meta-divider">|</span>
-  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
 
         
 
@@ -728,58 +663,43 @@
 
 
 
-
-
-
-
-        
       </div>
     </footer>
   </div>
 
   
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
 
 
-  <script src="/lib/anime.min.js?v=3.1.0"></script>
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-<script src="/js/utils.js?v=7.4.0.js"></script>
-
-<script src="/js/motion.js?v=7.4.0.js"></script>
+<script src="/js/schemes/muse.js"></script>
 
 
-<script src="/js/schemes/muse.js?v=7.4.0.js"></script>
-
-
-<script src="/js/next-boot.js?v=7.4.0.js"></script>
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<script src="/js/next-boot.js"></script>
 
 
 
 
   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
 

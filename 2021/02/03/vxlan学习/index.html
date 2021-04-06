@@ -1,59 +1,24 @@
 <!DOCTYPE html>
-
-
-
-
-
 <html lang="zh-Hans">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.4.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
-  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+<link rel="stylesheet" href="/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
-
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Muse',
-    version: '7.4.0',
-    exturl: false,
-    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
-    copycode: {"enable":false,"show_result":false,"style":null},
-    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
-    bookmark: {"enable":false,"color":"#222","save":"auto"},
-    fancybox: false,
-    mediumzoom: false,
-    lazyload: false,
-    pangu: false,
-    algolia: {
-      appID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    },
-    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
-    path: '',
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    translation: {
-      copy_button: 'Copy',
-      copy_success: 'Copied',
-      copy_failure: 'Copy failed'
-    },
-    sidebarPadding: 40
-  };
-</script>
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"rancho333.gitee.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
 
   <meta name="description" content="写在前面vxlan是overlay层的应用，vlan是underlay层的应用。这篇文档是vxlan的学习文档，在学习vxlan之前，会简单介绍下vlan，之后进入vxlan学习。学习完成后，应该搞明白以下的几个问题：  什么是vxlan vxlan解决了什么问题，应用场景是什么 vxlan报文的封装格式是什么样的 什么是VTEP和VNI 哪些VTEP之间需要建立vxlan隧道 什么是同一大二层域">
 <meta property="og:type" content="article">
@@ -82,24 +47,22 @@
 <meta property="article:tag" content="vxlan">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://rancho333.gitee.io/uploads/vlan_frame.png">
-  <link rel="canonical" href="https://rancho333.gitee.io/2021/02/03/vxlan%E5%AD%A6%E4%B9%A0/">
+
+<link rel="canonical" href="https://rancho333.gitee.io/2021/02/03/vxlan%E5%AD%A6%E4%B9%A0/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome: false,
-    isPost: true,
-    isPage: false,
-    isArchive: false
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
   };
 </script>
 
   <title>vxlan学习 | Rancho Blog</title>
   
-
-
 
 
 
@@ -118,7 +81,6 @@
   .use-motion .post-body,
   .use-motion .collection-header { opacity: initial; }
 
-  .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
@@ -132,65 +94,57 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
-  <div class="site-meta">
-
-    <div>
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Rancho Blog</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
-        <p class="site-subtitle">知行合一，致良知！</p>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button aria-label="Toggle navigation bar">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Rancho Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">知行合一，致良知！</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
   </div>
 </div>
 
 
-<nav class="site-nav">
-  
-  <ul id="menu" class="menu">
-      
-      
-      
-        
-        <li class="menu-item menu-item-home">
-      
-    
 
-    <a href="/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-home&quot;&gt;&lt;&#x2F;i&gt; &lt;br&gt;Home</a>
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
 
   </li>
-      
-      
-      
-        
         <li class="menu-item menu-item-archives">
-      
-    
 
-    <a href="/archives/" rel="section">&lt;i class&#x3D;&quot;menu-item-icon fa fa-fw fa-archive&quot;&gt;&lt;&#x2F;i&gt; &lt;br&gt;Archives</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
 
   </li>
   </ul>
-
-    
-
 </nav>
+
+
+
+
 </div>
     </header>
 
@@ -201,61 +155,50 @@
   </div>
 
 
-    <main id="main" class="main">
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          <div id="content" class="content">
+          
+
+          <div class="content post posts-expand">
             
 
-  <div id="posts" class="posts-expand">
-      <article itemscope itemtype="http://schema.org/Article">
+    
   
   
-  
-  <div class="post-block post">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2021/02/03/vxlan%E5%AD%A6%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rancho">
       <meta itemprop="description" content="No pain, no gain!">
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Rancho Blog">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">vxlan学习
-
-          
+        <h1 class="post-title" itemprop="name headline">
+          vxlan学习
         </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              
-                
-              
-
               <time title="Created: 2021-02-03 10:24:44" itemprop="dateCreated datePublished" datetime="2021-02-03T10:24:44+00:00">2021-02-03</time>
             </span>
-          
-            
-
-            
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
                 <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
               </span>
-            
-          
 
           
 
@@ -545,76 +488,72 @@
     
     
     
-        
-      
 
       <footer class="post-footer">
-          
-            
-          
           <div class="post-tags">
-            
               <a href="/tags/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/" rel="tag"># 通信协议</a>
-            
               <a href="/tags/vxlan/" rel="tag"># vxlan</a>
-            
           </div>
-        
 
         
 
-          <div class="post-nav">
-            <div class="post-nav-next post-nav-item">
-              
-                <a href="/2021/02/02/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%81%9A%E4%B8%B2%E5%8F%A3%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="next" title="树莓派做串口服务器">
-                  <i class="fa fa-chevron-left"></i> 树莓派做串口服务器
-                </a>
-              
-            </div>
 
-            <span class="post-nav-divider"></span>
-
-            <div class="post-nav-prev post-nav-item">
-              
-                <a href="/2021/02/08/Linux%E8%B7%AF%E7%94%B1%E4%BF%A1%E6%81%AF%E5%AD%A6%E4%B9%A0/" rel="prev" title="Linux路由信息学习">
-                  Linux路由信息学习 <i class="fa fa-chevron-right"></i>
-                </a>
-              
-            </div>
-          </div>
         
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/02/02/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%81%9A%E4%B8%B2%E5%8F%A3%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="prev" title="树莓派做串口服务器">
+      <i class="fa fa-chevron-left"></i> 树莓派做串口服务器
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/02/08/Linux%E8%B7%AF%E7%94%B1%E4%BF%A1%E6%81%AF%E5%AD%A6%E4%B9%A0/" rel="next" title="Linux路由信息学习">
+      Linux路由信息学习 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
       </footer>
     
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-  </div>
 
 
           </div>
           
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
 
         </div>
           
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
   </div>
 
   <aside class="sidebar">
     <div class="sidebar-inner">
-        
-        
-        
-        
-      
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
@@ -628,7 +567,6 @@
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
           <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vlan%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.</span> <span class="nav-text">vlan介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vxlan%E5%AD%A6%E4%B9%A0"><span class="nav-number">3.</span> <span class="nav-text">vxlan学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFvxlan"><span class="nav-number">3.1.</span> <span class="nav-text">什么是vxlan</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vxlan%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">3.2.</span> <span class="nav-text">vxlan的应用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vxlan%E7%9A%84%E9%9A%A7%E9%81%93%E6%98%AF%E5%A6%82%E4%BD%95%E5%BB%BA%E7%AB%8B%E7%9A%84"><span class="nav-number">3.3.</span> <span class="nav-text">vxlan的隧道是如何建立的</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vxlan%E4%B8%AD%E7%9A%84VTEP%E5%92%8CVNI"><span class="nav-number">3.3.1.</span> <span class="nav-text">vxlan中的VTEP和VNI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%82%A3%E4%BA%9BVTEP%E4%B9%8B%E9%97%B4%E9%9C%80%E8%A6%81%E5%BB%BA%E7%AB%8Bvxlan%E9%9A%A7%E9%81%93"><span class="nav-number">3.3.2.</span> <span class="nav-text">那些VTEP之间需要建立vxlan隧道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vxlan%E9%9A%A7%E9%81%93%E6%98%AF%E6%80%8E%E4%B9%88%E5%BB%BA%E7%AB%8B%E7%9A%84"><span class="nav-number">3.3.3.</span> <span class="nav-text">vxlan隧道是怎么建立的</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E5%BB%BA%E7%AB%8B"><span class="nav-number">3.3.3.1.</span> <span class="nav-text">手动建立</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E5%BB%BA%E7%AB%8B"><span class="nav-number">3.3.3.2.</span> <span class="nav-text">自动建立</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E7%A1%AE%E5%AE%9A%E6%8A%A5%E6%96%87%E8%B5%B0%E9%82%A3%E6%9D%A1%E9%9A%A7%E9%81%93"><span class="nav-number">3.3.3.3.</span> <span class="nav-text">如何确定报文走那条隧道</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vxlan%E7%BD%91%E5%85%B3%E6%9C%89%E5%93%AA%E4%BA%9B%E7%A7%8D%E7%B1%BB"><span class="nav-number">3.4.</span> <span class="nav-text">vxlan网关有哪些种类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vxlan%E4%BA%8C%E5%B1%82%E7%BD%91%E5%85%B3%E4%B8%8E%E4%B8%89%E5%B1%82%E7%BD%91%E5%85%B3"><span class="nav-number">3.4.1.</span> <span class="nav-text">vxlan二层网关与三层网关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vxlan%E9%9B%86%E4%B8%AD%E5%BC%8F%E7%BD%91%E5%85%B3%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F%E7%BD%91%E5%85%B3"><span class="nav-number">3.4.2.</span> <span class="nav-text">vxlan集中式网关与分布式网关</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vxlan%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%8A%A5%E6%96%87%E6%97%B6%E5%A6%82%E4%BD%95%E8%BD%AC%E5%8F%91%E7%9A%84"><span class="nav-number">3.5.</span> <span class="nav-text">vxlan网络中报文时如何转发的</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E4%B8%AD%E5%BC%8Fvxlan%E4%B8%AD%E5%90%8C%E5%AD%90%E7%BD%91%E4%BA%92%E9%80%9A%E6%B5%81%E7%A8%8B"><span class="nav-number">3.5.1.</span> <span class="nav-text">集中式vxlan中同子网互通流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E4%B8%AD%E5%BC%8Fvxlan%E4%B8%8D%E5%90%8C%E5%AD%90%E7%BD%91%E4%BA%92%E9%80%9A%E6%B5%81%E7%A8%8B"><span class="nav-number">3.5.2.</span> <span class="nav-text">集中式vxlan不同子网互通流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#overlay%E7%BD%91%E7%BB%9C%E7%9A%84%E4%B8%89%E7%A7%8D%E6%9E%84%E5%BB%BA%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.6.</span> <span class="nav-text">overlay网络的三种构建模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vxlan%E4%B8%8ESDN"><span class="nav-number">3.7.</span> <span class="nav-text">vxlan与SDN</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#EVPN%E5%AD%A6%E4%B9%A0"><span class="nav-number">4.</span> <span class="nav-text">EVPN学习</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#EVPN%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">4.1.</span> <span class="nav-text">EVPN的作用</span></a></li></ol></li></ol></div>
-        
       </div>
       <!--/noindex-->
 
@@ -637,35 +575,25 @@
   <p class="site-author-name" itemprop="name">Rancho</p>
   <div class="site-description" itemprop="description">No pain, no gain!</div>
 </div>
-  <nav class="site-state motion-element">
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
       <div class="site-state-item site-state-posts">
-        
-          <a href="/archives/%20%7C%7C%20archive">
+          <a href="/archives/">
         
           <span class="site-state-item-count">43</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
-    
-      
-      
       <div class="site-state-item site-state-categories">
-        
         <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">categories</span>
-        
       </div>
-    
-      
-      
       <div class="site-state-item site-state-tags">
-        
         <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">tags</span>
-        
       </div>
-    
   </nav>
+</div>
 
 
 
@@ -679,17 +607,23 @@
       </div>
     </main>
 
-    <footer id="footer" class="footer">
+    <footer class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Rancho</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0</div>
-  <span class="post-meta-divider">|</span>
-  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
 
         
 
@@ -700,58 +634,43 @@
 
 
 
-
-
-
-
-        
       </div>
     </footer>
   </div>
 
   
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
 
 
-  <script src="/lib/anime.min.js?v=3.1.0"></script>
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-<script src="/js/utils.js?v=7.4.0.js"></script>
-
-<script src="/js/motion.js?v=7.4.0.js"></script>
+<script src="/js/schemes/muse.js"></script>
 
 
-<script src="/js/schemes/muse.js?v=7.4.0.js"></script>
-
-
-<script src="/js/next-boot.js?v=7.4.0.js"></script>
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<script src="/js/next-boot.js"></script>
 
 
 
 
   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
 
