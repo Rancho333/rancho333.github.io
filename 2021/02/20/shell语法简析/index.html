@@ -17,18 +17,18 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"rancho333.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"rancho333.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="问题说明在shell下遇到一个赋值的问题 123[rancho ~]$ a&#x3D;10[rancho ~]$ demo$a&#x3D;$(echo 123)demo10&#x3D;123: command not found  shell下的命令格式shell下我们常用的命令格式如下： 123var&#x3D;value           #变量赋值，例如a&#x3D;1cmd [args]">
+  <meta name="description" content="问题说明在shell下遇到一个赋值的问题 123[rancho ~]$ a&#x3D;10[rancho ~]$ demo$a&#x3D;$(echo 123)demo10&#x3D;123: command not found">
 <meta property="og:type" content="article">
 <meta property="og:title" content="shell语法简析">
 <meta property="og:url" content="https://rancho333.gitee.io/2021/02/20/shell%E8%AF%AD%E6%B3%95%E7%AE%80%E6%9E%90/index.html">
 <meta property="og:site_name" content="Rancho Blog">
-<meta property="og:description" content="问题说明在shell下遇到一个赋值的问题 123[rancho ~]$ a&#x3D;10[rancho ~]$ demo$a&#x3D;$(echo 123)demo10&#x3D;123: command not found  shell下的命令格式shell下我们常用的命令格式如下： 123var&#x3D;value           #变量赋值，例如a&#x3D;1cmd [args]">
+<meta property="og:description" content="问题说明在shell下遇到一个赋值的问题 123[rancho ~]$ a&#x3D;10[rancho ~]$ demo$a&#x3D;$(echo 123)demo10&#x3D;123: command not found">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-02-20T16:14:32.000Z">
-<meta property="article:modified_time" content="2021-04-02T12:15:18.914Z">
+<meta property="article:modified_time" content="2021-04-06T10:47:07.061Z">
 <meta property="article:author" content="Rancho">
 <meta property="article:tag" content="shell">
 <meta name="twitter:card" content="summary">
@@ -233,7 +233,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
+                <time title="Modified: 2021-04-06 10:47:07" itemprop="dateModified" datetime="2021-04-06T10:47:07+00:00">2021-04-06</time>
               </span>
 
           
@@ -250,6 +250,7 @@
         <h1 id="问题说明"><a href="#问题说明" class="headerlink" title="问题说明"></a>问题说明</h1><p>在shell下遇到一个赋值的问题</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[rancho ~]$ a&#x3D;10</span><br><span class="line">[rancho ~]$ demo$a&#x3D;$(echo 123)</span><br><span class="line">demo10&#x3D;123: command not found</span><br></pre></td></tr></table></figure>
 
+<span id="more"></span>
 <h1 id="shell下的命令格式"><a href="#shell下的命令格式" class="headerlink" title="shell下的命令格式"></a>shell下的命令格式</h1><p>shell下我们常用的命令格式如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var&#x3D;value           #变量赋值，例如a&#x3D;1</span><br><span class="line">cmd [args]          #命令执行，例如ls -l</span><br><span class="line">&gt;redirection        #重定向,例如:&gt;a.c </span><br></pre></td></tr></table></figure>
 
@@ -377,13 +378,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

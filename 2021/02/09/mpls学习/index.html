@@ -17,15 +17,15 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"rancho333.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"rancho333.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="MPLS简介MPLS(multiprotocol label switching，多协议标签交换)起源于IPv4，最初是为了提高转发速度而提出的（早期路由是只能由软件处理的），其核心技术可扩展到多种网络协议，包括IPv6，IPX(internet packet exchange，网际报文交换)和CLNP(connectionless network protocol,无连接网络协议)等。MPLS中">
+  <meta name="description" content="MPLS简介概念说明转发等价类MPLS作为一种分类转发技术，将具有相同转发处理方式的分组归位一类，称为FEC(forwarding equivalence class，转发等价类)。相同FEC的分组在MPLS中将获得完全相同的处理。FEC的划分方式非常灵活，可以是源地址、目的地址、源端口、目的端口、协议类型或VPN等为划分依据的任意组合。例如，在传统的采用最长匹配算法的IP转发中，到同一个目的地址">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mpls学习">
 <meta property="og:url" content="https://rancho333.gitee.io/2021/02/09/mpls%E5%AD%A6%E4%B9%A0/index.html">
 <meta property="og:site_name" content="Rancho Blog">
-<meta property="og:description" content="MPLS简介MPLS(multiprotocol label switching，多协议标签交换)起源于IPv4，最初是为了提高转发速度而提出的（早期路由是只能由软件处理的），其核心技术可扩展到多种网络协议，包括IPv6，IPX(internet packet exchange，网际报文交换)和CLNP(connectionless network protocol,无连接网络协议)等。MPLS中">
+<meta property="og:description" content="MPLS简介概念说明转发等价类MPLS作为一种分类转发技术，将具有相同转发处理方式的分组归位一类，称为FEC(forwarding equivalence class，转发等价类)。相同FEC的分组在MPLS中将获得完全相同的处理。FEC的划分方式非常灵活，可以是源地址、目的地址、源端口、目的端口、协议类型或VPN等为划分依据的任意组合。例如，在传统的采用最长匹配算法的IP转发中，到同一个目的地址">
 <meta property="og:locale">
 <meta property="og:image" content="https://rancho333.gitee.io/uploads/mpls_packet.png">
 <meta property="og:image" content="https://rancho333.gitee.io/uploads/mpls_packet_location.png">
@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://rancho333.gitee.io/uploads/mpls_node.png">
 <meta property="og:image" content="https://rancho333.gitee.io/uploads/mpls_vpn.png">
 <meta property="article:published_time" content="2021-02-09T10:27:51.000Z">
-<meta property="article:modified_time" content="2021-04-02T12:15:18.918Z">
+<meta property="article:modified_time" content="2021-04-06T10:47:07.069Z">
 <meta property="article:author" content="Rancho">
 <meta property="article:tag" content="通信协议">
 <meta name="twitter:card" content="summary">
@@ -240,7 +240,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
+                <time title="Modified: 2021-04-06 10:47:07" itemprop="dateModified" datetime="2021-04-06T10:47:07+00:00">2021-04-06</time>
               </span>
 
           
@@ -254,8 +254,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="MPLS简介"><a href="#MPLS简介" class="headerlink" title="MPLS简介"></a>MPLS简介</h1><p>MPLS(multiprotocol label switching，多协议标签交换)起源于IPv4，最初是为了提高转发速度而提出的（早期路由是只能由软件处理的），其核心技术可扩展到多种网络协议，包括IPv6，IPX(internet packet exchange，网际报文交换)和CLNP(connectionless network protocol,无连接网络协议)等。MPLS中的<em>M</em>指的就是支持多种网络协议。</p>
-<h1 id="概念说明"><a href="#概念说明" class="headerlink" title="概念说明"></a>概念说明</h1><h2 id="转发等价类"><a href="#转发等价类" class="headerlink" title="转发等价类"></a>转发等价类</h2><p>MPLS作为一种分类转发技术，将具有相同转发处理方式的分组归位一类，称为FEC(forwarding equivalence class，转发等价类)。相同FEC的分组在MPLS中将获得完全相同的处理。<br>FEC的划分方式非常灵活，可以是源地址、目的地址、源端口、目的端口、协议类型或VPN等为划分依据的任意组合。例如，在传统的采用最长匹配算法的IP转发中，到同一个目的地址的所有报文就是一个FEC。</p>
+        <h1 id="MPLS简介"><a href="#MPLS简介" class="headerlink" title="MPLS简介"></a>MPLS简介</h1><h1 id="概念说明"><a href="#概念说明" class="headerlink" title="概念说明"></a>概念说明</h1><h2 id="转发等价类"><a href="#转发等价类" class="headerlink" title="转发等价类"></a>转发等价类</h2><p>MPLS作为一种分类转发技术，将具有相同转发处理方式的分组归位一类，称为FEC(forwarding equivalence class，转发等价类)。相同FEC的分组在MPLS中将获得完全相同的处理。<br>FEC的划分方式非常灵活，可以是源地址、目的地址、源端口、目的端口、协议类型或VPN等为划分依据的任意组合。例如，在传统的采用最长匹配算法的IP转发中，到同一个目的地址的所有报文就是一个FEC。</p>
+<span id="more"></span>
+
 <h2 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h2><p>标签是一个长度固定，仅具有本地意义的短标识符，用于唯一标识一个分组所属的FEC。一个标签只能代表一个FEC。标签长度为4个字节，结构如下：</p>
 <p><img src="https://rancho333.gitee.io/uploads/mpls_packet.png"></p>
 <p>字段解释如下：</p>
@@ -425,13 +426,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

@@ -17,29 +17,28 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"rancho333.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"rancho333.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="背景说明最近参与到公司的白盒交换机项目中，需要编译ONL和sonic，其中软件源的设置让我非常头疼，编译依赖有很大的问题。决定深入学习一下Linux软件源.主机环境为ubuntu16.04.   软件库存储文件*.listubuntu使用apt来管理软件包，apt将软件库存储在如下文件中:   12&#x2F;etc&#x2F;apt&#x2F;sources.list&#x2F;etc&amp;#x2F">
+  <meta name="description" content="title: 关于Ubuntu的软件源source.list学习date: 2019-07-25 03:02:19categories:   Linux相关tags: Linux 软件源  背景说明最近参与到公司的白盒交换机项目中，需要编译ONL和sonic，其中软件源的设置让我非常头疼，编译依赖有很大的问题。决定深入学习一下Linux软件源.主机环境为ubuntu16.04.   软件库存储文">
 <meta property="og:type" content="article">
-<meta property="og:title" content="关于Ubuntu的软件源source.list学习">
-<meta property="og:url" content="https://rancho333.gitee.io/2019/07/25/%E5%85%B3%E4%BA%8EUbuntu%E7%9A%84%E8%BD%AF%E4%BB%B6%E6%BA%90source-list%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:title" content="Rancho Blog">
+<meta property="og:url" content="https://rancho333.gitee.io/2021/04/06/%E5%85%B3%E4%BA%8EUbuntu%E7%9A%84%E8%BD%AF%E4%BB%B6%E6%BA%90source-list%E5%AD%A6%E4%B9%A0/index.html">
 <meta property="og:site_name" content="Rancho Blog">
-<meta property="og:description" content="背景说明最近参与到公司的白盒交换机项目中，需要编译ONL和sonic，其中软件源的设置让我非常头疼，编译依赖有很大的问题。决定深入学习一下Linux软件源.主机环境为ubuntu16.04.   软件库存储文件*.listubuntu使用apt来管理软件包，apt将软件库存储在如下文件中:   12&#x2F;etc&#x2F;apt&#x2F;sources.list&#x2F;etc&amp;#x2F">
+<meta property="og:description" content="title: 关于Ubuntu的软件源source.list学习date: 2019-07-25 03:02:19categories:   Linux相关tags: Linux 软件源  背景说明最近参与到公司的白盒交换机项目中，需要编译ONL和sonic，其中软件源的设置让我非常头疼，编译依赖有很大的问题。决定深入学习一下Linux软件源.主机环境为ubuntu16.04.   软件库存储文">
 <meta property="og:locale">
 <meta property="og:image" content="https://rancho333.gitee.io/uploads/ubuntu.png">
 <meta property="og:image" content="https://rancho333.gitee.io/uploads/xenial.png">
 <meta property="og:image" content="https://rancho333.gitee.io/uploads/xenial-updates.png">
 <meta property="og:image" content="https://rancho333.gitee.io/uploads/packages.png">
-<meta property="article:published_time" content="2019-07-25T03:02:19.000Z">
-<meta property="article:modified_time" content="2021-04-02T12:15:18.938Z">
+<meta property="article:published_time" content="2021-04-06T10:47:07.077Z">
+<meta property="article:modified_time" content="2021-04-06T10:47:07.077Z">
 <meta property="article:author" content="Rancho">
-<meta property="article:tag" content="Linux">
-<meta property="article:tag" content="软件源">
+<meta property="article:tag" content="Racncho, Rancho Blog, 嵌入式">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://rancho333.gitee.io/uploads/ubuntu.png">
 
-<link rel="canonical" href="https://rancho333.gitee.io/2019/07/25/%E5%85%B3%E4%BA%8EUbuntu%E7%9A%84%E8%BD%AF%E4%BB%B6%E6%BA%90source-list%E5%AD%A6%E4%B9%A0/">
+<link rel="canonical" href="https://rancho333.gitee.io/2021/04/06/%E5%85%B3%E4%BA%8EUbuntu%E7%9A%84%E8%BD%AF%E4%BB%B6%E6%BA%90source-list%E5%AD%A6%E4%B9%A0/">
 
 
 <script id="page-configurations">
@@ -52,7 +51,7 @@
   };
 </script>
 
-  <title>关于Ubuntu的软件源source.list学习 | Rancho Blog</title>
+  <title> | Rancho Blog</title>
   
 
 
@@ -209,7 +208,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2019/07/25/%E5%85%B3%E4%BA%8EUbuntu%E7%9A%84%E8%BD%AF%E4%BB%B6%E6%BA%90source-list%E5%AD%A6%E4%B9%A0/">
+    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2021/04/06/%E5%85%B3%E4%BA%8EUbuntu%E7%9A%84%E8%BD%AF%E4%BB%B6%E6%BA%90source-list%E5%AD%A6%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/Rancho.png">
@@ -222,7 +221,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          关于Ubuntu的软件源source.list学习
+          
         </h1>
 
         <div class="post-meta">
@@ -232,23 +231,7 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-07-25 03:02:19" itemprop="dateCreated datePublished" datetime="2019-07-25T03:02:19+00:00">2019-07-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">Linux相关</span></a>
-                </span>
+              <time title="Created: 2021-04-06 10:47:07" itemprop="dateCreated datePublished" datetime="2021-04-06T10:47:07+00:00">2021-04-06</time>
             </span>
 
           
@@ -262,8 +245,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="背景说明"><a href="#背景说明" class="headerlink" title="背景说明"></a>背景说明</h2><p>最近参与到公司的白盒交换机项目中，需要编译ONL和sonic，其中软件源的设置让我非常头疼，编译依赖有很大的问题。决定深入学习一下Linux软件源.主机环境为ubuntu16.04.  </p>
+        <hr>
+<p>title: 关于Ubuntu的软件源source.list学习<br>date: 2019-07-25 03:02:19<br>categories: </p>
+<ul>
+<li>Linux相关<br>tags:</li>
+<li>Linux</li>
+<li>软件源</li>
+</ul>
+<h2 id="背景说明"><a href="#背景说明" class="headerlink" title="背景说明"></a>背景说明</h2><p>最近参与到公司的白盒交换机项目中，需要编译ONL和sonic，其中软件源的设置让我非常头疼，编译依赖有很大的问题。决定深入学习一下Linux软件源.主机环境为ubuntu16.04.  </p>
 <h2 id="软件库存储文件-list"><a href="#软件库存储文件-list" class="headerlink" title="软件库存储文件*.list"></a>软件库存储文件*.list</h2><p>ubuntu使用apt来管理软件包，apt将软件库存储在如下文件中:  </p>
+<span id="more"></span>
+
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;etc&#x2F;apt&#x2F;sources.list</span><br><span class="line">&#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;目录中带.list后缀的文件</span><br></pre></td></tr></table></figure>
 <p>可以通过man sources.lis来查看apt的完整存储机制。  </p>
 <h2 id="sources-list格式和写法"><a href="#sources-list格式和写法" class="headerlink" title="sources.list格式和写法"></a>sources.list格式和写法</h2><ol>
@@ -341,10 +333,6 @@
     
 
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/Linux/" rel="tag"># Linux</a>
-              <a href="/tags/%E8%BD%AF%E4%BB%B6%E6%BA%90/" rel="tag"># 软件源</a>
-          </div>
 
         
 
@@ -352,12 +340,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/07/14/Hexo%E4%BD%BF%E7%94%A8%E4%BC%98%E5%8C%96/" rel="prev" title="Hexo使用优化">
-      <i class="fa fa-chevron-left"></i> Hexo使用优化
+    <a href="/2021/04/06/Linux%E6%9F%A5%E6%89%BEso%E6%96%87%E4%BB%B6%E6%89%80%E5%9C%A8pkg/" rel="prev" title="">
+      <i class="fa fa-chevron-left"></i> 
     </a></div>
       <div class="post-nav-item">
-    <a href="/2019/07/25/hexo%E4%B8%AD%E8%B8%A9%E8%BF%87%E7%9A%84%E5%9D%91/" rel="next" title="hexo中踩过的坑">
-      hexo中踩过的坑 <i class="fa fa-chevron-right"></i>
+    <a href="/2021/04/06/igmp-snooping%E5%AD%A6%E4%B9%A0/" rel="next" title="">
+       <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -440,13 +428,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

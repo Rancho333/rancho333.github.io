@@ -17,18 +17,18 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"rancho333.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"rancho333.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="shell重定向shell重定向即重新确定数据的流向，是通过改变文件描述符目标来实现的，如流向1的数据让其流向&#x2F;tmp&#x2F;a.c。 shell中，基础重定向有以下几种方式：  [n]&gt;file：覆盖式输出重定向，输出到fd&#x3D;n的数据改变流向输出到file文件中，file不存在则创建，file存在则先清空再写入数据  n可省略，默认值为1，即标准输出覆盖重定向到file中 &gt;&gt;表示追">
+  <meta name="description" content="shell重定向shell中，基础重定向有以下几种方式：  [n]&gt;file：覆盖式输出重定向，输出到fd&#x3D;n的数据改变流向输出到file文件中，file不存在则创建，file存在则先清空再写入数据  n可省略，默认值为1，即标准输出覆盖重定向到file中 &gt;&gt;表示追加式输出重定向">
 <meta property="og:type" content="article">
 <meta property="og:title" content="shell重定向">
 <meta property="og:url" content="https://rancho333.gitee.io/2021/02/23/shell%E9%87%8D%E5%AE%9A%E5%90%91/index.html">
 <meta property="og:site_name" content="Rancho Blog">
-<meta property="og:description" content="shell重定向shell重定向即重新确定数据的流向，是通过改变文件描述符目标来实现的，如流向1的数据让其流向&#x2F;tmp&#x2F;a.c。 shell中，基础重定向有以下几种方式：  [n]&gt;file：覆盖式输出重定向，输出到fd&#x3D;n的数据改变流向输出到file文件中，file不存在则创建，file存在则先清空再写入数据  n可省略，默认值为1，即标准输出覆盖重定向到file中 &gt;&gt;表示追">
+<meta property="og:description" content="shell重定向shell中，基础重定向有以下几种方式：  [n]&gt;file：覆盖式输出重定向，输出到fd&#x3D;n的数据改变流向输出到file文件中，file不存在则创建，file存在则先清空再写入数据  n可省略，默认值为1，即标准输出覆盖重定向到file中 &gt;&gt;表示追加式输出重定向">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-02-23T13:28:38.000Z">
-<meta property="article:modified_time" content="2021-04-02T12:15:18.934Z">
+<meta property="article:modified_time" content="2021-04-06T10:47:07.077Z">
 <meta property="article:author" content="Rancho">
 <meta property="article:tag" content="shell">
 <meta name="twitter:card" content="summary">
@@ -233,7 +233,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-02 12:15:18" itemprop="dateModified" datetime="2021-04-02T12:15:18+00:00">2021-04-02</time>
+                <time title="Modified: 2021-04-06 10:47:07" itemprop="dateModified" datetime="2021-04-06T10:47:07+00:00">2021-04-06</time>
               </span>
 
           
@@ -247,13 +247,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="shell重定向"><a href="#shell重定向" class="headerlink" title="shell重定向"></a>shell重定向</h1><p>shell重定向即重新确定数据的流向，是通过改变文件描述符目标来实现的，如流向<code>1</code>的数据让其流向<code>/tmp/a.c</code>。</p>
-<p>shell中，基础重定向有以下几种方式：</p>
+        <h1 id="shell重定向"><a href="#shell重定向" class="headerlink" title="shell重定向"></a>shell重定向</h1><p>shell中，基础重定向有以下几种方式：</p>
 <ul>
 <li><p><code>[n]&gt;file</code>：覆盖式输出重定向，输出到fd=n的数据改变流向输出到file文件中，file不存在则创建，file存在则先清空再写入数据</p>
 <ul>
 <li>n可省略，默认值为<code>1</code>，即标准输出覆盖重定向到file中</li>
-<li><code>&gt;&gt;</code>表示追加式输出重定向</li>
+<li><code>&gt;&gt;</code>表示追加式输出重定向<span id="more"></span></li>
 </ul>
 </li>
 <li><p><code>[n]&lt;file</code>:输入重定向，以读取模式打开文件并分配fd=n,file不存在则报错</p>
@@ -379,13 +378,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

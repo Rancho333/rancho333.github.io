@@ -4,7 +4,6 @@
     <title>2021年天弘跑团数据</title>
     <url>/2021/01/04/2021%E5%B9%B4%E5%A4%A9%E5%BC%98%E8%B7%91%E5%9B%A2%E6%95%B0%E6%8D%AE/</url>
     <content><![CDATA[<p>2021年天弘跑团数据统计</p>
-<p>1月1号至1月3号</p>
 <table>
 <thead>
 <tr>
@@ -32,55 +31,9 @@
 <td align="left">线上</td>
 <td align="left">4.3</td>
 </tr>
-<tr>
-<td align="left">Jason</td>
-<td align="left">1.2</td>
-<td align="left">线下</td>
-<td align="left">20</td>
-</tr>
-<tr>
-<td align="left">Ceecee+小朋友</td>
-<td align="left">1.2</td>
-<td align="left">线下</td>
-<td align="left">5+5</td>
-</tr>
-<tr>
-<td align="left">杨坤</td>
-<td align="left">1.2</td>
-<td align="left">线下</td>
-<td align="left">15</td>
-</tr>
-<tr>
-<td align="left">Lisa</td>
-<td align="left">1.2</td>
-<td align="left">线下</td>
-<td align="left">5</td>
-</tr>
-<tr>
-<td align="left">Lewis+小朋友</td>
-<td align="left">1.2</td>
-<td align="left">线下</td>
-<td align="left">10+5</td>
-</tr>
-<tr>
-<td align="left">吴徐祥</td>
-<td align="left">1.2</td>
-<td align="left">线下</td>
-<td align="left">10</td>
-</tr>
-<tr>
-<td align="left">energy</td>
-<td align="left">1.2</td>
-<td align="left">线上</td>
-<td align="left">4.73</td>
-</tr>
-<tr>
-<td align="left">xiang</td>
-<td align="left">1.2</td>
-<td align="left">线上</td>
-<td align="left">8.25</td>
-</tr>
 </tbody></table>
+<span id="more"></span>
+<p>| Jason | 1.2 | 线下 | 20 |<br>| Ceecee+小朋友 | 1.2 | 线下 | 5+5 |<br>| 杨坤 | 1.2 | 线下 | 15 |<br>| Lisa | 1.2 | 线下 | 5 |<br>| Lewis+小朋友 | 1.2 | 线下 | 10+5 |<br>| 吴徐祥 | 1.2 | 线下 | 10 |<br>| energy | 1.2 | 线上 | 4.73 |<br>| xiang | 1.2 | 线上 | 8.25 |</p>
 <p>2月10号至18号春节跑步打卡数据统计</p>
 <table>
 <thead>
@@ -152,7 +105,8 @@
     <title>ENOS上段错调试记录</title>
     <url>/2020/03/02/ENOS%E4%B8%8A%E6%AE%B5%E9%94%99%E8%B0%83%E8%AF%95%E8%AE%B0%E5%BD%95/</url>
     <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>移植ENOS过程中发现某些系统编译生成的命令运行过程中报<code>segmentation fault</code>,报错信息如下。这里记录一下调试过程中遇到的问题，涉及到<code>weak</code>属性，<code>-pthread</code>，<code>strace</code>等。<br><img src="https://rancho333.gitee.io/uploads/fault.png"></p>
-<h2 id="段错调试手段记录"><a href="#段错调试手段记录" class="headerlink" title="段错调试手段记录"></a>段错调试手段记录</h2><p>产生段错首先想到的自然是通过<code>gdb</code>进行错误分析，由于toolchain中并没有提供，所以自行下载了一个gdb源码，通过经典<code>configure, make, make install</code>三部曲后移到板子上，gdb调试信息如下：<br><img src="https://rancho333.gitee.io/uploads/gdb.png"></p>
+<h2 id="段错调试手段记录"><a href="#段错调试手段记录" class="headerlink" title="段错调试手段记录"></a>段错调试手段记录</h2><span id="more"></span>
+<p>产生段错首先想到的自然是通过<code>gdb</code>进行错误分析，由于toolchain中并没有提供，所以自行下载了一个gdb源码，通过经典<code>configure, make, make install</code>三部曲后移到板子上，gdb调试信息如下：<br><img src="https://rancho333.gitee.io/uploads/gdb.png"></p>
 <p>gdb中并不能看出什么有效的信息，但看起来函数栈的调用还没有到ccs的main函数中（没有与ccs相关的打印），上一篇文章《关于动态库以及constructor属性的使用》中有提到。<br>通过<code>dmesg</code>查看内核报错信息：<br><img src="https://rancho333.gitee.io/uploads/dmesg.png"><br>可以看到<code>pc</code>寄存器取址的地址为全0 ，这一般是因为空指针导致，我们知道cpu指令的执行顺序为取址，分析，执行三个步骤，没取到指令后续自然是啥都没有了。</p>
 <p>通过<code>strace ccs</code>命令来查看ccs的详细调用过程关于动态库的调用过程就不表了，这里直接看报错的位置：<br><img src="https://rancho333.gitee.io/uploads/strace.png"><br>发现执行完write指令之后就挂了，经过一番曲折之后定位到代码中：<br><img src="https://rancho333.gitee.io/uploads/iv_signal.png"><br><code>iv_fd_set_cloexec</code>中有两次<code>fnctl</code>的调用，与strace中的4次fnctl调用刚好对上，而函数<code>iv_signal_init</code>被<code>constructor</code>属性修饰，而该函数所在模块（libtask）是被编译成so供其它模块调用的，即所有调用该动态库的模块在执行main函数之前都会执行一遍<code>iv_signal_init</code>，进一步追查Makefile发现报错的命令全部都依赖与该动态库，一切都说通了，没有玄学。</p>
 <p>在进一步排查，init中最可疑的就是<code>pthr_atfork</code>这个函数了，查看该函数定义，发现一个从没见过的用法<code>#pragma weak pthread_atfork</code>：<br><img src="https://rancho333.gitee.io/uploads/atfork.png"><br>后面会再写一篇关于这个属性的用法，简单说就是被<code>weak</code>修饰的符号即使不存在编译也不会报错。</p>
@@ -166,8 +120,8 @@
   <entry>
     <title>C语言弱符号weak</title>
     <url>/2020/03/03/C%E8%AF%AD%E8%A8%80%E5%BC%B1%E7%AC%A6%E5%8F%B7weak/</url>
-    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>上一篇文章《ENOS上段错调试记录》中有提到弱符号<code>weak</code>引发的段错，这篇文章来学习一下weak的用法。说来惭愧，工作了快4年，第一次见到这个语法。</p>
-<h1 id="weak弱符号定义"><a href="#weak弱符号定义" class="headerlink" title="weak弱符号定义"></a>weak弱符号定义</h1><p>网上找了下weak符号的定义：#pragma weak to define a weakglobal symbol. This pragma is used mainly in source files for building libraries. The linker does not produce an error if it is unable to resolve a weak symbol.<br>对于全局的函数和变量，能不能重命名是有一定的规矩的，强、弱符号就是针对这些全局函数和变量来说的。</p>
+    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><h1 id="weak弱符号定义"><a href="#weak弱符号定义" class="headerlink" title="weak弱符号定义"></a>weak弱符号定义</h1><p>网上找了下weak符号的定义：#pragma weak to define a weakglobal symbol. This pragma is used mainly in source files for building libraries. The linker does not produce an error if it is unable to resolve a weak symbol.<br>对于全局的函数和变量，能不能重命名是有一定的规矩的，强、弱符号就是针对这些全局函数和变量来说的。</p>
+<span id="more"></span>
 <table>
 <thead>
 <tr>
@@ -217,6 +171,7 @@
     <title>Hexo使用优化</title>
     <url>/2019/07/14/Hexo%E4%BD%BF%E7%94%A8%E4%BC%98%E5%8C%96/</url>
     <content><![CDATA[<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">站点配置文件：位于站点根目录下，主要包含Hexo本身的配置</span><br><span class="line">主题配置文件：位于主题目录下，主要用于配置主题相关的选项</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
 
 <h2 id="使用next主题"><a href="#使用next主题" class="headerlink" title="使用next主题"></a>使用next主题</h2><p>网上一搜大部分都是Hexo+next的使用，本着站在前人的肩膀上原则，使用next主题。<br>主题下载：<code>git clone https://github.com/iissnan/hexo-theme-next themes/next</code><br>启用主题，打开站点配置文件，找到<code>theme</code>字段，修改为如下：  </p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">theme: next</span><br></pre></td></tr></table></figure>
@@ -270,8 +225,9 @@
   <entry>
     <title>Linux下程序调试方法简述</title>
     <url>/2020/08/05/Linux%E4%B8%8B%E7%A8%8B%E5%BA%8F%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95%E7%AE%80%E8%BF%B0/</url>
-    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>本文旨在综合性的描述Linux下程序调试的方法和思路，不会过于细节的描述某种工具的使用，如gdb，这些方法通过man以及google都能找到答案。包含知识点：strip, addr2line, strace, gdb, readelf。</p>
-<h2 id="strip相关"><a href="#strip相关" class="headerlink" title="strip相关"></a>strip相关</h2><p>嵌入式系统要求小巧精简，最大限度去除冗余数据。Linux下编译出来elf文件是带有符号表的，通过<code>nm</code>命令可以查看，如：<br><img src="https://rancho333.gitee.io/uploads/nm.png"><br>这些符号表是进行程序调试的关键，例如通过<code>addr2line</code>进行地址和文件名或行数的转换，例如在<code>gdb</code>中通过<code>bt</code>显示函数调用栈信息，没有符号表这些工具都无法提供有价值信息。<br><code>strip</code>命令可以去掉这些符号信息，进而减小文件大小，同时不会影响elf的正常执行。<br><img src="https://rancho333.gitee.io/uploads/compare.png"><br>可以看到，<code>strip app</code>之后，app中没有符号表相关信息了。<br>在进行rootfs制作时，对于发行版本，我们进行<code>strip</code>操作，对于开发人员调试版本，我们保留符号表信息。<br><img src="https://rancho333.gitee.io/uploads/strip.png"></p>
+    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><h2 id="strip相关"><a href="#strip相关" class="headerlink" title="strip相关"></a>strip相关</h2><p>嵌入式系统要求小巧精简，最大限度去除冗余数据。Linux下编译出来elf文件是带有符号表的，通过<code>nm</code>命令可以查看，如：<br><img src="https://rancho333.gitee.io/uploads/nm.png"><br>这些符号表是进行程序调试的关键，例如通过<code>addr2line</code>进行地址和文件名或行数的转换，例如在<code>gdb</code>中通过<code>bt</code>显示函数调用栈信息，没有符号表这些工具都无法提供有价值信息。<br><code>strip</code>命令可以去掉这些符号信息，进而减小文件大小，同时不会影响elf的正常执行。</p>
+<span id="more"></span>
+<p><img src="https://rancho333.gitee.io/uploads/compare.png"><br>可以看到，<code>strip app</code>之后，app中没有符号表相关信息了。<br>在进行rootfs制作时，对于发行版本，我们进行<code>strip</code>操作，对于开发人员调试版本，我们保留符号表信息。<br><img src="https://rancho333.gitee.io/uploads/strip.png"></p>
 <h2 id="gdb简述"><a href="#gdb简述" class="headerlink" title="gdb简述"></a>gdb简述</h2><p>遇到<code>core dump</code>最常使用的就是<code>gdb</code>了，<code>gdb</code>的一般使用方法<code>gdb app core</code>。常见子命令如下：</p>
 <table>
 <thead>
@@ -372,7 +328,7 @@
     <url>/2021/01/26/Linux%E5%8F%8C%E7%BD%91%E5%8D%A1%E8%AE%BE%E7%BD%AE-%E5%86%85%E5%A4%96%E7%BD%91/</url>
     <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>搞了一台树莓派4B来玩，想通过ssh来进行管理。由于公司网络管控，考虑通过内网（eth0）来进行ssh管理，通过外网(wlan0)进行上网。</p>
 <h1 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h1><p>有线网和无线网都连接好后，通过DHCP获取ip，<code>ip route</code>状态如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">default via 10.204.123.1 dev eth0 proto dhcp src 10.204.123.145 metric 202 </span><br><span class="line">default via 192.168.3.254 dev wlan0 proto dhcp src 192.168.3.38 metric 303 </span><br><span class="line">10.204.123.0&#x2F;24 dev eth0 proto dhcp scope link src 10.204.123.145 metric 202 </span><br><span class="line">192.168.0.0&#x2F;22 dev wlan0 proto dhcp scope link src 192.168.3.38 metric 303</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">default via 10.204.123.1 dev eth0 proto dhcp src 10.204.123.145 metric 202 </span><br><span class="line">default via 192.168.3.254 dev wlan0 proto dhcp src 192.168.3.38 metric 303 </span><br><span class="line">&lt;!-- more --&gt;</span><br><span class="line">10.204.123.0&#x2F;24 dev eth0 proto dhcp scope link src 10.204.123.145 metric 202 </span><br><span class="line">192.168.0.0&#x2F;22 dev wlan0 proto dhcp scope link src 192.168.3.38 metric 303</span><br></pre></td></tr></table></figure>
 <p>其中10.204.0.0/16网段是内网，设备没有通过认证，不能通过内网上外网。考虑通过该网段与自己的主机相连，其余网络连接走192.168网段。<br>先将默认路由删除，这里需要连接显示器。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">route del default</span><br></pre></td></tr></table></figure>
 <p>因为有两条默认理由，该命令执行两次。</p>
@@ -392,7 +348,8 @@
   <entry>
     <title>Linux密码修改</title>
     <url>/2020/03/09/Linux%E5%AF%86%E7%A0%81%E4%BF%AE%E6%94%B9/</url>
-    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>在做交换机Linux系统移植的过程中，发现进入shell的密码还是上一家的默认密码，还是改改吧。简单交代一下，ENOS上kernel加载完成之后应用的启动顺序如下如：<br><img src="https://rancho333.gitee.io/uploads/inittab.png"><br>这里是不进入shell的，而是直接进入klish作为交换机的命令行交互界面，类似于quagga的vtysh。之后在<code>configure</code>视图下面执行<code>start shell</code>进入linux shell的。<br><img src="https://rancho333.gitee.io/uploads/shell.png"><br>在fnconvert里面会获取用户<code>root</code>的密码，其实就是使用<code>getspnam</code>获取<code>passwd或者shadow</code>的口令。既然这玩意使用的是Linux的账户和密码，那就是修改<code>/etc/passwd</code>文件了。<br><img src="https://rancho333.gitee.io/uploads/spnam.png"></p>
+    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p><img src="https://rancho333.gitee.io/uploads/inittab.png"><br>这里是不进入shell的，而是直接进入klish作为交换机的命令行交互界面，类似于quagga的vtysh。之后在<code>configure</code>视图下面执行<code>start shell</code>进入linux shell的。<br><img src="https://rancho333.gitee.io/uploads/shell.png"><br>在fnconvert里面会获取用户<code>root</code>的密码，其实就是使用<code>getspnam</code>获取<code>passwd或者shadow</code>的口令。既然这玩意使用的是Linux的账户和密码，那就是修改<code>/etc/passwd</code>文件了。<br><img src="https://rancho333.gitee.io/uploads/spnam.png"></p>
+<span id="more"></span>
 <h1 id="passwd文件简介"><a href="#passwd文件简介" class="headerlink" title="passwd文件简介"></a>passwd文件简介</h1><p>Linux中每个用户在/etc/passwd文件中都有一个对应的记录行，每一行被冒号<code>:</code>分隔为7个字段，具体含义如下：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">用户名：口令：用户标识号：组标识号：注释性描述：主目录：登陆shell</span><br></pre></td></tr></table></figure>
 <p>发行版中口令字段一般是<code>*或x</code>，<code>*</code>表示账号锁定, <code>x</code>表示密码存放在<code>/etc/shadown</code>文件中（访问需要sudo权限，而passwd文件不需要），当然我们的嵌入式系统密文是直接放在passwd中，如下：<br><img src="https://rancho333.gitee.io/uploads/passwd.png"></p>
@@ -407,12 +364,20 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux查找so文件所在pkg</title>
-    <url>/2019/07/14/Linux%E6%9F%A5%E6%89%BEso%E6%96%87%E4%BB%B6%E6%89%80%E5%9C%A8pkg/</url>
-    <content><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>在Ubuntu16.04 server上安装typora时报错：<code>Typora: error while loading shared libraries: libnss3.so</code>  </p>
+    <title></title>
+    <url>/2021/04/06/Linux%E6%9F%A5%E6%89%BEso%E6%96%87%E4%BB%B6%E6%89%80%E5%9C%A8pkg/</url>
+    <content><![CDATA[<hr>
+<p>title: Linux查找so文件所在pkg<br>date: 2019-07-14 20:17:03<br>categories: </p>
+<ul>
+<li>Linux相关<br>tags:</li>
+<li>Linux</li>
+<li>so文件</li>
+</ul>
+<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>在Ubuntu16.04 server上安装typora时报错：<code>Typora: error while loading shared libraries: libnss3.so</code>  </p>
 
 <p>使用find在机器上的确没有找到该so文件，一般情况下对于name.so，安装一个name包就行了(so文件与pkg文件名相同)，但有的时候是不相同的，这时需要利用apt-file查找so文件所属的pkg.</p>
 
+<span id="more"></span>
 
 <h2 id="安装apt-file"><a href="#安装apt-file" class="headerlink" title="安装apt-file"></a>安装apt-file</h2><p>安装命令：<code>sudo apt-get install apt-file</code><br>update：<code>apt-file update</code>,当/etc/apt/source.list文件发生变化时，需要重新update   </p>
   
@@ -426,19 +391,21 @@
 <p>对每一个标有<code>not found</code>的so文件执行如下：<br><img src="https://rancho333.gitee.io/uploads/arch.png"></p>
 <p>找到pkg名称后，使用<code>sudo apt-get install pkg-name</code>安装即可。</p>
 ]]></content>
-      <categories>
-        <category>Linux相关</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>so文件</tag>
-      </tags>
   </entry>
   <entry>
-    <title>Linux科学上网记录</title>
-    <url>/2019/09/06/Linux%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>之前在AWS部署了自己的shadowsocks的服务端，这个比较简单，参见ss的<a href="https://github.com/shadowsocks/shadowsocks/tree/master">github</a>上面介绍就可以很容易的部署起来了，之后在windows上Android安装了对应的客户端，可以顺利科学上网，此处对这一部分就不多做说明了。最近做SONiC（哈，又是SONiC），编译过程中需要在google上下载一些资源，那么就需要在Linux服务器上翻墙，并且在docker中可以访问google。</p>
-<h2 id="在linux上安装ss"><a href="#在linux上安装ss" class="headerlink" title="在linux上安装ss"></a>在linux上安装ss</h2><p>Linux环境是ubuntu 16.04 server，没有图形界面，纯命令行。<br>使用pip安装</p>
+    <title></title>
+    <url>/2021/04/06/Linux%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<hr>
+<p>title: Linux科学上网记录<br>date: 2019-09-06 05:52:04<br>tags:</p>
+<ul>
+<li>Linux</li>
+<li>科学上网<br>categories:</li>
+<li>Linux</li>
+</ul>
+<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>之前在AWS部署了自己的shadowsocks的服务端，这个比较简单，参见ss的<a href="https://github.com/shadowsocks/shadowsocks/tree/master">github</a>上面介绍就可以很容易的部署起来了，之后在windows上Android安装了对应的客户端，可以顺利科学上网，此处对这一部分就不多做说明了。最近做SONiC（哈，又是SONiC），编译过程中需要在google上下载一些资源，那么就需要在Linux服务器上翻墙，并且在docker中可以访问google。</p>
+<h2 id="在linux上安装ss"><a href="#在linux上安装ss" class="headerlink" title="在linux上安装ss"></a>在linux上安装ss</h2><span id="more"></span>
+
+<p>Linux环境是ubuntu 16.04 server，没有图形界面，纯命令行。<br>使用pip安装</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install python-pip</span><br><span class="line">sudo apt-get install python-setuptools m2crypto</span><br><span class="line">pip install shadowsocks</span><br></pre></td></tr></table></figure>
 <p>或者直接用apt安装</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install shadowsocks</span><br></pre></td></tr></table></figure>
@@ -497,20 +464,14 @@
 <p><a href="https://blog.diosfun.com/2018/09/21/Ubuntu18-04%E5%AE%89%E8%A3%85shadowsocks%E5%AE%A2%E6%88%B7%E7%AB%AF/">Ubuntu18.04安装shadowsocks客户端</a></p>
 <p><a href="https://kebingzao.com/2019/02/22/docker-container-proxy/">docker 容器内使用宿主机的代理配置</a></p>
 ]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>科学上网</tag>
-      </tags>
   </entry>
   <entry>
     <title>Linux系统移植简述</title>
     <url>/2020/03/16/Linux%E7%B3%BB%E7%BB%9F%E7%A7%BB%E6%A4%8D%E7%AE%80%E8%BF%B0/</url>
-    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>之前也做过一些移植性的东西，不过都是别人搭好框架，自己填充一些模块，这次有机会完成系统级的移植，非常感谢张总以及胡老师的指点帮助，收获良多！</p>
-<h1 id="移植总述"><a href="#移植总述" class="headerlink" title="移植总述"></a>移植总述</h1><p>嵌入式系统移植分为四个大块，分别是构建交叉编译工具，rootfs的制作，kernel的配置、编译、移植，BootLoader的移植。需要移植的系统可以在MIPS上跑起来，我只需要顺着原有的编译框架完成ARM64的编译，之后再上板子做具体的调试。</p>
-<h2 id="构建交叉编译工具"><a href="#构建交叉编译工具" class="headerlink" title="构建交叉编译工具"></a>构建交叉编译工具</h2><p>toolchain一般芯片厂家会提供，当然自己通过buildroot构建也是可以的。<br>使用buildroot构建交叉编译工具，下载buildroot2015</p>
+    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><h1 id="移植总述"><a href="#移植总述" class="headerlink" title="移植总述"></a>移植总述</h1><p>嵌入式系统移植分为四个大块，分别是构建交叉编译工具，rootfs的制作，kernel的配置、编译、移植，BootLoader的移植。需要移植的系统可以在MIPS上跑起来，我只需要顺着原有的编译框架完成ARM64的编译，之后再上板子做具体的调试。</p>
+<h2 id="构建交叉编译工具"><a href="#构建交叉编译工具" class="headerlink" title="构建交叉编译工具"></a>构建交叉编译工具</h2><p>toolchain一般芯片厂家会提供，当然自己通过buildroot构建也是可以的。</p>
+<span id="more"></span>
+<p>使用buildroot构建交叉编译工具，下载buildroot2015</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;buildroot.uclibc.org&#x2F;downloads&#x2F;buildroot-2015.08.tar.gz</span><br></pre></td></tr></table></figure>
 <p><code>make menuconfig ARCH=arm64</code>配置buildroot，将target和toolchain两项配置成如下所示<br><img src="https://rancho333.gitee.io/uploads/buildroot.png"><br>之后<code>make</code>等待完成即可，buildroot有些源码下载速度很慢，下载网站也不尽相同，比较麻烦，不像Linux发行版可以改成国内镜像软件源，有的可能会等待比较长的时间。<br>将生成的toolchain打包，释放到服务器docker编译环境中，如下所示：<br><img src="https://rancho333.gitee.io/uploads/toolchain.png"><br>之后可以根据container构建image将编译环境发布出去，大家就可以直接使用了。</p>
 <h2 id="kernel的配置、编译、移植"><a href="#kernel的配置、编译、移植" class="headerlink" title="kernel的配置、编译、移植"></a>kernel的配置、编译、移植</h2><p>kernel的配置结果保存在<code>.config</code>文件中，根据实际的需求会选配一些内核选项，如开启nat以及veth相关的配置<br><img src="https://rancho333.gitee.io/uploads/nat.png"><br><img src="https://rancho333.gitee.io/uploads/veth.png"><br>这些配置实际上是系统构建完成后跑起来报错才知道需要的，只需要在<code>make menuconfig</code>中搜索对应关键字即可找到编译选项。<br>关于内核编译的一些说明，可以参考这篇文章<br><a href="https://rancho333.gitee.io/2020/03/11/kernel%E7%BC%96%E8%AF%91%E7%AE%80%E8%BF%B0/">kernel编译简述</a></p>
@@ -529,6 +490,7 @@
     <url>/2021/02/08/Linux%E8%B7%AF%E7%94%B1%E4%BF%A1%E6%81%AF%E5%AD%A6%E4%B9%A0/</url>
     <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p><code>route</code>命令用来查看Linux内核路由表。</p>
 <h1 id="表项内容说明"><a href="#表项内容说明" class="headerlink" title="表项内容说明"></a>表项内容说明</h1><p><code>route</code>命令输出如下，使用<code>-n</code>选项表示不解析名字，可以加快信息输出速度。</p>
+<span id="more"></span>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Kernel IP routing table</span><br><span class="line">Destination     Gateway         Genmask         Flags Metric Ref    Use Iface</span><br><span class="line">default         10.204.112.1    0.0.0.0         UG    0      0        0 ens160</span><br><span class="line">10.10.30.0      *               255.255.255.0   U     0      0        0 ens192</span><br><span class="line">10.204.112.0    *               255.255.254.0   U     0      0        0 ens160</span><br><span class="line">link-local      *               255.255.0.0     U     1000   0        0 ens192</span><br><span class="line">172.17.0.0      *               255.255.0.0     U     0      0        0 docker0</span><br></pre></td></tr></table></figure>
 <p>字段解释如下：<br>| 字段 | 说明 |<br>| :— | :— |<br>| Destination | 目标网段或主机 |<br>| Gateway | 网关地址， *或全0表示目标是本主机所属的网络，不需要路由 |<br>| Genmask | 网络掩码 |<br>| Flags | U:路由时活动的；H:目标是个主机；G:路由指向网关；R:恢复动态路由产生的表项；D:由路由的后台程序动态的安装；M:由路由的后台程序修改; !:拒绝路由 |<br>| Metric | 路由距离，到达指定网络所需要的中转数(linux内核中没有使用) |<br>| Ref | 路由项引用次数(linux内核中没有使用) |<br>| Use | 此路由项被路由软件查找的次数 |<br>| Iface | 该路由表项的输出接口 |</p>
 <p>Linux上有三种路由类型：</p>
@@ -551,9 +513,10 @@
   <entry>
     <title>Makefile学习</title>
     <url>/2019/08/26/Makefile%E5%AD%A6%E4%B9%A0/</url>
-    <content><![CDATA[<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>学软件的时候接触过一些makefile，但是之后的工作中一直没怎么用上。最近在做白盒交换机SONiC以及ONL的编译工作，里面用makefile和python完成整个工程的编译，有些宏大与震撼，关键很多地方看不懂哇。系统的学习一下，这里作为笔记，参考的是陈皓的《跟我一起写Makefile》。</p>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>会不会写makefile从一个侧面说明一个人是否具备完成大型工程的能力。</p>
+    <content><![CDATA[<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>会不会写makefile从一个侧面说明一个人是否具备完成大型工程的能力。</p>
 <p>makefile关系到了整个工程的编译规则。源文件（类型、功能、模块）放在若干目录，makefile是编译规则，指定那些文件需要先编译，后编译，重新编译。其中也可以执行操作系统的命令。</p>
+<span id="more"></span>
+
 <p>make是解释makefile中指令的命令工具。</p>
 <h2 id="关于程序的编译与链接"><a href="#关于程序的编译与链接" class="headerlink" title="关于程序的编译与链接"></a>关于程序的编译与链接</h2><p>编译流程：预处理（.i），编译(.s)，汇编(.o)，链接(binary)。</p>
 <p>编译时，编译器需要的是语法的正确，函数与变量的声明的正确（告诉头文件所在的位置，定义应该放在C文件中）。一般来说，每个源文件都应该对应于一个中间目标文件（.o文件）。如果函数未被声明，编译器可以生成Obiect File。</p>
@@ -569,7 +532,9 @@
     <title>Markdown学习笔记</title>
     <url>/2019/07/14/Markdown%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h1 id="Markdown学习笔记"><a href="#Markdown学习笔记" class="headerlink" title="Markdown学习笔记"></a>Markdown学习笔记</h1><p>最早接触Markdown(下面简称md)标记语言是在有道云笔记上，当时的学习计划就是用md写的,后来看到github上readme基本上<br>都是用md写的，到如今搭建自己的Blog,md做为主要的编写blog方式，花点时间系统学习一下md。</p>
-<h2 id="Markdown简介"><a href="#Markdown简介" class="headerlink" title="Markdown简介"></a>Markdown简介</h2><p>md是一种轻量级的标记语言，md编写的文档可以导出HYML、Word、图像、PDF等多种格式的文档,md编写的文档后缀名为<br>.md，markdown。<br>md可以用来撰写电子书，帮助文档或在论坛上发表消息。例如：GitHub、简书。<br>个人理解，md就是比较简单的格式化文本语言。</p>
+<h2 id="Markdown简介"><a href="#Markdown简介" class="headerlink" title="Markdown简介"></a>Markdown简介</h2><p>md是一种轻量级的标记语言，md编写的文档可以导出HYML、Word、图像、PDF等多种格式的文档,md编写的文档后缀名为</p>
+<span id="more"></span>
+<p>.md，markdown。<br>md可以用来撰写电子书，帮助文档或在论坛上发表消息。例如：GitHub、简书。<br>个人理解，md就是比较简单的格式化文本语言。</p>
 <h2 id="Markdown标题"><a href="#Markdown标题" class="headerlink" title="Markdown标题"></a>Markdown标题</h2><ol>
 <li>使用=和-标记一级和二级标题  </li>
 </ol>
@@ -667,8 +632,10 @@
   <entry>
     <title>SONiC启动简述</title>
     <url>/2021/01/29/SONiC%E5%90%AF%E5%8A%A8%E7%AE%80%E8%BF%B0/</url>
-    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>sonic在初始化的时候是怎样识别platform的，<br>/host/machine.conf<br>/etc/sonic/config_db.json<br>/etc/rc.local</p>
+    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>sonic在初始化的时候是怎样识别platform的，<br>/etc/sonic/config_db.json<br>/etc/rc.local</p>
 <h2 id="platform相关"><a href="#platform相关" class="headerlink" title="platform相关"></a>platform相关</h2><p>在<code>device_info.py</code>中会通过读取<code>/host/machine.conf</code>配置文件来获取platform的名称</p>
+<span id="more"></span>
+
 <h2 id="hwsku相关"><a href="#hwsku相关" class="headerlink" title="hwsku相关"></a>hwsku相关</h2><p>在<code>device_info.py</code>中会通过读取ConfigDB来获取hwsku, 如果在<code>show version</code>中没有看到hwsku，那么需要配置config_db.json配置文件来加载配置信息，重启后生效。</p>
 <h2 id="chassis相关"><a href="#chassis相关" class="headerlink" title="chassis相关"></a>chassis相关</h2><p>以pmon的docker的psud为例，先获取<code>platform_chassis</code>，对于chassis的初始化，关注platform_base.py、platform.py以及chassis.py这三个文件，其中chassis.py中完成chassis的实例化，一般包括syseeprom、watchdog、fan、thermal、psu、sfp、component。</p>
 <p>chassis.py是厂商的sonic_platform包里面提供的文件，pmon的docker创建的时候会根据platform挂载对应的sonic_platform包，所以能保证加载正确的板子的外设。</p>
@@ -680,14 +647,11 @@
   <entry>
     <title>SONiC添加新的device</title>
     <url>/2020/12/31/SONiC%E6%B7%BB%E5%8A%A0%E6%96%B0%E7%9A%84device/</url>
-    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>SONiC项目中，有时候厂商需要添加自己新的device上去。</p>
-<ol>
-<li>需要添加那些东西？</li>
-<li>怎么编译进文件系统？</li>
-<li>SONiC启动时是如何选择对应设备的文件？</li>
-</ol>
+    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>SONiC项目中，有时候厂商需要添加自己新的device上去。<br>2. 怎么编译进文件系统？<br>3. SONiC启动时是如何选择对应设备的文件？</p>
 <p>搞清楚这三个问题后，我们就可以对device进行裁剪（SONiC默认会将device目录下所有文件拷贝进文件系统）。</p>
-<h1 id="目录结构及添加内容"><a href="#目录结构及添加内容" class="headerlink" title="目录结构及添加内容"></a>目录结构及添加内容</h1><p>与设备硬件耦合的文件夹有两个，分别是<code>platform</code>与<code>device</code>，<code>platform</code>描述ASIC，厂商设备驱动代码以及new platform API的适配；<code>device</code>描述厂商设备代码，其中包括端口配置，led配置，sai配置等信息，<code>plugins</code>文件夹是一些外设命令适配的python代码。</p>
+<h1 id="目录结构及添加内容"><a href="#目录结构及添加内容" class="headerlink" title="目录结构及添加内容"></a>目录结构及添加内容</h1><span id="more"></span>
+
+<p>与设备硬件耦合的文件夹有两个，分别是<code>platform</code>与<code>device</code>，<code>platform</code>描述ASIC，厂商设备驱动代码以及new platform API的适配；<code>device</code>描述厂商设备代码，其中包括端口配置，led配置，sai配置等信息，<code>plugins</code>文件夹是一些外设命令适配的python代码。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sonic-buildimage&#x2F;</span><br><span class="line">    platform&#x2F;            # asic相关，重点关注sai以及sonic-platform.bin</span><br><span class="line">        broadcom&#x2F;        </span><br><span class="line">    device              # 设备相关，对设备硬件特性的控制描述，如端口，led，console；以及和硬件相关的命令的底层适配接口，如填入eeprom的地址，之后使用SONiC的解析器进行解析。对于SONiC的命令体系，可以再写一篇文档</span><br><span class="line">        celestica&#x2F;</span><br></pre></td></tr></table></figure>
 
 <p>在<code>platform</code>中有个<code>sonic-platform</code>的文件夹，这里面包含了eeprom、fan、psu等外设相关的文件，与<code>device</code>里面的文件实际上是有重复的，这可能是SONiC的历史遗留问题，在字节项目中有讨论过后续会将外设相关的处理全部放到<code>platform</code>中去。</p>
@@ -736,7 +700,7 @@
     <title>SONiC编译简述及优化</title>
     <url>/2020/12/15/SONiC%E7%BC%96%E8%AF%91%E7%AE%80%E8%BF%B0%E5%8F%8A%E4%BC%98%E5%8C%96/</url>
     <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>SONiC在docker中完成编译，docker image基于debian(jessie, stretch, buster)完成构建。201807及其之前的版本使用的是jessie, 202006及其之后的版本使用的是buster, 我们现阶段主要使用stretch。SONiC的编译大致分成三个阶段。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1. git submodules初始化。对应make init</span><br><span class="line">2. 编译环境构建。对应的是Makefile.work中的DOCKER_BASE_BUILD与DOCKER_BUILD，编译环境只需要在第一次使用时进行构建。</span><br><span class="line">3. 主目标编译（sonic-platform.bin）。这里面可以分为kernel编译，外部功能编译（platform, src等），根文件系统的构建。对应的是make target&#x2F;sonic-platform.bin.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1. git submodules初始化。对应make init</span><br><span class="line">2. 编译环境构建。对应的是Makefile.work中的DOCKER_BASE_BUILD与DOCKER_BUILD，编译环境只需要在第一次使用时进行构建。</span><br><span class="line">3. 主目标编译（sonic-platform.bin）。这里面可以分为kernel编译，外部功能编译（platform, src等），根文件系统的构建。对应的是make target&#x2F;sonic-platform.bin.</span><br><span class="line">&lt;!-- more --&gt;</span><br></pre></td></tr></table></figure>
 
 <h1 id="submodules初始化优化建议"><a href="#submodules初始化优化建议" class="headerlink" title="submodules初始化优化建议"></a>submodules初始化优化建议</h1><p>执行<code>make init</code>之前，项目文件大小</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[rancho git]$ du -h --max-depth&#x3D;1</span><br><span class="line">76M     .&#x2F;bytedance-sonic</span><br></pre></td></tr></table></figure>
@@ -808,7 +772,7 @@
     <url>/2021/01/19/broadcom-sdk-cmd/</url>
     <content><![CDATA[<h1 id="BCMShell简介"><a href="#BCMShell简介" class="headerlink" title="BCMShell简介"></a>BCMShell简介</h1><p>BCMShell是Broadcom公司对于ASIC的SDK命令解释器。利用该工具可以对ASIC所有的寄存器和内存进行读写操作，还可以利用脚本在ASIC上搭建各种复杂的网络环境。</p>
 <h1 id="BCMShell的几种模式"><a href="#BCMShell的几种模式" class="headerlink" title="BCMShell的几种模式"></a>BCMShell的几种模式</h1><h2 id="BCMshell模式"><a href="#BCMshell模式" class="headerlink" title="BCMshell模式"></a>BCMshell模式</h2><p>拿到Broadcom源码后，根据OS上的kernel版本选择对应的内核头文件编译SDK，之后会得到几个文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bcm.user  bcm.user.dbg  linux-bcm-knet.ko  linux-kernel-bde.ko  linux-user-bde.ko  netserve</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bcm.user  bcm.user.dbg  linux-bcm-knet.ko  linux-kernel-bde.ko  linux-user-bde.ko  netserve</span><br><span class="line">&lt;!-- more --&gt;</span><br></pre></td></tr></table></figure>
 <p>参考SDK包运行环境中的<code>auto_load_user.sh</code>，安装对应驱动，启动<code>bcm.user</code>即可进入BCMShell命令行，提示如下：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">BCM.0&gt; </span><br><span class="line">BCM.0&gt; exit</span><br></pre></td></tr></table></figure>
 <p><code>exit</code>退回到shell。<br>如果OS是SONiC，执行<code>bcmsh</code>也可进入，通过<code>bcmcmd cmd</code>可以在shell下在BCMShell中执行命令。</p>
@@ -876,12 +840,10 @@
     <title>hexo中踩过的坑</title>
     <url>/2019/07/25/hexo%E4%B8%AD%E8%B8%A9%E8%BF%87%E7%9A%84%E5%9D%91/</url>
     <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我们都是站在前人的肩膀上看的更远，走的更高。在这里记录下通过Hexo搭建个人博客，通过markdown写博客的过程中踩的一些坑，希望对看到这篇文章的你有些帮助！</p>
-<h3 id="关于代码块"><a href="#关于代码块" class="headerlink" title="关于代码块"></a>关于代码块</h3><p>```后面不要留空格，不然不会把它当做代码块的定界符来处理，会把后面的内容都当做代码块来处理。</p>
+<h3 id="关于代码块"><a href="#关于代码块" class="headerlink" title="关于代码块"></a>关于代码块</h3><span id="more"></span>
+<p>```后面不要留空格，不然不会把它当做代码块的定界符来处理，会把后面的内容都当做代码块来处理。</p>
 <h3 id="关于表格"><a href="#关于表格" class="headerlink" title="关于表格"></a>关于表格</h3><p>在表格开头留个空行，不然可能不对表格进行渲染。<br>在表格结束留个空行，不然可能对表格之后的内容进行越界渲染。</p>
 ]]></content>
-      <categories>
-        <category>Hexo</category>
-      </categories>
       <tags>
         <tag>踩坑</tag>
         <tag>hexo</tag>
@@ -889,9 +851,17 @@
       </tags>
   </entry>
   <entry>
-    <title>igmp-snooping学习</title>
-    <url>/2019/09/10/igmp-snooping%E5%AD%A6%E4%B9%A0/</url>
-    <content><![CDATA[<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>恩，18年做了半年的组播，算入门吧！最近有个igmp snooping（下面简称igsp）的bug，是个机缘接触一下igsp！</p>
+    <title></title>
+    <url>/2021/04/06/igmp-snooping%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<hr>
+<p>title: igmp-snooping学习<br>date: 2019-09-10 06:07:29<br>tags:</p>
+<ul>
+<li>通信协议</li>
+<li>igmp snooping<br>caegories:</li>
+<li>通信协议</li>
+</ul>
+<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>恩，18年做了半年的组播，算入门吧！最近有个igmp snooping（下面简称igsp）的bug，是个机缘接触一下igsp！</p>
+<span id="more"></span>
 <h2 id="使用需求简述"><a href="#使用需求简述" class="headerlink" title="使用需求简述"></a>使用需求简述</h2><p>很多情况下，组播报文要不可避免的经过一些二层交换设备，尤其是在局域网环境里。如下图：</p>
 <p><img src="https://rancho333.gitee.io/uploads/mc_data.png"></p>
 <p>上图中switch会将组播报文当做广播在vlan内进行flood，这是因为组播报文的目的地址为组播地址，在二层设备上学习不到这一类的MAC表项，这样不但浪费网络带宽，而且影响网络信息安全。配置igsp后，二层组播设备可以侦听和分析组播用户和上游路由器之间的IGMP报文，根据这些信息建立二层组播转发表项，控制组播数据报文的转发。</p>
@@ -938,22 +908,17 @@
 <p>对于IGMP离开报文的接收接口，二层组播设备在其老化时间内：<br>    * 如果从该接口收到了主机响应IGMP特定组查询报文的报告报文，表示接口下还有该组成员，重置老化时间。<br>    * 如果没有收到，则在老化超时后，将接口从该组的转发表项出接口列表中删除。</p>
 <p>参考资料：<br><a href="https://support.huawei.com/enterprise/zh/doc/EDOC1000141440/cabd652a">华为IGSP配置</a><br><a href="https://blog.51cto.com/lifulin/2073218">组播IGMP Snooping理论知识详解</a></p>
 ]]></content>
-      <tags>
-        <tag>通信协议</tag>
-        <tag>igmp snooping</tag>
-      </tags>
   </entry>
   <entry>
     <title>kernel编译简述</title>
     <url>/2020/03/11/kernel%E7%BC%96%E8%AF%91%E7%AE%80%E8%BF%B0/</url>
-    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>在ENOS系统移植的过程中，对于Linux kernel，涉及到kernel的配置，编译，以及二进制镜像uImage的生成。这篇文章分为两块：</p>
-<ol>
+    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><ol>
 <li>内核配置系统浅析</li>
 <li>vmlinux,uImage,Image的关系或区别</li>
 </ol>
 <h1 id="内核配置系统浅析"><a href="#内核配置系统浅析" class="headerlink" title="内核配置系统浅析"></a>内核配置系统浅析</h1><p>Linux采用模块化的内核配置系统，保证了内核的可扩展性。Linux内核的配置系统由三个部分组成，分别是：</p>
 <ol>
-<li>Makefile：分部在Linux内核源码中的Makefile，定义Linux内核的编译规则</li>
+<li>Makefile：分部在Linux内核源码中的Makefile，定义Linux内核的编译规则<span id="more"></span></li>
 <li>配置文件（.config, Kconfig等）</li>
 <li>配置工具<ol>
 <li>配置命令解释器，对配置脚本中使用的配置命令进行解释</li>
@@ -1017,8 +982,9 @@
   <entry>
     <title>mpls学习</title>
     <url>/2021/02/09/mpls%E5%AD%A6%E4%B9%A0/</url>
-    <content><![CDATA[<h1 id="MPLS简介"><a href="#MPLS简介" class="headerlink" title="MPLS简介"></a>MPLS简介</h1><p>MPLS(multiprotocol label switching，多协议标签交换)起源于IPv4，最初是为了提高转发速度而提出的（早期路由是只能由软件处理的），其核心技术可扩展到多种网络协议，包括IPv6，IPX(internet packet exchange，网际报文交换)和CLNP(connectionless network protocol,无连接网络协议)等。MPLS中的<em>M</em>指的就是支持多种网络协议。</p>
-<h1 id="概念说明"><a href="#概念说明" class="headerlink" title="概念说明"></a>概念说明</h1><h2 id="转发等价类"><a href="#转发等价类" class="headerlink" title="转发等价类"></a>转发等价类</h2><p>MPLS作为一种分类转发技术，将具有相同转发处理方式的分组归位一类，称为FEC(forwarding equivalence class，转发等价类)。相同FEC的分组在MPLS中将获得完全相同的处理。<br>FEC的划分方式非常灵活，可以是源地址、目的地址、源端口、目的端口、协议类型或VPN等为划分依据的任意组合。例如，在传统的采用最长匹配算法的IP转发中，到同一个目的地址的所有报文就是一个FEC。</p>
+    <content><![CDATA[<h1 id="MPLS简介"><a href="#MPLS简介" class="headerlink" title="MPLS简介"></a>MPLS简介</h1><h1 id="概念说明"><a href="#概念说明" class="headerlink" title="概念说明"></a>概念说明</h1><h2 id="转发等价类"><a href="#转发等价类" class="headerlink" title="转发等价类"></a>转发等价类</h2><p>MPLS作为一种分类转发技术，将具有相同转发处理方式的分组归位一类，称为FEC(forwarding equivalence class，转发等价类)。相同FEC的分组在MPLS中将获得完全相同的处理。<br>FEC的划分方式非常灵活，可以是源地址、目的地址、源端口、目的端口、协议类型或VPN等为划分依据的任意组合。例如，在传统的采用最长匹配算法的IP转发中，到同一个目的地址的所有报文就是一个FEC。</p>
+<span id="more"></span>
+
 <h2 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h2><p>标签是一个长度固定，仅具有本地意义的短标识符，用于唯一标识一个分组所属的FEC。一个标签只能代表一个FEC。标签长度为4个字节，结构如下：</p>
 <p><img src="https://rancho333.gitee.io/uploads/mpls_packet.png"></p>
 <p>字段解释如下：</p>
@@ -1106,11 +1072,10 @@
   <entry>
     <title>shell变量</title>
     <url>/2021/02/22/shell%E5%8F%98%E9%87%8F/</url>
-    <content><![CDATA[<h1 id="shell变量"><a href="#shell变量" class="headerlink" title="shell变量"></a>shell变量</h1><p>标准的UNIX变量分为两类，环境变量和shell变量。广义上而言，<code>shell变量</code>只应用于当前的shell实例，是用来设置短期工作情况的; <code>环境变量</code>有更长远的意义，这些变量在登录时设置，在整个会话期都是有效的。一般约定，环境变量使用大写变量表示，shell变量使用小写表示。</p>
-<p>通过<code>printenv</code>命令列出所有的环境变量，<code>set</code>命令列出所有的shell变量。环境变量中存储的更多是永久性的变量,例如：</p>
+    <content><![CDATA[<h1 id="shell变量"><a href="#shell变量" class="headerlink" title="shell变量"></a>shell变量</h1><p>标准的UNIX变量分为两类，环境变量和shell变量。广义上而言，<code>shell变量</code>只应用于当前的shell实例，是用来设置短期工作情况的; <code>环境变量</code>有更长远的意义，这些变量在登录时设置，在整个会话期都是有效的。一般约定，环境变量使用大写变量表示，shell变量使用小写表示。<br>通过<code>printenv</code>命令列出所有的环境变量，<code>set</code>命令列出所有的shell变量。环境变量中存储的更多是永久性的变量,例如：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">HOME&#x3D;&#x2F;home&#x2F;rancho</span><br></pre></td></tr></table></figure>
 <p>这些变量很少改变，而shell变量存储本地的、临时性的、shell特有的变量,如：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">PWD&#x3D;&#x2F;tmp            #切换到不同的文件夹下查看该变量，该变量的值就是pwd命令的打印</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;!-- more --&gt;</span><br><span class="line">PWD&#x3D;&#x2F;tmp            #切换到不同的文件夹下查看该变量，该变量的值就是pwd命令的打印</span><br></pre></td></tr></table></figure>
 
 <p>shell变量是shell专有的变量，不会被子进程继承，环境变量才会被继承。</p>
 <h1 id="变量相关的一些命令"><a href="#变量相关的一些命令" class="headerlink" title="变量相关的一些命令"></a>变量相关的一些命令</h1><p>对于几个关于变量的命令的说明：</p>
@@ -1149,11 +1114,11 @@
   <entry>
     <title>shell核心机制之子shell与shell环境</title>
     <url>/2021/02/22/shell%E6%A0%B8%E5%BF%83%E6%9C%BA%E5%88%B6%E4%B9%8B%E5%AD%90shell%E4%B8%8Eshell%E7%8E%AF%E5%A2%83/</url>
-    <content><![CDATA[<h1 id="深入了解shell必备的两个知识点"><a href="#深入了解shell必备的两个知识点" class="headerlink" title="深入了解shell必备的两个知识点"></a>深入了解shell必备的两个知识点</h1><p>子shell与shell环境是深入了解shell所必备的两个知识点。shell的实现方式有多种，如bash，sh，zsh等，这些软件本质就是一个shell解释器，最常用的是bash，因为其在几乎所有的Linux发行版中都预安装了。<br>子shell是shell命令的运行机制，而shell环境是shell命令的运行环境，就是我们常说的环境变量了。</p>
+    <content><![CDATA[<h1 id="深入了解shell必备的两个知识点"><a href="#深入了解shell必备的两个知识点" class="headerlink" title="深入了解shell必备的两个知识点"></a>深入了解shell必备的两个知识点</h1><p>子shell与shell环境是深入了解shell所必备的两个知识点。shell的实现方式有多种，如bash，sh，zsh等，这些软件本质就是一个shell解释器，最常用的是bash，因为其在几乎所有的Linux发行版中都预安装了。</p>
 <h1 id="命令类型与子shell"><a href="#命令类型与子shell" class="headerlink" title="命令类型与子shell"></a>命令类型与子shell</h1><p>并不是在shell里执行的所有命令都会在子shell里执行，我们需要先认识一下shell命令分类。</p>
 <p><code>type</code>命令可以可以显示出命令的类型，对于不同的类型shell解释器有不同的处理方式。命令类型有以下几种：</p>
 <ul>
-<li>alias(shell alias)</li>
+<li>alias(shell alias)<span id="more"></span></li>
 <li>function(shell functions)，shell函数</li>
 <li>builtin(shell builtin)，shell内建命令</li>
 <li>file(disk file)，磁盘文件，需要有可执行权限，我们安装的第三方软件一般就是这种类型，在PATH下找到，这个是外部命令，如ssh、ls</li>
@@ -1265,9 +1230,10 @@
   <entry>
     <title>shell脚本执行的几种方式</title>
     <url>/2021/02/20/shell%E8%84%9A%E6%9C%AC%E6%89%A7%E8%A1%8C%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/</url>
-    <content><![CDATA[<h1 id="shell脚本执行的几种方式"><a href="#shell脚本执行的几种方式" class="headerlink" title="shell脚本执行的几种方式"></a>shell脚本执行的几种方式</h1><p>shell脚本有三种执行方式</p>
-<h2 id="filename-或-filename"><a href="#filename-或-filename" class="headerlink" title="./filename 或 filename"></a>./filename 或 filename</h2><p>这种方式是我们在CLI中最常使用的方式，要求脚本具有<em>可执行</em>权限。类似于执行二进制程序，需要让shell找到文件的具体位置。这种执行方式是重新启动一个子shell，在子shell中执行此脚本。子shell继承父shell的环境变量，但子shell新建的、改变的变量不会带回父shell，除非使用export。</p>
-<h2 id="source-filename-或-filename"><a href="#source-filename-或-filename" class="headerlink" title="source filename 或 . filename"></a>source filename 或 . filename</h2><p>这种方式一般用在脚本中定义shell环境变量，比如修改<code>.bashrc</code>后使用source执行一下，将改动生效到当前shell中。<br>这个命令其实只是简单的读取脚本里面的语句依次在当前shell里面执行，没有新建子shell。脚本里面所有新建、改变变量的语句都会保存在当前shell里面。</p>
+    <content><![CDATA[<h1 id="shell脚本执行的几种方式"><a href="#shell脚本执行的几种方式" class="headerlink" title="shell脚本执行的几种方式"></a>shell脚本执行的几种方式</h1><h2 id="filename-或-filename"><a href="#filename-或-filename" class="headerlink" title="./filename 或 filename"></a>./filename 或 filename</h2><p>这种方式是我们在CLI中最常使用的方式，要求脚本具有<em>可执行</em>权限。类似于执行二进制程序，需要让shell找到文件的具体位置。这种执行方式是重新启动一个子shell，在子shell中执行此脚本。子shell继承父shell的环境变量，但子shell新建的、改变的变量不会带回父shell，除非使用export。</p>
+<h2 id="source-filename-或-filename"><a href="#source-filename-或-filename" class="headerlink" title="source filename 或 . filename"></a>source filename 或 . filename</h2><p>这种方式一般用在脚本中定义shell环境变量，比如修改<code>.bashrc</code>后使用source执行一下，将改动生效到当前shell中。</p>
+<span id="more"></span>
+<p>这个命令其实只是简单的读取脚本里面的语句依次在当前shell里面执行，没有新建子shell。脚本里面所有新建、改变变量的语句都会保存在当前shell里面。</p>
 <h2 id="bash-filename-或-sh-filename，两者等效"><a href="#bash-filename-或-sh-filename，两者等效" class="headerlink" title="bash filename 或 sh filename，两者等效"></a>bash filename 或 sh filename，两者等效</h2><p>这种方式与./filename执行方式的唯一区别是，filename不需要可执行权限。</p>
 <h1 id="关于-0和BASH-SOURCE"><a href="#关于-0和BASH-SOURCE" class="headerlink" title="关于$0和BASH_SOURCE"></a>关于$0和BASH_SOURCE</h1><p><code>$0</code>保存了被执行脚本的程序名称, 在脚本中<code>basename $0</code>可以获取脚本的文件名。用source方式执行的脚本不适用，$0为<code>-bash</code>。<br>但是，除了$0之外，bash还提供了一个数组变量<code>BASH_SOURCE</code>,程序名以入栈的方式存储在BASH_SOURCE中，即最后一个执行的脚本是BASH_SOURCE[0]或BASH_SOURCE，等价于$0。<br>在嵌套脚本的调用中，使用<code>BASH_SOURCE[0]</code>获取当前脚本的路径，使用<code>BASH_SOURCE[-1]</code>或<code>$0</code>获取顶层脚本的路径</p>
 ]]></content>
@@ -1281,6 +1247,7 @@
     <content><![CDATA[<h1 id="问题说明"><a href="#问题说明" class="headerlink" title="问题说明"></a>问题说明</h1><p>在shell下遇到一个赋值的问题</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[rancho ~]$ a&#x3D;10</span><br><span class="line">[rancho ~]$ demo$a&#x3D;$(echo 123)</span><br><span class="line">demo10&#x3D;123: command not found</span><br></pre></td></tr></table></figure>
 
+<span id="more"></span>
 <h1 id="shell下的命令格式"><a href="#shell下的命令格式" class="headerlink" title="shell下的命令格式"></a>shell下的命令格式</h1><p>shell下我们常用的命令格式如下：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var&#x3D;value           #变量赋值，例如a&#x3D;1</span><br><span class="line">cmd [args]          #命令执行，例如ls -l</span><br><span class="line">&gt;redirection        #重定向,例如:&gt;a.c </span><br></pre></td></tr></table></figure>
 
@@ -1310,13 +1277,12 @@
   <entry>
     <title>shell重定向</title>
     <url>/2021/02/23/shell%E9%87%8D%E5%AE%9A%E5%90%91/</url>
-    <content><![CDATA[<h1 id="shell重定向"><a href="#shell重定向" class="headerlink" title="shell重定向"></a>shell重定向</h1><p>shell重定向即重新确定数据的流向，是通过改变文件描述符目标来实现的，如流向<code>1</code>的数据让其流向<code>/tmp/a.c</code>。</p>
-<p>shell中，基础重定向有以下几种方式：</p>
+    <content><![CDATA[<h1 id="shell重定向"><a href="#shell重定向" class="headerlink" title="shell重定向"></a>shell重定向</h1><p>shell中，基础重定向有以下几种方式：</p>
 <ul>
 <li><p><code>[n]&gt;file</code>：覆盖式输出重定向，输出到fd=n的数据改变流向输出到file文件中，file不存在则创建，file存在则先清空再写入数据</p>
 <ul>
 <li>n可省略，默认值为<code>1</code>，即标准输出覆盖重定向到file中</li>
-<li><code>&gt;&gt;</code>表示追加式输出重定向</li>
+<li><code>&gt;&gt;</code>表示追加式输出重定向<span id="more"></span></li>
 </ul>
 </li>
 <li><p><code>[n]&lt;file</code>:输入重定向，以读取模式打开文件并分配fd=n,file不存在则报错</p>
@@ -1345,6 +1311,7 @@
     <title>sonic-testbed的理解</title>
     <url>/2021/03/02/sonic-testbed%E7%9A%84%E7%90%86%E8%A7%A3/</url>
     <content><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>这篇文章用来记录对sonic testbed的一些理解以及一些较核心的知识点。</p>
+<span id="more"></span>
 <p>sonic-mgmt代码运行在docker-sonic-mgmt环境中中，镜像在sonic-buildimage中编译生成，docker-ptf也是在里面生成的。docker-sonic-mgmt环境集成了ansible-playbook、pytest、spytest等所需的依赖。</p>
 ]]></content>
       <tags>
@@ -1354,14 +1321,15 @@
   <entry>
     <title>一些shell基础知识</title>
     <url>/2020/03/06/%E4%B8%80%E4%BA%9Bshell%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
-    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>最开始接触到的命令行是windows的cmd，一次用它来查ip感觉很神奇。后来接触到Linux，vim，从起初的抵触不适应，到后来的得心应手。使用命令行，离计算机更近。这篇文章记录一下shell下面的一些细节。分为</p>
-<ol>
+    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><ol>
 <li>标准输入和命令参数的区别</li>
 <li>在后台运行的命令退出终端也就全部退出了</li>
 <li>单引号和双引号表示字符串的区别</li>
 <li>有的命令和<code>sudo</code>一起用就<code>command not found</code></li>
 </ol>
-<h1 id="标准输入和参数的区别"><a href="#标准输入和参数的区别" class="headerlink" title="标准输入和参数的区别"></a>标准输入和参数的区别</h1><p>最初遇到这个问题的时候是在shell下面使用<code>管道</code>操作，例如：<code>find ./ -name &quot;*.c&quot; | xargs grep -rn zhw</code>,这条命令的含义是：在当前路径下的所有<code>.c</code>文件中查找<code>zhw</code>关键字，注意这里在管道的右侧加了关键字<code>xargs</code>，表示将<code>find</code>找到的结果作为<em>参数</em>传递给<code>grep</code>，grep是不接受标准输入的。</p>
+<h1 id="标准输入和参数的区别"><a href="#标准输入和参数的区别" class="headerlink" title="标准输入和参数的区别"></a>标准输入和参数的区别</h1><span id="more"></span>
+
+<p>最初遇到这个问题的时候是在shell下面使用<code>管道</code>操作，例如：<code>find ./ -name &quot;*.c&quot; | xargs grep -rn zhw</code>,这条命令的含义是：在当前路径下的所有<code>.c</code>文件中查找<code>zhw</code>关键字，注意这里在管道的右侧加了关键字<code>xargs</code>，表示将<code>find</code>找到的结果作为<em>参数</em>传递给<code>grep</code>，grep是不接受标准输入的。</p>
 <p>标准输入就是编程语言中诸如<code>scanf</code>或者<code>readline</code>获取到的信息；而参数是指程序的<code>main</code>函数传入的<code>args</code>字符串数组。管道符和重定向符都是将数据作为程序的标准输入，下面这个示例：<br><img src="https://rancho333.gitee.io/uploads/grep.png"></p>
 <ol>
 <li>grep要搜索的文件作为参数是可选的，<code>-r</code>可以在当前路径下递归查找</li>
@@ -1394,9 +1362,8 @@
   <entry>
     <title>中断学习</title>
     <url>/2020/03/10/%E4%B8%AD%E6%96%AD%E5%AD%A6%E4%B9%A0/</url>
-    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>在ENOS系统移植的过程中需要调试CPU和交换芯片的中断，这里记录一下对中断的学习！</p>
-<h1 id="中断简介"><a href="#中断简介" class="headerlink" title="中断简介"></a>中断简介</h1><p>Linux内核需要对连接到计算机上的所有硬件设备进行管理，他们之间需要互相通信，一般有两种方案可以实现。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1. 轮询（polling）内核定期对设备的状态进行查询，然后做出相应的处理</span><br><span class="line">2. 中断（interrupt）让硬件在需要的时候向内核发出信号（变内核主动为硬件主动）</span><br></pre></td></tr></table></figure>
+    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><h1 id="中断简介"><a href="#中断简介" class="headerlink" title="中断简介"></a>中断简介</h1><p>Linux内核需要对连接到计算机上的所有硬件设备进行管理，他们之间需要互相通信，一般有两种方案可以实现。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1. 轮询（polling）内核定期对设备的状态进行查询，然后做出相应的处理</span><br><span class="line">2. 中断（interrupt）让硬件在需要的时候向内核发出信号（变内核主动为硬件主动）</span><br><span class="line">&lt;!-- more --&gt;</span><br></pre></td></tr></table></figure>
 <p>轮询是周期性的重复执行，大量耗用CPU的时间，效率比较低，对于实时性比较高的操作，肯定是不适用的。</p>
 <p>从物理学的角度看，中断是一种电信号，由硬件设备产生，并直接送入中断控制器（如8259A）的输入引脚上，然后再由中断控制器向CPU发送相应的信号。处理器检测到该信号，便中断当前正在处理的工作，转而去处理中断。对于软件开发人员，一般需要用到的就是中断号和中断处理函数。</p>
 <p>提一下，PCIE可以通过MSI(message signaled interrupts)方式实现中断：<br><img src="https://rancho333.gitee.io/uploads/msi.png"><br>CPu里面有一段特殊的寄存器空间，往这个寄存器里面写数据，就会触发CPU中断。pci设备经过配置以后，一旦需要上报中断就会往cpu这种寄存器里面写一个值，触发cpu中断。</p>
@@ -1484,10 +1451,19 @@
       </tags>
   </entry>
   <entry>
-    <title>关于Ubuntu的软件源source.list学习</title>
-    <url>/2019/07/25/%E5%85%B3%E4%BA%8EUbuntu%E7%9A%84%E8%BD%AF%E4%BB%B6%E6%BA%90source-list%E5%AD%A6%E4%B9%A0/</url>
-    <content><![CDATA[<h2 id="背景说明"><a href="#背景说明" class="headerlink" title="背景说明"></a>背景说明</h2><p>最近参与到公司的白盒交换机项目中，需要编译ONL和sonic，其中软件源的设置让我非常头疼，编译依赖有很大的问题。决定深入学习一下Linux软件源.主机环境为ubuntu16.04.  </p>
+    <title></title>
+    <url>/2021/04/06/%E5%85%B3%E4%BA%8EUbuntu%E7%9A%84%E8%BD%AF%E4%BB%B6%E6%BA%90source-list%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<hr>
+<p>title: 关于Ubuntu的软件源source.list学习<br>date: 2019-07-25 03:02:19<br>categories: </p>
+<ul>
+<li>Linux相关<br>tags:</li>
+<li>Linux</li>
+<li>软件源</li>
+</ul>
+<h2 id="背景说明"><a href="#背景说明" class="headerlink" title="背景说明"></a>背景说明</h2><p>最近参与到公司的白盒交换机项目中，需要编译ONL和sonic，其中软件源的设置让我非常头疼，编译依赖有很大的问题。决定深入学习一下Linux软件源.主机环境为ubuntu16.04.  </p>
 <h2 id="软件库存储文件-list"><a href="#软件库存储文件-list" class="headerlink" title="软件库存储文件*.list"></a>软件库存储文件*.list</h2><p>ubuntu使用apt来管理软件包，apt将软件库存储在如下文件中:  </p>
+<span id="more"></span>
+
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;etc&#x2F;apt&#x2F;sources.list</span><br><span class="line">&#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;目录中带.list后缀的文件</span><br></pre></td></tr></table></figure>
 <p>可以通过man sources.lis来查看apt的完整存储机制。  </p>
 <h2 id="sources-list格式和写法"><a href="#sources-list格式和写法" class="headerlink" title="sources.list格式和写法"></a>sources.list格式和写法</h2><ol>
@@ -1558,20 +1534,13 @@
 
 <p><strong>参考资料：</strong><br><a href="https://forum.ubuntu.org.cn/viewtopic.php?t=465499">ubuntu论坛</a></p>
 ]]></content>
-      <categories>
-        <category>Linux相关</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>软件源</tag>
-      </tags>
   </entry>
   <entry>
     <title>关于动态库以及constructor属性的使用</title>
     <url>/2020/02/26/%E5%85%B3%E4%BA%8E%E5%8A%A8%E6%80%81%E5%BA%93%E4%BB%A5%E5%8F%8Aconstructor%E5%B1%9E%E6%80%A7%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>在做linux系统移植的过程中逐步加深了对动态编译和静态编译的理解，今天这里记录一下如何将自己的代码编译成动态库供其他程序使用。顺道记录一下遇到的一个好玩的东西：C语言中的constructor属性，是<code>__attribute__</code>的attr_list中的一员。</p>
+    <content><![CDATA[<p>在做linux系统移植的过程中逐步加深了对动态编译和静态编译的理解，今天这里记录一下如何将自己的代码编译成动态库供其他程序使用。顺道记录一下遇到的一个好玩的东西：C语言中的constructor属性，是<code>__attribute__</code>的attr_list中的一员。</p>
 <h2 id="将自己的模块编译生成so"><a href="#将自己的模块编译生成so" class="headerlink" title="将自己的模块编译生成so"></a>将自己的模块编译生成so</h2><p>示例模块分成两个部分，cons.c和cons.h,cons.c的代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &quot;cons.h&quot;</span><br><span class="line"></span><br><span class="line">void before_main()</span><br><span class="line">&#123;</span><br><span class="line">        printf(&quot;%s\n&quot;, __FUNCTION__);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void after_main()</span><br><span class="line">&#123;</span><br><span class="line">        printf(&quot;after main!\n&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &quot;cons.h&quot;</span><br><span class="line">&lt;!-- more --&gt;</span><br><span class="line"></span><br><span class="line">void before_main()</span><br><span class="line">&#123;</span><br><span class="line">        printf(&quot;%s\n&quot;, __FUNCTION__);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void after_main()</span><br><span class="line">&#123;</span><br><span class="line">        printf(&quot;after main!\n&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>cons.h的代码如下：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">void before_main() __attribute__((constructor)); </span><br><span class="line">void after_main();</span><br></pre></td></tr></table></figure>
 <p>使用命令<code>gcc cons.c -fPIC -shared -o  libcons.so</code>编译生成动态库文件。</p>
@@ -1598,9 +1567,10 @@
   <entry>
     <title>关于终端回显的问题</title>
     <url>/2021/01/05/%E5%85%B3%E4%BA%8E%E7%BB%88%E7%AB%AF%E5%9B%9E%E6%98%BE%E7%9A%84%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>在嵌入式设备调试中，经常会使用console口对设备进行管理。使用vim进行文件编辑时，会发现屏幕回显有问题，例如，行显示不会逐步递增到屏幕底端，列显示时换行错乱。这是tty设置的<code>rows</code>与<code>cols</code>与实际的屏幕尺寸不适配。</p>
-<h1 id="对于console连接"><a href="#对于console连接" class="headerlink" title="对于console连接"></a>对于console连接</h1><p>我们可以使用<code>stty -a</code>查看stty的所有配置信息，其中第一行包括波特率，终端的大小（以字符为基准）。也可以直接使用<code>stty size</code>查看终端的大小。</p>
+    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><h1 id="对于console连接"><a href="#对于console连接" class="headerlink" title="对于console连接"></a>对于console连接</h1><p>我们可以使用<code>stty -a</code>查看stty的所有配置信息，其中第一行包括波特率，终端的大小（以字符为基准）。也可以直接使用<code>stty size</code>查看终端的大小。</p>
 <p><img src="https://rancho333.gitee.io/uploads/stty.png"></p>
+<span id="more"></span>
+
 <p>对于常见的远程登录软件，如<code>xshell</code>和<code>secure CRT</code>会在软件底端显示出当前终端的大小，我们按照这个数值进行设定即可。之后<code>reset</code>终端设置。如果显示依然不正常，最大化窗口然后再恢复即可。</p>
 <h1 id="对于ssh或telent连接"><a href="#对于ssh或telent连接" class="headerlink" title="对于ssh或telent连接"></a>对于ssh或telent连接</h1><p>为什么使用ssh或者telnet连接时不会出现这种终端显示的问题呢，因为ssh当窗口大小发生变化后，会自动的调整stty的数值。可以尝试调整窗口大小，然后<code>stty size</code>查看终端大小与软件显示的窗口大小进行比较。</p>
 <h1 id="写在后面"><a href="#写在后面" class="headerlink" title="写在后面"></a>写在后面</h1><p>Linux的TTY子系统其实是一个很复杂的点。其中包括的知识点有<code>行编辑</code>、<code>进程组</code>、<code>会话组</code>、<code>信号控制</code>、<code>流控制与I/O阻塞</code>、<code>TTY配置</code>等。</p>
@@ -1613,10 +1583,11 @@
     <title>加弘跑团</title>
     <url>/2020/12/21/%E5%8A%A0%E5%BC%98%E8%B7%91%E5%9B%A2/</url>
     <content><![CDATA[<p>为什么要跑步？<br>我最开始跑步是为了减肥，现在我更多的认为规律性的跑步是一种健康的生活方式，是一种极易获取的运动。对跑步，我谈不上热爱，但我已经习惯了生活有它的一席之地。我知道跑步之前的生活状态，也知道现在的生活状态，所以我离不开跑步。</p>
-<p>提及跑步，可以轻易找到各种各样的好处，这里不赘述。但是随便跑个几公里，一周只跑一两次其实很难看到你想要的效果。如果加大跑量，跑步有时候可能会损伤你的膝盖，还会让你得上一些奇奇怪怪的病，什么足底筋膜炎，跟腱炎，髂胫束摩擦综合症，跑完一个半马，你可能下楼梯都困难。</p>
 <p>跑步是痛苦的，长跑更是意志力的对抗赛。只有在熬过最初的苦痛，可以边跑边聊天，可以只用鼻子呼吸的时候，你才不会感觉那么煎熬，这之前是可以称作跑步痛苦期。如果想着提高配速，增加距离，再突破瓶颈，那便得再痛苦一番。跑步也不能拯救我们，跑步是花钱的运动，专业跑鞋很贵，所以好好工作才能好好跑步。</p>
 <p>跑步是痛苦的，只有认识到跑步的痛苦之后，然后依然热爱并且坚定的选择，才能持久的进行。跑步的快乐，只有在获得正向反馈之后，熬过跑步痛苦期之后，才能真正体会到。</p>
 <p>所以，为什么要跑步？请寻找你内心的信念，让它支撑你熬过开始跑步时的痛苦。</p>
+<span id="more"></span>
+
 <p>什么叫跑步？<br>跑步，跑马拉松并不会让我们高人一等，也不是只有跑十公里以上才叫跑步。每个人跑步的需求也是不一样的。有严肃跑者，将跑步当作兴趣来培养，动辄全马百公里超马越野跑，追求成绩追求PB；也有休闲跑者，三五好友或携妻带子，三两公里，微风微汗，也是开心畅快。<br>不用神话跑步，学音乐，学舞蹈，学英语都可以让我们变得更好。无论是严肃的跑者还是休闲的跑者，跑起来，都是跑步。跑步是一项包容性很大的活动。不用管配速，不用管距离，跑起来就好。</p>
 <p>了解了一下，加弘跑团中有跑过上马的老马, 有早起晨跑的大佬，有希望进阶的跑者，有刚接触跑步的菜鸟。大家相聚一起，一起跑，想来是件很欢快的事情。加弘跑团刚成立，需要大家一起去将跑团运行起来。下面对跑团的运行以及接下来的安排做一些简要说明，欢迎大家补充优化。</p>
 <ol>
@@ -1646,10 +1617,10 @@
   <entry>
     <title>对SONiC项目的认识</title>
     <url>/2021/02/25/%E5%AF%B9SONiC%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AE%A4%E8%AF%86/</url>
-    <content><![CDATA[<h1 id="SONiC简介"><a href="#SONiC简介" class="headerlink" title="SONiC简介"></a>SONiC简介</h1><p>不做过多赘述，SONiC本质就是一个Linux交换机网络操作系统，它有两个特点。</p>
-<p>第一，它是基于SAI的，在没有SAI之前所有的芯片都要通过自己的SDK与上层软件进行通信，相当于用自己的“方言”与上层操作系统通信，SAI把这个“方言”标准化，大家的芯片用同样的语言同上层的控制软件交流，因为有了SAI，所以才能建立一个操作系统。有了SAI之后，适配ASIC的工作由芯片厂商完成，白盒交换机厂商推出一款新产品所花费的时间大大缩短。</p>
+    <content><![CDATA[<h1 id="SONiC简介"><a href="#SONiC简介" class="headerlink" title="SONiC简介"></a>SONiC简介</h1><p>不做过多赘述，SONiC本质就是一个Linux交换机网络操作系统，它有两个特点。<br>第一，它是基于SAI的，在没有SAI之前所有的芯片都要通过自己的SDK与上层软件进行通信，相当于用自己的“方言”与上层操作系统通信，SAI把这个“方言”标准化，大家的芯片用同样的语言同上层的控制软件交流，因为有了SAI，所以才能建立一个操作系统。有了SAI之后，适配ASIC的工作由芯片厂商完成，白盒交换机厂商推出一款新产品所花费的时间大大缩短。</p>
 <p>第二，基于Docker，Sonic有丰富的扩展性。依托于Linux,Docker生态，Sonic孕育了丰富的管理软件和解决方案。而其自身也于Redis, Quagga, LLDP等开源技术碰撞出更多火花。</p>
 <p>2016年，SONiC的理念就是将传统交换机OS拆分成多个容器化组件的解决方案，进而也定义了控制面的容器化架构，囊括了组件和编程接口。</p>
+<span id="more"></span>
 <p>2017年微软对SONiC的性能进行了大幅升级，全面支持IDV，并且融合了更多的容器特性。</p>
 <p>2018年微软又在管理性上下了大力气（如ConfigDB）</p>
 <h1 id="对SONiC项目的学习"><a href="#对SONiC项目的学习" class="headerlink" title="对SONiC项目的学习"></a>对SONiC项目的学习</h1><p>相比于传统Linux交换机操作系统几十M的镜像大小，SONiC镜像动辄几百M甚至超1G，这也说明了里面包含的内容极其庞杂。如果有比较深厚的Linux功底，上手会很快。因为里面大多是Linux本质性、不变性和可复用性的东西。以自己对SONiC项目的认知，将其划分为5个大块比较合适。分别是：</p>
@@ -1718,9 +1689,10 @@
   <entry>
     <title>树莓派做串口服务器</title>
     <url>/2021/02/02/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%81%9A%E4%B8%B2%E5%8F%A3%E6%9C%8D%E5%8A%A1%E5%99%A8/</url>
-    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>交换机设备放在实验室中，部分位置只有网口而没有串口服务器，用PC做串口服务器太浪费，下面介绍用树莓派做串口服务器。</p>
-<h1 id="拓扑说明"><a href="#拓扑说明" class="headerlink" title="拓扑说明"></a>拓扑说明</h1><p>通过SSh远程到树莓派上，树莓派通过USB转串口与交换机串口相连。Linux上通过minicom连接串口。</p>
-<h1 id="Linux环境准备"><a href="#Linux环境准备" class="headerlink" title="Linux环境准备"></a>Linux环境准备</h1><h2 id="minicom安装"><a href="#minicom安装" class="headerlink" title="minicom安装"></a>minicom安装</h2><p>通过以下命令安装minicom。</p>
+    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><h1 id="拓扑说明"><a href="#拓扑说明" class="headerlink" title="拓扑说明"></a>拓扑说明</h1><p>通过SSh远程到树莓派上，树莓派通过USB转串口与交换机串口相连。Linux上通过minicom连接串口。</p>
+<h1 id="Linux环境准备"><a href="#Linux环境准备" class="headerlink" title="Linux环境准备"></a>Linux环境准备</h1><span id="more"></span>
+
+<h2 id="minicom安装"><a href="#minicom安装" class="headerlink" title="minicom安装"></a>minicom安装</h2><p>通过以下命令安装minicom。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apt install  lrzsz</span><br><span class="line">apt install minicom</span><br></pre></td></tr></table></figure>
 
 <h2 id="串口参数设置"><a href="#串口参数设置" class="headerlink" title="串口参数设置"></a>串口参数设置</h2><p><code>minicom -s</code>进行参数设置。<br><img src="https://rancho333.gitee.io/uploads/minicom_s.png"></p>
@@ -1734,8 +1706,10 @@
   <entry>
     <title>计算机存储体系</title>
     <url>/2020/03/08/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%AD%98%E5%82%A8%E4%BD%93%E7%B3%BB/</url>
-    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>在没有接触过嵌入式之前，对于计算机存储的认知仅限于知道硬盘和内存，然后硬盘掉电可以保存数据，内存掉电丢失数据。后来逐渐听到更多的专业名词，什么ROM，RAM，SRAM，DRAM，FLASH,，NandFlash，NorFlash等等了。以前将自己的定位总是局限在协议工程师，对于和硬件和驱动相关的东西有些抵触，随着工作的深入，也时常会用到一些I2C,gpio之类的东东。本着沉下来，归零，再出发的心态，这篇文章用来梳理一下自己对于计算机存储体系的认知。</p>
+    <content><![CDATA[<p>在没有接触过嵌入式之前，对于计算机存储的认知仅限于知道硬盘和内存，然后硬盘掉电可以保存数据，内存掉电丢失数据。后来逐渐听到更多的专业名词，什么ROM，RAM，SRAM，DRAM，FLASH,，NandFlash，NorFlash等等了。以前将自己的定位总是局限在协议工程师，对于和硬件和驱动相关的东西有些抵触，随着工作的深入，也时常会用到一些I2C,gpio之类的东东。本着沉下来，归零，再出发的心态，这篇文章用来梳理一下自己对于计算机存储体系的认知。</p>
 <h1 id="总体架构"><a href="#总体架构" class="headerlink" title="总体架构"></a>总体架构</h1><p>下面这张图大家应该都很熟悉了<br><img src="https://rancho333.gitee.io/uploads/storage.png"><br>生活中的大部分物品，基本都满足“好的不一定是最贵的，但是最贵的一定是好的”，在计算机存储体系中，基本满足了上面这句话。塔尖上的那一小撮是最贵的，最快的，存储空间最小的。在实际生产中需要做到价格与性能（或者说实际需求）的平衡。下面从上到下梳理一下吧。</p>
+<span id="more"></span>
+
 <h2 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h2><p>恩，之前软考《网络工程师》的时候接触过一点点.哦，文章有点跑题了，但是还是想记录一下。CPU执行指令分为：取指令，分析指令，执行指令三部曲，这里面会用到一系列的寄存器，有分别属于控制器和运算器，列举几个常见的。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">控制器</span><br><span class="line">    程序计数器PC：存放下一条指令的地址</span><br><span class="line">    指令寄存器IR:存放正在运行的指令</span><br></pre></td></tr></table></figure>
 <p>指令包括操作码和地址码（操作数所在的地址）</p>
@@ -1758,7 +1732,7 @@
     <title>通过Hexo与Github.io搭建个人博客</title>
     <url>/2019/07/14/%E9%80%9A%E8%BF%87Hexo%E4%B8%8EGithub-io%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
     <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我信奉好记性不如记下来，上学时在笔记本上记笔记，后来在csdn上写点东西(有广告，不舒服)，后来笔记都记在有道云笔记上。最后发现利用github.io可以很方便的搭建个人博客。下面记录的是Blog搭建的过程(完成blog的上传)以及源码的备份，后面的文章记录一些优化与使用技巧。</p>
-<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Github账号</span><br><span class="line">Linux服务器</span><br><span class="line">  git</span><br><span class="line">  node.js(6.9版本以上)</span><br></pre></td></tr></table></figure>
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Github账号</span><br><span class="line">Linux服务器</span><br><span class="line">  git</span><br><span class="line">  node.js(6.9版本以上)</span><br><span class="line">&lt;!-- more --&gt;</span><br></pre></td></tr></table></figure>
 <p>Github账号的注册在这里不做赘述，然后创建一个名为yourname.github.io的仓库（仓库名格式一定要符合）。我用的Linux是ubuntu16.04 server版(家用)与ubuntu18.04(aws云服务器,一年免费，可以用来科学上网)。hexo依赖于git与node.js<br>安装git  </p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install git-core</span><br></pre></td></tr></table></figure>
 
@@ -1831,10 +1805,10 @@
   <entry>
     <title>ARP协议简述及应用</title>
     <url>/2020/12/25/ARP%E5%8D%8F%E8%AE%AE%E7%AE%80%E8%BF%B0%E5%8F%8A%E5%BA%94%E7%94%A8/</url>
-    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>这篇文章分为两个部分ARP协议简介以及ARP协议的实际应用。</p>
-<span id="more"></span>
+    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><span id="more"></span>
 
-<h1 id="ARP协议简介"><a href="#ARP协议简介" class="headerlink" title="ARP协议简介"></a>ARP协议简介</h1><h2 id="ARP的作用"><a href="#ARP的作用" class="headerlink" title="ARP的作用"></a>ARP的作用</h2><p>ARP(Address Resolution Protocol，地址解析协议)是将IP地址解析为以太网MAC地址的协议。与之相对的，将MAC地址解析为IP地址的协议称为RARP。</p>
+<h1 id="ARP协议简介"><a href="#ARP协议简介" class="headerlink" title="ARP协议简介"></a>ARP协议简介</h1><h2 id="ARP的作用"><a href="#ARP的作用" class="headerlink" title="ARP的作用"></a>ARP的作用</h2><!-- more -->
+<p>ARP(Address Resolution Protocol，地址解析协议)是将IP地址解析为以太网MAC地址的协议。与之相对的，将MAC地址解析为IP地址的协议称为RARP。</p>
 <p>在局域网中，当终端设备需要将数据发送给另一个终端设备时，它必须知道对方网络的IP地址。但是仅仅有IP地址是不够的，因为IP数据必须封装成帧才能通过物理网络发送，因此发送端还必须有接收端的MAC地址，所以需要一个从IP地址到物理地址的映射。ARP就是实现这个功能的协议。</p>
 <h2 id="ARP报文的结构"><a href="#ARP报文的结构" class="headerlink" title="ARP报文的结构"></a>ARP报文的结构</h2><p><img src="https://rancho333.gitee.io/uploads/arp_protocol.png"> </p>
 <p>对于各个字段的解释如下</p>
@@ -2071,10 +2045,12 @@
       </tags>
   </entry>
   <entry>
-    <title>Systemd学习</title>
-    <url>/2021/01/26/Systemd%E5%AD%A6%E4%B9%A0/</url>
-    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>Systemd是现代Linux的服务启动管理。Linux的第一个进程已经由<code>init</code>变成<code>systemd</code>了。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[rancho sonic-buildimage]$ ps -ef | grep root | grep init</span><br><span class="line">root         1     0  0  2020 ?        00:19:51 &#x2F;sbin&#x2F;init splash</span><br><span class="line">[rancho sonic-buildimage]$ file &#x2F;sbin&#x2F;init</span><br><span class="line">&#x2F;sbin&#x2F;init: symbolic link to &#x2F;lib&#x2F;systemd&#x2F;systemd</span><br></pre></td></tr></table></figure>
+    <title></title>
+    <url>/2021/04/06/Systemd%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<hr>
+<p>title: Systemd学习<br>date: 2021-01-26 13:32:42<br>tags:<br>    - Linux<br>    - Systemd<br>Categories:<br>    - Linux</p>
+<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>Systemd是现代Linux的服务启动管理。Linux的第一个进程已经由<code>init</code>变成<code>systemd</code>了。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[rancho sonic-buildimage]$ ps -ef | grep root | grep init</span><br><span class="line">root         1     0  0  2020 ?        00:19:51 &#x2F;sbin&#x2F;init splash</span><br><span class="line">&lt;!-- more --&gt;</span><br><span class="line">[rancho sonic-buildimage]$ file &#x2F;sbin&#x2F;init</span><br><span class="line">&#x2F;sbin&#x2F;init: symbolic link to &#x2F;lib&#x2F;systemd&#x2F;systemd</span><br></pre></td></tr></table></figure>
 <p>init的两个缺点:</p>
 <ol>
 <li>启动时间长。init是串行启动。</li>
@@ -2201,19 +2177,15 @@
 <h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>一般而言，配置文件存放在<code>/lib/systemd/system</code>和<code>/usr/lib/systemd/system</code>目录下，通过<code>systemctl enable</code>在<code>/etc/systemd/system</code>创建符号链接指向前者，Systemd会执行etc下的文件，前提是文件中的Install配对了Target。</p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="http://www.ruanyifeng.com/blog/2016/03/systemd-tutorial-commands.html">Systemd入门教程：命令篇</a><br><a href="https://linux.cn/article-5926-1.html">systemctl 命令完全指南</a></p>
 ]]></content>
-      <tags>
-        <tag>Linux</tag>
-        <tag>Systemd</tag>
-      </tags>
   </entry>
   <entry>
     <title>sonic-testbed</title>
     <url>/2020/12/18/sonic-testbed/</url>
-    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>最初，SONiC的所有测试用例都是用ansible playbook写的。2019年开始使用pytest， 2020年9月份之后，只有用pytest写的测试用例才被采纳。<br>但是ansible依然很重要，pytest-ansible插件连接pytest与ansible。pytest通过ansible进行多设备协同工作。</p>
+    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>最初，SONiC的所有测试用例都是用ansible playbook写的。2019年开始使用pytest， 2020年9月份之后，只有用pytest写的测试用例才被采纳。</p>
 <h2 id="物理拓扑"><a href="#物理拓扑" class="headerlink" title="物理拓扑"></a>物理拓扑</h2><p><img src="https://rancho333.gitee.io/uploads/physical-topology.png"></p>
 <ol>
 <li>DUT和leaf fanout的端口一一互联</li>
-<li>leaf fanout与DUT相连的端口进行VLAN隔离</li>
+<li>leaf fanout与DUT相连的端口进行VLAN隔离<span id="more"></span></li>
 <li>root fanout连接leaf fanout与testbed server</li>
 <li>root fanout的端口工作在vlan trunk模式下</li>
 <li>任一testbed server可以发送带有vlan tag的包到达DUT端口（root fanout的trunk口需要使能该vlan tag）</li>
@@ -2523,12 +2495,12 @@
   <entry>
     <title>vxlan学习</title>
     <url>/2021/02/03/vxlan%E5%AD%A6%E4%B9%A0/</url>
-    <content><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>vxlan是overlay层的应用，vlan是underlay层的应用。这篇文档是vxlan的学习文档，在学习vxlan之前，会简单介绍下vlan，之后进入vxlan学习。学习完成后，应该搞明白以下的几个问题：</p>
+    <content><![CDATA[<p>vxlan是overlay层的应用，vlan是underlay层的应用。这篇文档是vxlan的学习文档，在学习vxlan之前，会简单介绍下vlan，之后进入vxlan学习。学习完成后，应该搞明白以下的几个问题：</p>
 <ul>
 <li>什么是vxlan</li>
 <li>vxlan解决了什么问题，应用场景是什么</li>
 <li>vxlan报文的封装格式是什么样的</li>
-<li>什么是VTEP和VNI</li>
+<li>什么是VTEP和VNI<span id="more"></span></li>
 <li>哪些VTEP之间需要建立vxlan隧道<ul>
 <li>什么是<code>同一大二层域</code></li>
 </ul>
