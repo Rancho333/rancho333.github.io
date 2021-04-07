@@ -2268,7 +2268,7 @@
 <li>使能LACP/LLDP</li>
 <li>关闭STP功能</li>
 </ul>
-<h3 id="Testbed-server"><a href="#Testbed-server" class="headerlink" title="Testbed server"></a>Testbed server</h3><p><img src="https://rancho333.gitee.io/pictures/testbed_server.png"></p>
+<h3 id="Testbed-server"><a href="#Testbed-server" class="headerlink" title="Testbed server"></a>Testbed server</h3><p><img src="https://rancho333.gitee.io/pictures/testbed-server.png"></p>
 <h4 id="网络连接"><a href="#网络连接" class="headerlink" title="网络连接"></a>网络连接</h4><ul>
 <li>testbed server有两个网络接口<ul>
 <li>trunk端口连接root fanout</li>
@@ -2417,7 +2417,7 @@
 <li>所有的DUT端口直连VMs</li>
 <li>PTF容器只有注入端口</li>
 </ul>
-<h4 id="t1-lag"><a href="#t1-lag" class="headerlink" title="t1-lag"></a>t1-lag</h4><p><img src="https://rancho333.gitee.io/pictures/testbed-ti-lag.png"></p>
+<h4 id="t1-lag"><a href="#t1-lag" class="headerlink" title="t1-lag"></a>t1-lag</h4><p><img src="https://rancho333.gitee.io/pictures/testbed-t1-lag.png"></p>
 <ul>
 <li>需要24个VMs</li>
 <li>所有的DUT端口直连VMs</li>

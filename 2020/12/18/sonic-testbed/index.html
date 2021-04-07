@@ -28,16 +28,16 @@
 <meta property="og:description" content="写在前面最初，SONiC的所有测试用例都是用ansible playbook写的。2019年开始使用pytest， 2020年9月份之后，只有用pytest写的测试用例才被采纳。但是ansible依然很重要，pytest-ansible插件连接pytest与ansible。pytest通过ansible进行多设备协同工作。">
 <meta property="og:locale">
 <meta property="og:image" content="https://rancho333.gitee.io/pictures/physical-topology.png">
-<meta property="og:image" content="https://rancho333.gitee.io/pictures/testbed_server.png">
+<meta property="og:image" content="https://rancho333.gitee.io/pictures/testbed-server.png">
 <meta property="og:image" content="https://rancho333.gitee.io/pictures/testbed-direct.png">
 <meta property="og:image" content="https://rancho333.gitee.io/pictures/testbed-injected.png">
 <meta property="og:image" content="https://rancho333.gitee.io/pictures/testbed-t1.png">
-<meta property="og:image" content="https://rancho333.gitee.io/pictures/testbed-ti-lag.png">
+<meta property="og:image" content="https://rancho333.gitee.io/pictures/testbed-t1-lag.png">
 <meta property="og:image" content="https://rancho333.gitee.io/pictures/testbed-ptf32.png">
 <meta property="og:image" content="https://rancho333.gitee.io/pictures/testbed-ptf64.png">
 <meta property="og:image" content="https://rancho333.gitee.io/pictures/testbed-t0.png">
 <meta property="article:published_time" content="2020-12-18T15:29:56.000Z">
-<meta property="article:modified_time" content="2021-04-07T06:57:17.078Z">
+<meta property="article:modified_time" content="2021-04-07T07:59:28.310Z">
 <meta property="article:author" content="Rancho">
 <meta property="article:tag" content="SONiC">
 <meta name="twitter:card" content="summary">
@@ -243,7 +243,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-07 06:57:17" itemprop="dateModified" datetime="2021-04-07T06:57:17+00:00">2021-04-07</time>
+                <time title="Modified: 2021-04-07 07:59:28" itemprop="dateModified" datetime="2021-04-07T07:59:28+00:00">2021-04-07</time>
               </span>
 
           
@@ -274,7 +274,7 @@
 <li>使能LACP/LLDP</li>
 <li>关闭STP功能</li>
 </ul>
-<h3 id="Testbed-server"><a href="#Testbed-server" class="headerlink" title="Testbed server"></a>Testbed server</h3><p><img src="https://rancho333.gitee.io/pictures/testbed_server.png"></p>
+<h3 id="Testbed-server"><a href="#Testbed-server" class="headerlink" title="Testbed server"></a>Testbed server</h3><p><img src="https://rancho333.gitee.io/pictures/testbed-server.png"></p>
 <h4 id="网络连接"><a href="#网络连接" class="headerlink" title="网络连接"></a>网络连接</h4><ul>
 <li>testbed server有两个网络接口<ul>
 <li>trunk端口连接root fanout</li>
@@ -423,7 +423,7 @@
 <li>所有的DUT端口直连VMs</li>
 <li>PTF容器只有注入端口</li>
 </ul>
-<h4 id="t1-lag"><a href="#t1-lag" class="headerlink" title="t1-lag"></a>t1-lag</h4><p><img src="https://rancho333.gitee.io/pictures/testbed-ti-lag.png"></p>
+<h4 id="t1-lag"><a href="#t1-lag" class="headerlink" title="t1-lag"></a>t1-lag</h4><p><img src="https://rancho333.gitee.io/pictures/testbed-t1-lag.png"></p>
 <ul>
 <li>需要24个VMs</li>
 <li>所有的DUT端口直连VMs</li>
