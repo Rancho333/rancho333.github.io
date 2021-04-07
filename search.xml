@@ -1641,6 +1641,7 @@
     <title>对SONiC项目的认识</title>
     <url>/2021/02/25/%E5%AF%B9SONiC%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AE%A4%E8%AF%86/</url>
     <content><![CDATA[<h1 id="SONiC简介"><a href="#SONiC简介" class="headerlink" title="SONiC简介"></a>SONiC简介</h1><p>不做过多赘述，SONiC本质就是一个Linux交换机网络操作系统，它有两个特点。</p>
+<span id="more"></span>
 <p>第一，它是基于SAI的，在没有SAI之前所有的芯片都要通过自己的SDK与上层软件进行通信，相当于用自己的“方言”与上层操作系统通信，SAI把这个“方言”标准化，大家的芯片用同样的语言同上层的控制软件交流，因为有了SAI，所以才能建立一个操作系统。有了SAI之后，适配ASIC的工作由芯片厂商完成，白盒交换机厂商推出一款新产品所花费的时间大大缩短。</p>
 <p>第二，基于Docker，Sonic有丰富的扩展性。依托于Linux,Docker生态，Sonic孕育了丰富的管理软件和解决方案。而其自身也于Redis, Quagga, LLDP等开源技术碰撞出更多火花。</p>
 <p>2016年，SONiC的理念就是将传统交换机OS拆分成多个容器化组件的解决方案，进而也定义了控制面的容器化架构，囊括了组件和编程接口。</p>
