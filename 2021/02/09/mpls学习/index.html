@@ -33,8 +33,8 @@
 <meta property="og:image" content="https://rancho333.gitee.io/pictures/mpls_network.png">
 <meta property="og:image" content="https://rancho333.gitee.io/pictures/mpls_node.png">
 <meta property="og:image" content="https://rancho333.gitee.io/pictures/mpls_vpn.png">
-<meta property="article:published_time" content="2021-02-09T02:27:51.000Z">
-<meta property="article:modified_time" content="2021-04-07T04:06:49.087Z">
+<meta property="article:published_time" content="2021-02-09T10:27:51.000Z">
+<meta property="article:modified_time" content="2021-04-07T06:57:17.082Z">
 <meta property="article:author" content="Rancho">
 <meta property="article:tag" content="通信协议">
 <meta name="twitter:card" content="summary">
@@ -233,14 +233,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2021-02-09 02:27:51" itemprop="dateCreated datePublished" datetime="2021-02-09T02:27:51+00:00">2021-02-09</time>
+              <time title="Created: 2021-02-09 10:27:51" itemprop="dateCreated datePublished" datetime="2021-02-09T10:27:51+00:00">2021-02-09</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-07 04:06:49" itemprop="dateModified" datetime="2021-04-07T04:06:49+00:00">2021-04-07</time>
+                <time title="Modified: 2021-04-07 06:57:17" itemprop="dateModified" datetime="2021-04-07T06:57:17+00:00">2021-04-07</time>
               </span>
 
           
@@ -255,6 +255,7 @@
 
       
         <h1 id="MPLS简介"><a href="#MPLS简介" class="headerlink" title="MPLS简介"></a>MPLS简介</h1><p>MPLS(multiprotocol label switching，多协议标签交换)起源于IPv4，最初是为了提高转发速度而提出的（早期路由是只能由软件处理的），其核心技术可扩展到多种网络协议，包括IPv6，IPX(internet packet exchange，网际报文交换)和CLNP(connectionless network protocol,无连接网络协议)等。MPLS中的<em>M</em>指的就是支持多种网络协议。</p>
+<span id="more"></span>
 <h1 id="概念说明"><a href="#概念说明" class="headerlink" title="概念说明"></a>概念说明</h1><h2 id="转发等价类"><a href="#转发等价类" class="headerlink" title="转发等价类"></a>转发等价类</h2><p>MPLS作为一种分类转发技术，将具有相同转发处理方式的分组归位一类，称为FEC(forwarding equivalence class，转发等价类)。相同FEC的分组在MPLS中将获得完全相同的处理。<br>FEC的划分方式非常灵活，可以是源地址、目的地址、源端口、目的端口、协议类型或VPN等为划分依据的任意组合。例如，在传统的采用最长匹配算法的IP转发中，到同一个目的地址的所有报文就是一个FEC。</p>
 <h2 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h2><p>标签是一个长度固定，仅具有本地意义的短标识符，用于唯一标识一个分组所属的FEC。一个标签只能代表一个FEC。标签长度为4个字节，结构如下：</p>
 <p><img src="https://rancho333.gitee.io/pictures/mpls_packet.png"></p>

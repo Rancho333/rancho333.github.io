@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"rancho333.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="深入了解shell必备的两个知识点子shell与shell环境是深入了解shell所必备的两个知识点。shell的实现方式有多种，如bash，sh，zsh等，这些软件本质就是一个shell解释器，最常用的是bash，因为其在几乎所有的Linux发行版中都预安装了。子shell是shell命令的运行机制，而shell环境是shell命令的运行环境，就是我们常说的环境变量了。 命令类型与子shell并">
+  <meta name="description" content="深入了解shell必备的两个知识点子shell与shell环境是深入了解shell所必备的两个知识点。shell的实现方式有多种，如bash，sh，zsh等，这些软件本质就是一个shell解释器，最常用的是bash，因为其在几乎所有的Linux发行版中都预安装了。子shell是shell命令的运行机制，而shell环境是shell命令的运行环境，就是我们常说的环境变量了。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="shell核心机制之子shell与shell环境">
 <meta property="og:url" content="https://rancho333.gitee.io/2021/02/22/shell%E6%A0%B8%E5%BF%83%E6%9C%BA%E5%88%B6%E4%B9%8B%E5%AD%90shell%E4%B8%8Eshell%E7%8E%AF%E5%A2%83/index.html">
 <meta property="og:site_name" content="Rancho Blog">
-<meta property="og:description" content="深入了解shell必备的两个知识点子shell与shell环境是深入了解shell所必备的两个知识点。shell的实现方式有多种，如bash，sh，zsh等，这些软件本质就是一个shell解释器，最常用的是bash，因为其在几乎所有的Linux发行版中都预安装了。子shell是shell命令的运行机制，而shell环境是shell命令的运行环境，就是我们常说的环境变量了。 命令类型与子shell并">
+<meta property="og:description" content="深入了解shell必备的两个知识点子shell与shell环境是深入了解shell所必备的两个知识点。shell的实现方式有多种，如bash，sh，zsh等，这些软件本质就是一个shell解释器，最常用的是bash，因为其在几乎所有的Linux发行版中都预安装了。子shell是shell命令的运行机制，而shell环境是shell命令的运行环境，就是我们常说的环境变量了。">
 <meta property="og:locale">
-<meta property="article:published_time" content="2021-02-22T02:49:31.000Z">
-<meta property="article:modified_time" content="2021-04-07T04:06:49.083Z">
+<meta property="article:published_time" content="2021-02-22T10:49:31.000Z">
+<meta property="article:modified_time" content="2021-04-07T06:57:17.078Z">
 <meta property="article:author" content="Rancho">
 <meta property="article:tag" content="shell">
 <meta name="twitter:card" content="summary">
@@ -226,14 +226,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2021-02-22 02:49:31" itemprop="dateCreated datePublished" datetime="2021-02-22T02:49:31+00:00">2021-02-22</time>
+              <time title="Created: 2021-02-22 10:49:31" itemprop="dateCreated datePublished" datetime="2021-02-22T10:49:31+00:00">2021-02-22</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-07 04:06:49" itemprop="dateModified" datetime="2021-04-07T04:06:49+00:00">2021-04-07</time>
+                <time title="Modified: 2021-04-07 06:57:17" itemprop="dateModified" datetime="2021-04-07T06:57:17+00:00">2021-04-07</time>
               </span>
 
           
@@ -248,6 +248,7 @@
 
       
         <h1 id="深入了解shell必备的两个知识点"><a href="#深入了解shell必备的两个知识点" class="headerlink" title="深入了解shell必备的两个知识点"></a>深入了解shell必备的两个知识点</h1><p>子shell与shell环境是深入了解shell所必备的两个知识点。shell的实现方式有多种，如bash，sh，zsh等，这些软件本质就是一个shell解释器，最常用的是bash，因为其在几乎所有的Linux发行版中都预安装了。<br>子shell是shell命令的运行机制，而shell环境是shell命令的运行环境，就是我们常说的环境变量了。</p>
+<span id="more"></span>
 <h1 id="命令类型与子shell"><a href="#命令类型与子shell" class="headerlink" title="命令类型与子shell"></a>命令类型与子shell</h1><p>并不是在shell里执行的所有命令都会在子shell里执行，我们需要先认识一下shell命令分类。</p>
 <p><code>type</code>命令可以可以显示出命令的类型，对于不同的类型shell解释器有不同的处理方式。命令类型有以下几种：</p>
 <ul>

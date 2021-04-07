@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"rancho333.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="写在前面之前也做过一些移植性的东西，不过都是别人搭好框架，自己填充一些模块，这次有机会完成系统级的移植，非常感谢张总以及胡老师的指点帮助，收获良多！ 移植总述嵌入式系统移植分为四个大块，分别是构建交叉编译工具，rootfs的制作，kernel的配置、编译、移植，BootLoader的移植。需要移植的系统可以在MIPS上跑起来，我只需要顺着原有的编译框架完成ARM64的编译，之后再上板子做具体的调试">
+  <meta name="description" content="写在前面之前也做过一些移植性的东西，不过都是别人搭好框架，自己填充一些模块，这次有机会完成系统级的移植，非常感谢张总以及胡老师的指点帮助，收获良多！">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux系统移植简述">
 <meta property="og:url" content="https://rancho333.gitee.io/2020/03/16/Linux%E7%B3%BB%E7%BB%9F%E7%A7%BB%E6%A4%8D%E7%AE%80%E8%BF%B0/index.html">
 <meta property="og:site_name" content="Rancho Blog">
-<meta property="og:description" content="写在前面之前也做过一些移植性的东西，不过都是别人搭好框架，自己填充一些模块，这次有机会完成系统级的移植，非常感谢张总以及胡老师的指点帮助，收获良多！ 移植总述嵌入式系统移植分为四个大块，分别是构建交叉编译工具，rootfs的制作，kernel的配置、编译、移植，BootLoader的移植。需要移植的系统可以在MIPS上跑起来，我只需要顺着原有的编译框架完成ARM64的编译，之后再上板子做具体的调试">
+<meta property="og:description" content="写在前面之前也做过一些移植性的东西，不过都是别人搭好框架，自己填充一些模块，这次有机会完成系统级的移植，非常感谢张总以及胡老师的指点帮助，收获良多！">
 <meta property="og:locale">
 <meta property="og:image" content="https://rancho333.gitee.io/pictures/buildroot.png">
 <meta property="og:image" content="https://rancho333.gitee.io/pictures/toolchain.png">
@@ -33,8 +33,8 @@
 <meta property="og:image" content="https://rancho333.gitee.io/pictures/veth.png">
 <meta property="og:image" content="https://rancho333.gitee.io/pictures/rootfs.png">
 <meta property="og:image" content="https://rancho333.gitee.io/pictures/panic.png">
-<meta property="article:published_time" content="2020-03-16T06:12:38.000Z">
-<meta property="article:modified_time" content="2021-04-07T04:06:49.083Z">
+<meta property="article:published_time" content="2020-03-16T14:12:38.000Z">
+<meta property="article:modified_time" content="2021-04-07T06:57:17.082Z">
 <meta property="article:author" content="Rancho">
 <meta property="article:tag" content="系统移植">
 <meta name="twitter:card" content="summary">
@@ -233,14 +233,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-03-16 06:12:38" itemprop="dateCreated datePublished" datetime="2020-03-16T06:12:38+00:00">2020-03-16</time>
+              <time title="Created: 2020-03-16 14:12:38" itemprop="dateCreated datePublished" datetime="2020-03-16T14:12:38+00:00">2020-03-16</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-07 04:06:49" itemprop="dateModified" datetime="2021-04-07T04:06:49+00:00">2021-04-07</time>
+                <time title="Modified: 2021-04-07 06:57:17" itemprop="dateModified" datetime="2021-04-07T06:57:17+00:00">2021-04-07</time>
               </span>
 
           
@@ -255,6 +255,7 @@
 
       
         <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>之前也做过一些移植性的东西，不过都是别人搭好框架，自己填充一些模块，这次有机会完成系统级的移植，非常感谢张总以及胡老师的指点帮助，收获良多！</p>
+<span id="more"></span>
 <h1 id="移植总述"><a href="#移植总述" class="headerlink" title="移植总述"></a>移植总述</h1><p>嵌入式系统移植分为四个大块，分别是构建交叉编译工具，rootfs的制作，kernel的配置、编译、移植，BootLoader的移植。需要移植的系统可以在MIPS上跑起来，我只需要顺着原有的编译框架完成ARM64的编译，之后再上板子做具体的调试。</p>
 <h2 id="构建交叉编译工具"><a href="#构建交叉编译工具" class="headerlink" title="构建交叉编译工具"></a>构建交叉编译工具</h2><p>toolchain一般芯片厂家会提供，当然自己通过buildroot构建也是可以的。<br>使用buildroot构建交叉编译工具，下载buildroot2015</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;buildroot.uclibc.org&#x2F;downloads&#x2F;buildroot-2015.08.tar.gz</span><br></pre></td></tr></table></figure>

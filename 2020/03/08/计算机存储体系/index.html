@@ -29,8 +29,8 @@
 <meta property="og:locale">
 <meta property="og:image" content="https://rancho333.gitee.io/pictures/storage.png">
 <meta property="og:image" content="https://rancho333.gitee.io/pictures/register.png">
-<meta property="article:published_time" content="2020-03-08T09:00:34.000Z">
-<meta property="article:modified_time" content="2021-04-07T04:06:49.095Z">
+<meta property="article:published_time" content="2020-03-08T17:00:34.000Z">
+<meta property="article:modified_time" content="2021-04-07T06:57:17.090Z">
 <meta property="article:author" content="Rancho">
 <meta property="article:tag" content="存储">
 <meta property="article:tag" content="flash">
@@ -230,14 +230,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-03-08 09:00:34" itemprop="dateCreated datePublished" datetime="2020-03-08T09:00:34+00:00">2020-03-08</time>
+              <time title="Created: 2020-03-08 17:00:34" itemprop="dateCreated datePublished" datetime="2020-03-08T17:00:34+00:00">2020-03-08</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-07 04:06:49" itemprop="dateModified" datetime="2021-04-07T04:06:49+00:00">2021-04-07</time>
+                <time title="Modified: 2021-04-07 06:57:17" itemprop="dateModified" datetime="2021-04-07T06:57:17+00:00">2021-04-07</time>
               </span>
 
           
@@ -252,6 +252,8 @@
 
       
         <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>在没有接触过嵌入式之前，对于计算机存储的认知仅限于知道硬盘和内存，然后硬盘掉电可以保存数据，内存掉电丢失数据。后来逐渐听到更多的专业名词，什么ROM，RAM，SRAM，DRAM，FLASH,，NandFlash，NorFlash等等了。以前将自己的定位总是局限在协议工程师，对于和硬件和驱动相关的东西有些抵触，随着工作的深入，也时常会用到一些I2C,gpio之类的东东。本着沉下来，归零，再出发的心态，这篇文章用来梳理一下自己对于计算机存储体系的认知。</p>
+<span id="more"></span>
+
 <h1 id="总体架构"><a href="#总体架构" class="headerlink" title="总体架构"></a>总体架构</h1><p>下面这张图大家应该都很熟悉了<br><img src="https://rancho333.gitee.io/pictures/storage.png"><br>生活中的大部分物品，基本都满足“好的不一定是最贵的，但是最贵的一定是好的”，在计算机存储体系中，基本满足了上面这句话。塔尖上的那一小撮是最贵的，最快的，存储空间最小的。在实际生产中需要做到价格与性能（或者说实际需求）的平衡。下面从上到下梳理一下吧。</p>
 <h2 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h2><p>恩，之前软考《网络工程师》的时候接触过一点点.哦，文章有点跑题了，但是还是想记录一下。CPU执行指令分为：取指令，分析指令，执行指令三部曲，这里面会用到一系列的寄存器，有分别属于控制器和运算器，列举几个常见的。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">控制器</span><br><span class="line">    程序计数器PC：存放下一条指令的地址</span><br><span class="line">    指令寄存器IR:存放正在运行的指令</span><br></pre></td></tr></table></figure>

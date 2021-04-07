@@ -20,25 +20,25 @@
     var CONFIG = {"hostname":"rancho333.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="写在前面恩，18年做了半年的组播，算入门吧！最近有个igmp snooping（下面简称igsp）的bug，是个机缘接触一下igsp！ 使用需求简述很多情况下，组播报文要不可避免的经过一些二层交换设备，尤其是在局域网环境里。如下图：  上图中switch会将组播报文当做广播在vlan内进行flood，这是因为组播报文的目的地址为组播地址，在二层设备上学习不到这一类的MAC表项，这样不但浪费网络带宽">
+  <meta name="description" content="写在前面恩，18年做了半年的组播，算入门吧！最近有个igmp snooping（下面简称igsp）的bug，是个机缘接触一下igsp！">
 <meta property="og:type" content="article">
 <meta property="og:title" content="igmp-snooping学习">
-<meta property="og:url" content="https://rancho333.gitee.io/2019/09/09/igmp-snooping%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:url" content="https://rancho333.gitee.io/2019/09/10/igmp-snooping%E5%AD%A6%E4%B9%A0/index.html">
 <meta property="og:site_name" content="Rancho Blog">
-<meta property="og:description" content="写在前面恩，18年做了半年的组播，算入门吧！最近有个igmp snooping（下面简称igsp）的bug，是个机缘接触一下igsp！ 使用需求简述很多情况下，组播报文要不可避免的经过一些二层交换设备，尤其是在局域网环境里。如下图：  上图中switch会将组播报文当做广播在vlan内进行flood，这是因为组播报文的目的地址为组播地址，在二层设备上学习不到这一类的MAC表项，这样不但浪费网络带宽">
+<meta property="og:description" content="写在前面恩，18年做了半年的组播，算入门吧！最近有个igmp snooping（下面简称igsp）的bug，是个机缘接触一下igsp！">
 <meta property="og:locale">
 <meta property="og:image" content="https://rancho333.gitee.io/pictures/environment.png">
 <meta property="og:image" content="https://rancho333.gitee.io/pictures/mc_data.png">
 <meta property="og:image" content="https://rancho333.gitee.io/pictures/concept.png">
-<meta property="article:published_time" content="2019-09-09T22:07:29.000Z">
-<meta property="article:modified_time" content="2021-04-07T04:06:49.095Z">
+<meta property="article:published_time" content="2019-09-10T06:07:29.000Z">
+<meta property="article:modified_time" content="2021-04-07T07:11:22.759Z">
 <meta property="article:author" content="Rancho">
 <meta property="article:tag" content="通信协议">
 <meta property="article:tag" content="igmp snooping">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://rancho333.gitee.io/pictures/environment.png">
 
-<link rel="canonical" href="https://rancho333.gitee.io/2019/09/09/igmp-snooping%E5%AD%A6%E4%B9%A0/">
+<link rel="canonical" href="https://rancho333.gitee.io/2019/09/10/igmp-snooping%E5%AD%A6%E4%B9%A0/">
 
 
 <script id="page-configurations">
@@ -208,7 +208,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2019/09/09/igmp-snooping%E5%AD%A6%E4%B9%A0/">
+    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2019/09/10/igmp-snooping%E5%AD%A6%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/pictures/Rancho.png">
@@ -231,14 +231,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-09-09 22:07:29" itemprop="dateCreated datePublished" datetime="2019-09-09T22:07:29+00:00">2019-09-09</time>
+              <time title="Created: 2019-09-10 06:07:29" itemprop="dateCreated datePublished" datetime="2019-09-10T06:07:29+00:00">2019-09-10</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-07 04:06:49" itemprop="dateModified" datetime="2021-04-07T04:06:49+00:00">2021-04-07</time>
+                <time title="Modified: 2021-04-07 07:11:22" itemprop="dateModified" datetime="2021-04-07T07:11:22+00:00">2021-04-07</time>
               </span>
 
           
@@ -253,6 +253,9 @@
 
       
         <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>恩，18年做了半年的组播，算入门吧！最近有个igmp snooping（下面简称igsp）的bug，是个机缘接触一下igsp！</p>
+<span id="more"></span>
+
+
 <h2 id="使用需求简述"><a href="#使用需求简述" class="headerlink" title="使用需求简述"></a>使用需求简述</h2><p>很多情况下，组播报文要不可避免的经过一些二层交换设备，尤其是在局域网环境里。如下图：</p>
 <p><img src="https://rancho333.gitee.io/pictures/environment.png"></p>
 <p>上图中switch会将组播报文当做广播在vlan内进行flood，这是因为组播报文的目的地址为组播地址，在二层设备上学习不到这一类的MAC表项，这样不但浪费网络带宽，而且影响网络信息安全。配置igsp后，二层组播设备可以侦听和分析组播用户和上游路由器之间的IGMP报文，根据这些信息建立二层组播转发表项，控制组播数据报文的转发。</p>
@@ -317,7 +320,7 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/09/05/Linux%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%E8%AE%B0%E5%BD%95/" rel="prev" title="Linux科学上网记录">
+    <a href="/2019/09/06/Linux%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%E8%AE%B0%E5%BD%95/" rel="prev" title="Linux科学上网记录">
       <i class="fa fa-chevron-left"></i> Linux科学上网记录
     </a></div>
       <div class="post-nav-item">
