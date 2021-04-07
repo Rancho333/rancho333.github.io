@@ -200,86 +200,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2021/02/08/Linux%E8%B7%AF%E7%94%B1%E4%BF%A1%E6%81%AF%E5%AD%A6%E4%B9%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/Rancho.png">
-      <meta itemprop="name" content="Rancho">
-      <meta itemprop="description" content="No pain, no gain!">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Rancho Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/02/08/Linux%E8%B7%AF%E7%94%B1%E4%BF%A1%E6%81%AF%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">Linux路由信息学习</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-02-08 14:14:57" itemprop="dateCreated datePublished" datetime="2021-02-08T14:14:57+00:00">2021-02-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-06 10:52:32" itemprop="dateModified" datetime="2021-04-06T10:52:32+00:00">2021-04-06</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p><code>route</code>命令用来查看Linux内核路由表。</p>
-<h1 id="表项内容说明"><a href="#表项内容说明" class="headerlink" title="表项内容说明"></a>表项内容说明</h1><p><code>route</code>命令输出如下，使用<code>-n</code>选项表示不解析名字，可以加快信息输出速度。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Kernel IP routing table</span><br><span class="line">Destination     Gateway         Genmask         Flags Metric Ref    Use Iface</span><br><span class="line">default         10.204.112.1    0.0.0.0         UG    0      0        0 ens160</span><br><span class="line">10.10.30.0      *               255.255.255.0   U     0      0        0 ens192</span><br><span class="line">10.204.112.0    *               255.255.254.0   U     0      0        0 ens160</span><br><span class="line">link-local      *               255.255.0.0     U     1000   0        0 ens192</span><br><span class="line">172.17.0.0      *               255.255.0.0     U     0      0        0 docker0</span><br></pre></td></tr></table></figure>
-<p>字段解释如下：<br>| 字段 | 说明 |<br>| :— | :— |<br>| Destination | 目标网段或主机 |<br>| Gateway | 网关地址， *或全0表示目标是本主机所属的网络，不需要路由 |<br>| Genmask | 网络掩码 |<br>| Flags | U:路由时活动的；H:目标是个主机；G:路由指向网关；R:恢复动态路由产生的表项；D:由路由的后台程序动态的安装；M:由路由的后台程序修改; !:拒绝路由 |<br>| Metric | 路由距离，到达指定网络所需要的中转数(linux内核中没有使用) |<br>| Ref | 路由项引用次数(linux内核中没有使用) |<br>| Use | 此路由项被路由软件查找的次数 |<br>| Iface | 该路由表项的输出接口 |</p>
-<p>Linux上有三种路由类型：</p>
-<ul>
-<li>主机路由。路由表中指向单个IP地址或主机名的路由记录。主机路由的Flags字段为H。</li>
-<li>网络路由。代表主机可以到达的网络。网络路由的Flags字段为N。</li>
-<li>默认路由。当主机不能再路由表中查找到目标主机的IP地址或网络路由时，数据包就被发送到默认路由上。默认路由的Flags字段为G。</li>
-</ul>
-<p>对于一个物理网卡，Linux默认只支持一条默认路由。当然可以通过route命令手动添加多条默认路由，当重新启动网口时，会把其它默认路由去掉，只剩下一条该网口生成的默认路由。</p>
-<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><h2 id="添加或删除路由"><a href="#添加或删除路由" class="headerlink" title="添加或删除路由"></a>添加或删除路由</h2><p>route {add | del } [-net|-host] [网域或主机] netmask [mask] [gw|dev]</p>
-<p>route add default gw 192.168.5.1</p>
-<p>route add -net 10.204.0.0/16 eth0<br>route add -net 10.204.0.0/26 gw 10.204.123.1</p>
-<h2 id="查询路由信息"><a href="#查询路由信息" class="headerlink" title="查询路由信息"></a>查询路由信息</h2><p>route -nee</p>
-<p>ee选项表示详细信息</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2021/02/03/vxlan%E5%AD%A6%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -311,7 +231,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-06 10:52:32" itemprop="dateModified" datetime="2021-04-06T10:52:32+00:00">2021-04-06</time>
+                <time title="Modified: 2021-04-07 04:06:49" itemprop="dateModified" datetime="2021-04-07T04:06:49+00:00">2021-04-07</time>
               </span>
 
           
@@ -352,7 +272,7 @@
 </li>
 </ul>
 <h1 id="vlan介绍"><a href="#vlan介绍" class="headerlink" title="vlan介绍"></a>vlan介绍</h1><p>VLAN(virtual local area network)即虚拟局域网，是将一个物理的LAN在逻辑上划分多个广播域的通信技术。根据IEEE 802.1Q协议规定，在以太网数据帧的目的MAC地址和源MAC地址字段之后、协议字段之前加入4个字节的VLAN tag，用以标识VLAN信息，VLAN数据帧格式如下图所示。</p>
-<p><img src="https://rancho333.github.io/uploads/vlan_frame.png"></p>
+<p><img src="https://rancho333.gitee.io/pictures/vlan_frame.png"></p>
 <p>对于交换机而言，其内部处理的数据帧都带有VLAN tag，现网中交换机连接的设备只会接收Untagged帧。交换机需要有识别Untagged帧并在收发时给帧添加、剥离VLAN标签的能力，交换机间的接口需要有同时识别和发送多个vlan数据帧的能力。</p>
 <p>根据接口对象和收发数据帧处理的不同，下面介绍4中链路类型，用以适应不同的连接和组网：</p>
 <ul>
@@ -398,7 +318,7 @@
 </tbody></table>
 <p>两个概念，vlan的透传和终结，vlan的透传就是某个vlan不仅在一台交换机上有效，它还要通过某种方式延伸到别的以太网交换机上，在别的设备上照样有效，vlan的透传可以使用802.1Q协议，trunk链路上使用。vlan的终结意思相对，某个vlan的有效域不能再延伸到别的设备，或者不能通过某条链路延伸到别的设备，可以使用pvlan技术实现，主要在vlan数据出端口到终端设备，或者上三层转发时剥离。这两者的本质就是保留vlan tag和去除vlan tag。</p>
 <h1 id="vxlan学习"><a href="#vxlan学习" class="headerlink" title="vxlan学习"></a>vxlan学习</h1><h2 id="什么是vxlan"><a href="#什么是vxlan" class="headerlink" title="什么是vxlan"></a>什么是vxlan</h2><p>vxlan(virtual extensible local area network)虚拟扩展局域网，是有IETF定义的NVO3(network virtualization over layer 3)标准技术之一。vxlan的本质是一种隧道技术，将L2的以太帧封装到UDP报文中在L3网络中传输。虽然从名字上看，vxlan是vlan的一种扩展协议，但是vxlan构建虚拟隧道的本领已经和vlan迥然不同了。vxlan报文格式如下图所示。</p>
-<p><img src="https://rancho333.github.io/uploads/vxlan_tag.png"></p>
+<p><img src="https://rancho333.gitee.io/pictures/vxlan_tag.png"></p>
 <p>如上图所示，VTEP对VM发送的原始以太帧（original L2 frame）进行了如下的封装：</p>
 <table>
 <thead>
@@ -433,7 +353,7 @@
 <p>对于虚拟机动态迁移，不仅虚拟机的IP地址不变，而且虚拟机的运行状态也必须保持原状（如TCP会话状态），所以虚拟机动态迁移只能在一个二层域中进行。vxlan可以将整个数据中心基础网络虚拟化成一台巨大的“二层交换机”，所有的服务器都连结在这台二层交换机上。underlay网路具体如何转发，服务器完全无需关心。将虚拟机从“二层交换机”的一个端口换到另一个端口，完全无需变更IP地址。<br>使用这种理念的技术协议，除了vxlan外，还有NVGRE、STT等。</p>
 <p>传统网络中，vlan数量只有4000个左右，vxlan理论上可以支持16M的vxlan段，从而满足大规模不同网络之间的标识、隔离需求。</p>
 <h2 id="vxlan的隧道是如何建立的"><a href="#vxlan的隧道是如何建立的" class="headerlink" title="vxlan的隧道是如何建立的"></a>vxlan的隧道是如何建立的</h2><h3 id="vxlan中的VTEP和VNI"><a href="#vxlan中的VTEP和VNI" class="headerlink" title="vxlan中的VTEP和VNI"></a>vxlan中的VTEP和VNI</h3><p>下面了解一下vxlan网络模型以及一些常见的概念，如下图所示，两台服务器之间通过vxlan的网络进行通信。</p>
-<p><img src="https://rancho333.github.io/uploads/vxlan_network_module.png"></p>
+<p><img src="https://rancho333.gitee.io/pictures/vxlan_network_module.png"></p>
 <p>如上图所示，vxlan报文在vtep两端又一个封装和解封装的操作。</p>
 <p>VTEP(vxlan tunnel endpoints, vxlan隧道断点)是vxlan网路的边缘设备，是vxlan隧道的起点个终点，vxlan对用户原始数据帧的封装和解封装均在VTEP上进行。VTEP既可以是一台独立的网络设备，也可以是服务器中的虚拟交换机。</p>
 <p>VNI(vxlan network identifier, vxlan网络标识符)是一种类似VLAN ID的用户标识，一个VNI代表了一个租户，属于不同的VNI虚拟机之间不能直接进行二层通信。在分布式网关的部署场景下，VNI可以分为二层VNI和三层VNI：</p>
@@ -480,11 +400,11 @@
 <li>二层网关：用于终端接入vxlan网络，也可用于同一vxlan网络的子网通信</li>
 <li>三层网关：用于vxlan网络中跨子网通信以及访问外部网络</li>
 </ul>
-<p>具体说明下。<br>vxlan三层网关。用于终结vxlan网络，将vxlan报文转换成传统三层报文发送至IP网络，适用于vxlan网络内服务器与远端之间的三层互访；同时也作不同vxlan网络互通，如下图所示.当服务器访问外部网络时，vxlan三层网关剥离对应vxlan报文封装，送入IP网络；当外部终端访问vxlan内的服务器时，vxlan根据目的IP地址所属vxlan及所属的VTEP，加上对应的vxlan报文头封装进入vxlan网络。vxlan之间的互访流量与此类似，vxlan网关剥离vxlan报文头，并基于目的IP地址所属vxlan及所属的VTEP，重新封装后送入另外的vxlan网络。<br><img src="https://rancho333.github.io/uploads/vxlan_l3_gateway.png"></p>
+<p>具体说明下。<br>vxlan三层网关。用于终结vxlan网络，将vxlan报文转换成传统三层报文发送至IP网络，适用于vxlan网络内服务器与远端之间的三层互访；同时也作不同vxlan网络互通，如下图所示.当服务器访问外部网络时，vxlan三层网关剥离对应vxlan报文封装，送入IP网络；当外部终端访问vxlan内的服务器时，vxlan根据目的IP地址所属vxlan及所属的VTEP，加上对应的vxlan报文头封装进入vxlan网络。vxlan之间的互访流量与此类似，vxlan网关剥离vxlan报文头，并基于目的IP地址所属vxlan及所属的VTEP，重新封装后送入另外的vxlan网络。<br><img src="https://rancho333.gitee.io/pictures/vxlan_l3_gateway.png"></p>
 <p>vxlan二层网关。用于终结vxlan网络。将vxlan报文转换成对应的传统二层网络送到传统以太网路，适用于vxlan网络内服务器与远端终端或远端服务器的二层互联。如在不同网络中做虚拟机迁移时，当业务需要传统网络中服务器与vxlan网络中服务器在同一个二层中，此时需要使用vxlan二层网关打通vxlan网络和二层网络。如下图所示。vxlan10网络中的服务器要和IP网络中vlan100的业务二层互通，此时就需要通过vxlan的二层网关进行互联。vxlan10的报文进入IP网络的流量，剥离vxlan报文头，根据vxlan的标签查询对应的vlan网络，并据此在二层报文中加入vlan的802.1Q报文送入IP网络；相反vlan100的业务流量进入vxlan也需要根据vlan获知对应的vxlan的vni，根据目的mac地址获知远端vtep的IP地址，基于以上信息进行vxlan封装后送入对应的vxlan网络。</p>
-<p><img src="https://rancho333.github.io/uploads/vxlan_l2_gateway.png"></p>
+<p><img src="https://rancho333.gitee.io/pictures/vxlan_l2_gateway.png"></p>
 <h3 id="vxlan集中式网关与分布式网关"><a href="#vxlan集中式网关与分布式网关" class="headerlink" title="vxlan集中式网关与分布式网关"></a>vxlan集中式网关与分布式网关</h3><p>集中式网关指将三层网关集中部署在一台设备上,如下图所示，所有跨子网的流量都经过这个三层网关转发，实现流量的集中管理。</p>
-<p><img src="https://rancho333.github.io/uploads/vxlan_gateway.png"></p>
+<p><img src="https://rancho333.gitee.io/pictures/vxlan_gateway.png"></p>
 <p>集中式网关的优点和缺点如下：</p>
 <ul>
 <li>优点：对跨子网流量进行集中管理，网关部署和管理比较简单</li>
@@ -495,7 +415,7 @@
 </li>
 </ul>
 <p>vxlan分布式网关是指在典型的”spine-leaf”组网结构下，将leaf节点作为vxlan隧道断点VTEP，每个leaf节点都可作为vxlan三层网关(同时也是vxlan二层网关)，spine节点不感知vxlan隧道，只作为vxlan报文的转发节点。如下图所示</p>
-<p><img src="https://rancho333.github.io/uploads/vxlan_gateway_2.png"></p>
+<p><img src="https://rancho333.gitee.io/pictures/vxlan_gateway_2.png"></p>
 <p>部署分布式网关时：</p>
 <ul>
 <li>spine节点：关注于高速IP转发，强调的是设备的高速转发能力</li>
@@ -511,9 +431,9 @@
 <li>leaf节点只需要学习自身连接服务器的ARP表项，而不必像集中三层网关一样，需要学习所有服务器的ARP表项，解决了集中式三层网关带来的ARP表项瓶颈问题，网络规模扩展能力强</li>
 </ul>
 <h2 id="vxlan网络中报文时如何转发的"><a href="#vxlan网络中报文时如何转发的" class="headerlink" title="vxlan网络中报文时如何转发的"></a>vxlan网络中报文时如何转发的</h2><p>这里介绍集中式vxlan中相同子网内、不同子网间是如何进行通信的。对于分布式vxlan网络，在EVPN中介绍。<br>对于二三层转发通信细节不是很清楚的同学，建议学习下二层与三层ping中arp与icmp报文的交互细节。</p>
-<h3 id="集中式vxlan中同子网互通流程"><a href="#集中式vxlan中同子网互通流程" class="headerlink" title="集中式vxlan中同子网互通流程"></a>集中式vxlan中同子网互通流程</h3><p><img src="https://rancho333.github.io/uploads/vxlan_l2_ct.png"></p>
+<h3 id="集中式vxlan中同子网互通流程"><a href="#集中式vxlan中同子网互通流程" class="headerlink" title="集中式vxlan中同子网互通流程"></a>集中式vxlan中同子网互通流程</h3><p><img src="https://rancho333.gitee.io/pictures/vxlan_l2_ct.png"></p>
 <p>如上图所示，VM_A、VM_B、VM_C属于相同网段，且同属VNI 5000。C要与A进行通信，对于首次通信，需要通过ARP获取对方MAC。在vlan子网通信中，arp报文在vlan内广播。在vxlan相同子网中，ARP请求报文转发流程见下图</p>
-<p><img src="https://rancho333.github.io/uploads/vxlan_l2_arp_request.png"></p>
+<p><img src="https://rancho333.gitee.io/pictures/vxlan_l2_arp_request.png"></p>
 <p>A向C进行MAC请求的过程如下：</p>
 <ol>
 <li>A发送ARP请求报文请求C的MAC</li>
@@ -536,7 +456,7 @@
 <li>B和C收到arp报文后，按照arp报文处理方式进行丢弃或应答。这里C向A发送ARP应答。</li>
 </ol>
 <p>ARP应答报文转发流程见下图</p>
-<p><img src="https://rancho333.github.io/uploads/vxlan_l2_arp_reply.png"></p>
+<p><img src="https://rancho333.gitee.io/pictures/vxlan_l2_arp_reply.png"></p>
 <p>C向A发送ARP 应答报文的过程如下：</p>
 <ol>
 <li>A向C发送ARP应答报文</li>
@@ -558,11 +478,11 @@
 </li>
 </ol>
 <p>至此，A和C均已学习到了对方的MAC地址。</p>
-<h3 id="集中式vxlan不同子网互通流程"><a href="#集中式vxlan不同子网互通流程" class="headerlink" title="集中式vxlan不同子网互通流程"></a>集中式vxlan不同子网互通流程</h3><p><img src="https://rancho333.github.io/uploads/vxlan_l3_ct.png"></p>
+<h3 id="集中式vxlan不同子网互通流程"><a href="#集中式vxlan不同子网互通流程" class="headerlink" title="集中式vxlan不同子网互通流程"></a>集中式vxlan不同子网互通流程</h3><p><img src="https://rancho333.gitee.io/pictures/vxlan_l3_ct.png"></p>
 <p>A、B分属不同网段，且分别属于VNI 5000和VNI 6000。A、B对应的三层网关分别是VTEP_3上的BDIF 10和BDIF 20的IP地址。VTEP_3上存在到两个网段的路由。</p>
 <p>BDIF接口的功能与VLAN IF接口类似，是基于BD创建的三层逻辑接口，用以实现不同子网之间的通信，或vxlan网络与非vxlan网络之间的通信。</p>
 <p>对于首次通信，类比与underlay网络中跨网段通信。A请求网关BDIF 10 MAC，然后将数据包发送给网关BDIF 10，BDIF 10将数据包路由至BDIF 20，BDIF 20请求B的MAC，然后将数据包发送给B。具体流程如下：</p>
-<p><img src="https://rancho333.github.io/uploads/vxlan_l3_arp.png"></p>
+<p><img src="https://rancho333.gitee.io/pictures/vxlan_l3_arp.png"></p>
 <p>数据报文转发流程如下：</p>
 <ol>
 <li>A将数据报文发送给网关。报文的源MAC是A MAC，目的MAC是网管BDIF 10的MAC；报文的源IP是A的IP，目的IP是B的IP</li>
@@ -587,7 +507,7 @@
 </ol>
 <p>vxlan网络与非vxlan网络之间的互通，也需要借助三层网关，但是不同在于：报文在vxlan网络侧会进行封装，而在非vxlan网络侧不需要进行封装。报文从vxlan侧进入网关并解封后，就按照普通单播报文的发送方式进行转发。</p>
 <h2 id="overlay网络的三种构建模式"><a href="#overlay网络的三种构建模式" class="headerlink" title="overlay网络的三种构建模式"></a>overlay网络的三种构建模式</h2><p>在数据中心，部分业务不适合进行虚拟化(如小机服务器，高性能数据库服务器),这些服务器会直接与物理交换机互联；对于服务器(虚拟机)，接入的可以是虚拟交换机(OpenvSwitch),也可以是物理交换机，因此存在如下图所示的三种接入模型。</p>
-<p><img src="https://rancho333.github.io/uploads/vxlan_network_module_2.png"></p>
+<p><img src="https://rancho333.gitee.io/pictures/vxlan_network_module_2.png"></p>
 <p>以上，在network overlay方案中，所有终端均采用物理交换机作为VTEP节点；host overlay方案中，所有终端均采用虚拟交换机作为VTEP节点；hybird overlay方案中，既有物理交换机接入，又有虚拟交换机接入，且软件VTEP和硬件VTEP之间可以基于标准协议互通。</p>
 <h2 id="vxlan与SDN"><a href="#vxlan与SDN" class="headerlink" title="vxlan与SDN"></a>vxlan与SDN</h2><p>vxlan只定义了转发平面的流程，对于控制平面还没有规范，一般采取三种方式：</p>
 <ol>
@@ -646,7 +566,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-06 10:52:32" itemprop="dateModified" datetime="2021-04-06T10:52:32+00:00">2021-04-06</time>
+                <time title="Modified: 2021-04-07 04:06:49" itemprop="dateModified" datetime="2021-04-07T04:06:49+00:00">2021-04-07</time>
               </span>
 
           
@@ -665,8 +585,8 @@
 <h1 id="Linux环境准备"><a href="#Linux环境准备" class="headerlink" title="Linux环境准备"></a>Linux环境准备</h1><h2 id="minicom安装"><a href="#minicom安装" class="headerlink" title="minicom安装"></a>minicom安装</h2><p>通过以下命令安装minicom。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt install  lrzsz</span><br><span class="line">apt install minicom</span><br></pre></td></tr></table></figure>
 
-<h2 id="串口参数设置"><a href="#串口参数设置" class="headerlink" title="串口参数设置"></a>串口参数设置</h2><p><code>minicom -s</code>进行参数设置。<br><img src="https://rancho333.github.io/uploads/minicom_s.png"></p>
-<p>按如下参数进行设置.<br><img src="https://rancho333.github.io/uploads/serial_port.png"><br>可以在插拔usb转串口线在<code>/dev</code>查看串口设备。波特率以设备波特率为准。</p>
+<h2 id="串口参数设置"><a href="#串口参数设置" class="headerlink" title="串口参数设置"></a>串口参数设置</h2><p><code>minicom -s</code>进行参数设置。<br><img src="https://rancho333.gitee.io/pictures/minicom_s.png"></p>
+<p>按如下参数进行设置.<br><img src="https://rancho333.gitee.io/pictures/serial_port.png"><br>可以在插拔usb转串口线在<code>/dev</code>查看串口设备。波特率以设备波特率为准。</p>
 <p>设置完成后记得保存设置。</p>
 <h2 id="设备登录"><a href="#设备登录" class="headerlink" title="设备登录"></a>设备登录</h2><p>在shell下输入<code>minicom</code>即可登录设备。<br>minicom的控制命令。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Ctrl-A x        退出minicom</span><br><span class="line">Ctrl-A z        显示快捷键帮助信息</span><br></pre></td></tr></table></figure>
@@ -790,7 +710,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-06 10:52:32" itemprop="dateModified" datetime="2021-04-06T10:52:32+00:00">2021-04-06</time>
+                <time title="Modified: 2021-04-07 04:06:49" itemprop="dateModified" datetime="2021-04-07T04:06:49+00:00">2021-04-07</time>
               </span>
 
           
@@ -813,7 +733,7 @@
 </ol>
 <h1 id="Systemd概述"><a href="#Systemd概述" class="headerlink" title="Systemd概述"></a>Systemd概述</h1><p>Linux一直没有一个统一的管理平台，所以各种资料与学习都很零散，而且是一个分散的管理系统。Systemd是一个趋势，不然这么多发行版(Arch Linux、Debian系、Red Hat系)也不会去集成它了。</p>
 <p>Systemd的设计目标是：为系统的启动和管理提供一套完整的解决方案。</p>
-<p>Systemd的优点是功能强大，使用方便。缺点是体系庞大，非常复杂，与操作系统其它部分强耦合。<br><img src="https://rancho333.github.io/uploads/arch_of_systemd.png"></p>
+<p>Systemd的优点是功能强大，使用方便。缺点是体系庞大，非常复杂，与操作系统其它部分强耦合。<br><img src="https://rancho333.gitee.io/pictures/arch_of_systemd.png"></p>
 <h1 id="Systemd命令族"><a href="#Systemd命令族" class="headerlink" title="Systemd命令族"></a>Systemd命令族</h1><p>Systemd是一组命令的集合，涉及到系统管理的各个方面。</p>
 <h2 id="systemctl"><a href="#systemctl" class="headerlink" title="systemctl"></a>systemctl</h2><p><code>systemctl</code>是Systemd的主命令，用于系统管理。systemctl接受服务（.service），挂载点（.mount）,套接口（.socket）和设备（.device）作为单元。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">systemctl --version                 #查看systemd的版本</span><br><span class="line">systemctl reboot                    #重启系统</span><br><span class="line">systemctl poweroff                  #掉电</span><br><span class="line">systemctl halt                      #CPU停止工作</span><br><span class="line">systemctl suspend                   #暂停系统</span><br><span class="line"></span><br><span class="line">systemctl list-unit-files           #列出所有可用单元</span><br><span class="line">            [--type&#x3D;service]        #所有服务</span><br><span class="line">            [--type&#x3D;mount]          #所有系统挂载点</span><br><span class="line">            [--type&#x3D;socket]         #所有可用系统套接口</span><br><span class="line">systemctl list-units                #列出所有运行中的单元</span><br><span class="line">systemctl --failed                  #列出所有失败的单元</span><br><span class="line"></span><br><span class="line">systemctl status                    #显示系统状态</span><br><span class="line">            [XX.service]            #检查某个服务状态</span><br><span class="line">systemctl start XX.service          </span><br><span class="line">systemctl restart XX.service</span><br><span class="line">systemctl stop XX.service</span><br><span class="line">systemctl reload XX.service         #启动、重启、停止、重载服务</span><br><span class="line"></span><br><span class="line">systemctl is-active XX.service      #检查某个单元是否正在运行</span><br><span class="line">systemctl is-enabled XX.service     #检查某个单元是否启用</span><br><span class="line">systemctl is-failed XX.service      #检查某个单元是否启动失败</span><br><span class="line"></span><br><span class="line">systemctl enable XX.service         #在启动时启用服务</span><br><span class="line">systemctl disable XX.service        #在启动时禁止服务</span><br><span class="line">systemctl kill XX.service           #杀死服务</span><br><span class="line">systemctl show XX                   #检查某个服务的所有配置细节</span><br><span class="line"></span><br><span class="line">systemctl mask XX.service           #屏蔽服务</span><br><span class="line">systemctl unmask XX.service         #显示服务</span><br><span class="line"></span><br><span class="line">systemctl list-dependencies XX.service      #获取某个服务的依赖性列表</span><br><span class="line"></span><br><span class="line">systemctl get-default               #查看启动时的默认target</span><br><span class="line"></span><br><span class="line">systemctl daemon-reload             # 重新加载配置文件</span><br><span class="line">systemctl restart foobar            # 重启相关服务</span><br></pre></td></tr></table></figure>
@@ -840,7 +760,7 @@
 <h2 id="unit配置文件"><a href="#unit配置文件" class="headerlink" title="unit配置文件"></a>unit配置文件</h2><p>每一个unit都有一个配置文件，告诉systemd怎么启动这个unit。<br>systemd默认从<code>/etc/systemd/system</code>读取配置文件。这里面部分文件是符号链接，指向<code>/lib/systemd/system</code>或者<code>/usr/lib/systemd/system</code>。</p>
 <p><code>systemctl enable</code>的本质就是在上面两个目录的文件之间建立符号链接关系。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable XX.service</span><br><span class="line">等同于</span><br><span class="line">ln -s &#x2F;lib&#x2F;systemd&#x2F;system&#x2F;XX.service &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;XX.service</span><br></pre></td></tr></table></figure>
-<p><img src="https://rancho333.github.io/uploads/systemd_enable.png"></p>
+<p><img src="https://rancho333.gitee.io/pictures/systemd_enable.png"></p>
 <p>如果配置文件里面设置了开机启动，<code>systemctl enable</code>命令相当于激活开机启动。</p>
 <p>配置文件的后缀名就是该unit的种类，systemd默认后缀名是<code>.service</code>，所以<code>bluetooth</code>等效于<code>bluetooth.service</code>。</p>
 <p><code>systemctl list-unit-files</code>会显示每个unit的状态，一共有四种：</p>
@@ -850,7 +770,7 @@
 <li>static: 该配置文件没有[install]部分，无法执行，只能做为其它配置文件的依赖</li>
 <li>masked：该配置文件被禁止建立启动链接</li>
 </ul>
-<h2 id="配置文件的格式"><a href="#配置文件的格式" class="headerlink" title="配置文件的格式"></a>配置文件的格式</h2><p>配置文件示例如下：<br><img src="https://rancho333.github.io/uploads/systemd_config_file.png"></p>
+<h2 id="配置文件的格式"><a href="#配置文件的格式" class="headerlink" title="配置文件的格式"></a>配置文件的格式</h2><p>配置文件示例如下：<br><img src="https://rancho333.gitee.io/pictures/systemd_config_file.png"></p>
 <p>配置文件分为Unit、Service、Install等区块，每个区块中都是key-value形式的配置。</p>
 <p><code>[Unit]</code>是配置文件的第一个区块，用来定义Unit的元数据，以及配置与其他Unit的关系，主要字段如下：</p>
 <ul>
@@ -914,7 +834,7 @@
 <h2 id="Unit区块中的启动顺序与依赖关系"><a href="#Unit区块中的启动顺序与依赖关系" class="headerlink" title="Unit区块中的启动顺序与依赖关系"></a>Unit区块中的启动顺序与依赖关系</h2><p>启动顺序由<code>Before</code>和<code>After</code>字段表示。Before表明应该在value表示的服务<em>之前</em>启动，After表示应该在value表示的服务<em>之后</em>启动。这两个字段只涉及到启动顺序而不设计依赖关系。</p>
 <p>举例来说，SONiC中的bgp服务需要用redis数据库存储数据。如果在配置文件中只定义在redis之后启动，而没有定义依赖关系。设备启动后，由于某些原因，redis挂掉了，这之后bgp就会无法建立数据库连接。</p>
 <p>设置依赖关系，需要使用<code>Wants</code>和<code>Requires</code>字段。Wants字段表明两者之间存在<em>弱依赖</em>关系，即如果value表明的服务启动失败或者停止运行，不影响主服务的继续执行。Requires字段则表明两者之间存在<em>强依赖</em>关系，即如果value表明的服务启动失败或者异常退出，那么主服务也必须退出。注意这两个字段只涉及依赖关系，与启动顺序无关，默认情况下不是同时启动的。</p>
-<p>依赖于某一服务才能正常运行，可以同时定义Requires和After字段，如下所示。<br><img src="https://rancho333.github.io/uploads/requires_after.png"></p>
+<p>依赖于某一服务才能正常运行，可以同时定义Requires和After字段，如下所示。<br><img src="https://rancho333.gitee.io/pictures/requires_after.png"></p>
 <h2 id="Services区块的小问题"><a href="#Services区块的小问题" class="headerlink" title="Services区块的小问题"></a>Services区块的小问题</h2><p>Services区块定义如何启动当前服务。</p>
 <p>在所有的启动设置之前加上一个连词号(-),表示<em>抑制错误</em>，即错误发生的时候，不影响其它命令的执行。比如，<code>EnvironmentFile=-/etc/sysconfig/sshd</code>（注意等号后面的那个连词号），就表示即使<code>/etc/sysconfig/sshd</code>文件不存在，也不会抛出错误。</p>
 <p><code>KillMode</code>字段定义了Systemd如何停止服务，value可以设置的值如下：</p>
@@ -926,7 +846,7 @@
 <h2 id="Install区块的小问题"><a href="#Install区块的小问题" class="headerlink" title="Install区块的小问题"></a>Install区块的小问题</h2><p>Install区块定义如何安装这个配置文件，即怎样做到开机启动。</p>
 <p><code>WanteBy</code>字段表示该服务所在的Target。systemd默认启动的Target可以通过<code>systemctl get-default</code>查看到。服务必须加到这个Target或这个Target的子Target中才能开机启动。</p>
 <p>常用的Target有两个，一个是<code>multi-user.target</code>，表示多用户命令行状态；另一个是<code>graphical.target</code>，表示图形用户状态，它依赖于<code>multi-user.target</code>，SONiC使用的是后者。官方文档有一张非常清晰的<a target="_blank" rel="noopener" href="https://www.freedesktop.org/software/systemd/man/bootup.html#System%20Manager%20Bootup">Target依赖关系图</a></p>
-<h2 id="Target的配置文件"><a href="#Target的配置文件" class="headerlink" title="Target的配置文件"></a>Target的配置文件</h2><p>在<code>/lib/systemd/system</code>下可以找到Target的配置文件,以<code>graphical.target</code>为例：<br><img src="https://rancho333.github.io/uploads/graphical_target.png"><br>其中：</p>
+<h2 id="Target的配置文件"><a href="#Target的配置文件" class="headerlink" title="Target的配置文件"></a>Target的配置文件</h2><p>在<code>/lib/systemd/system</code>下可以找到Target的配置文件,以<code>graphical.target</code>为例：<br><img src="https://rancho333.gitee.io/pictures/graphical_target.png"><br>其中：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Requires字段：要求basic.target一起运行。</span><br><span class="line">Conflicts字段：冲突字段。如果rescue.service或rescue.target正在运行，multi-user.target就不能运行，反之亦然。</span><br><span class="line">After：表示multi-user.target在basic.target 、 rescue.service、 rescue.target之后启动，如果它们有启动的话。</span><br><span class="line">AllowIsolate：允许使用systemctl isolate命令切换到multi-user.target。</span><br></pre></td></tr></table></figure>
 
 <h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>一般而言，配置文件存放在<code>/lib/systemd/system</code>和<code>/usr/lib/systemd/system</code>目录下，通过<code>systemctl enable</code>在<code>/etc/systemd/system</code>创建符号链接指向前者，Systemd会执行etc下的文件，前提是文件中的Install配对了Target。</p>
@@ -1187,7 +1107,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-06 10:52:32" itemprop="dateModified" datetime="2021-04-06T10:52:32+00:00">2021-04-06</time>
+                <time title="Modified: 2021-04-07 04:06:49" itemprop="dateModified" datetime="2021-04-07T04:06:49+00:00">2021-04-07</time>
               </span>
 
           
@@ -1203,7 +1123,7 @@
       
           <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>在嵌入式设备调试中，经常会使用console口对设备进行管理。使用vim进行文件编辑时，会发现屏幕回显有问题，例如，行显示不会逐步递增到屏幕底端，列显示时换行错乱。这是tty设置的<code>rows</code>与<code>cols</code>与实际的屏幕尺寸不适配。</p>
 <h1 id="对于console连接"><a href="#对于console连接" class="headerlink" title="对于console连接"></a>对于console连接</h1><p>我们可以使用<code>stty -a</code>查看stty的所有配置信息，其中第一行包括波特率，终端的大小（以字符为基准）。也可以直接使用<code>stty size</code>查看终端的大小。</p>
-<p><img src="https://rancho333.github.io/uploads/stty.png"></p>
+<p><img src="https://rancho333.gitee.io/pictures/stty.png"></p>
 <p>对于常见的远程登录软件，如<code>xshell</code>和<code>secure CRT</code>会在软件底端显示出当前终端的大小，我们按照这个数值进行设定即可。之后<code>reset</code>终端设置。如果显示依然不正常，最大化窗口然后再恢复即可。</p>
 <h1 id="对于ssh或telent连接"><a href="#对于ssh或telent连接" class="headerlink" title="对于ssh或telent连接"></a>对于ssh或telent连接</h1><p>为什么使用ssh或者telnet连接时不会出现这种终端显示的问题呢，因为ssh当窗口大小发生变化后，会自动的调整stty的数值。可以尝试调整窗口大小，然后<code>stty size</code>查看终端大小与软件显示的窗口大小进行比较。</p>
 <h1 id="写在后面"><a href="#写在后面" class="headerlink" title="写在后面"></a>写在后面</h1><p>Linux的TTY子系统其实是一个很复杂的点。其中包括的知识点有<code>行编辑</code>、<code>进程组</code>、<code>会话组</code>、<code>信号控制</code>、<code>流控制与I/O阻塞</code>、<code>TTY配置</code>等。</p>
@@ -1464,7 +1384,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-06 10:52:32" itemprop="dateModified" datetime="2021-04-06T10:52:32+00:00">2021-04-06</time>
+                <time title="Modified: 2021-04-07 04:06:49" itemprop="dateModified" datetime="2021-04-07T04:06:49+00:00">2021-04-07</time>
               </span>
 
           
@@ -1494,14 +1414,14 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$(addprefix $(DEST)&#x2F;, $(MAIN_TARGET)): $(DEST)&#x2F;% :                                       </span><br><span class="line">    pushd .&#x2F;src                     </span><br><span class="line">                                    </span><br><span class="line">    # Remove any stale data         </span><br><span class="line">    rm -rf .&#x2F;device                 </span><br><span class="line">                                    </span><br><span class="line">    # Create a new dir and copy all ONIE-platform-string-named dirs into it              </span><br><span class="line">    mkdir .&#x2F;device                  </span><br><span class="line">    cp -r -L ..&#x2F;..&#x2F;..&#x2F;device&#x2F;*&#x2F;* .&#x2F;device&#x2F;                                               </span><br><span class="line">                                    </span><br><span class="line">    # Create hwsku for virtual switch</span><br><span class="line">    for d in &#96;find -L ..&#x2F;..&#x2F;..&#x2F;device -maxdepth 3 -mindepth 3 -type d | grep -vE &quot;(plugins|led-code)&quot;&#96;; do \</span><br><span class="line">        cp -Lr $$d device&#x2F;x86_64-kvm_x86_64-r0&#x2F; ; \                                      </span><br><span class="line">        cp .&#x2F;sai.vs_profile device&#x2F;x86_64-kvm_x86_64-r0&#x2F;$$(basename $$d)&#x2F;sai.profile; \  </span><br><span class="line">        grep -v ^# device&#x2F;x86_64-kvm_x86_64-r0&#x2F;$$(basename $$d)&#x2F;port_config.ini | awk &#39;&#123;i&#x3D;i+1;print &quot;eth&quot;i&quot;:&quot;$$2&#125;&#39; &gt; device&#x2F;x86_64-kvm_x86_64-r0&#x2F;$$(basename $$d)&#x2F;lanemap.ini</span><br><span class="line">    done;                           </span><br><span class="line">                                    </span><br><span class="line">    # Build the package                                                                                                                                       </span><br><span class="line">    dpkg-buildpackage -rfakeroot -b -us -uc</span><br></pre></td></tr></table></figure>
 <p>在<code>src/sonic-device-data/src/Makefile</code>中有config和media的测试</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">test:</span><br><span class="line">    # Execute Broadcom config file test</span><br><span class="line">    pushd ..&#x2F;tests&#x2F;</span><br><span class="line">    for f in $$(find ..&#x2F;..&#x2F;..&#x2F;device -name &quot;*.config.bcm&quot;); do</span><br><span class="line">        .&#x2F;config_checker $$f</span><br><span class="line">    done</span><br><span class="line">    for f in $$(find ..&#x2F;..&#x2F;..&#x2F;device -name media_settings.json); do                                                                                           </span><br><span class="line">        .&#x2F;media_checker $$f</span><br><span class="line">    done</span><br><span class="line">    popd</span><br></pre></td></tr></table></figure>
-<p>使用<code>dpkg -X target/debs/stretch/sonic-device-data_1.0-1_all.deb</code>或者在<code>fsroot/usr/share/sonic/device/</code>目录下可以发现<code>device</code>相关的文件。这些文件与设备目录上<code>/usr/share/sonic/device/</code>的文件相对应。<br>在<code>sonic_debian_extension.sh</code>脚本中会将其释放到根文件系统中去。<br><img src="https://rancho333.github.io/uploads/device_data.png"><br>注意，在slave.mk中操作一下才能看到脚本，否则它做为中间文件，编译完成后会被自动删除。</p>
+<p>使用<code>dpkg -X target/debs/stretch/sonic-device-data_1.0-1_all.deb</code>或者在<code>fsroot/usr/share/sonic/device/</code>目录下可以发现<code>device</code>相关的文件。这些文件与设备目录上<code>/usr/share/sonic/device/</code>的文件相对应。<br>在<code>sonic_debian_extension.sh</code>脚本中会将其释放到根文件系统中去。<br><img src="https://rancho333.gitee.io/pictures/device_data.png"><br>注意，在slave.mk中操作一下才能看到脚本，否则它做为中间文件，编译完成后会被自动删除。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-       $(if $($*_DOCKERS),</span><br><span class="line">-               rm sonic_debian_extension.sh,</span><br><span class="line">-       )</span><br><span class="line">+#      $(if $($*_DOCKERS),</span><br><span class="line">+#              rm sonic_debian_extension.sh,</span><br><span class="line">+#      )</span><br><span class="line"> </span><br><span class="line">        chmod a+x $@</span><br><span class="line">        $(FOOTER)</span><br></pre></td></tr></table></figure>
 
 <p>对于porting而言，可以修改Makefile中cmd的规则，只拷贝需要的device和只进行与之对应的test。</p>
 <h2 id="platform的编译"><a href="#platform的编译" class="headerlink" title="platform的编译"></a>platform的编译</h2><p><code>slave.mk</code>是SONiC项目真正的Makefile，所有的编译规则在里面可以找到，<code>platform</code>的入口在：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ifneq ($(CONFIGURED_PLATFORM), undefined)</span><br><span class="line">include $(PLATFORM_PATH)&#x2F;rules.mk</span><br><span class="line">endif </span><br></pre></td></tr></table></figure>
 <p>我们在执行<code>make configure PLATFORM=platform</code>时会指定platform，从而找到对应的rules.mk。</p>
-<p><img src="https://rancho333.github.io/uploads/rules_mk.png"></p>
+<p><img src="https://rancho333.gitee.io/pictures/rules_mk.png"></p>
 <p>这里面关注三个文件</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sai.mk                          # 指定SAI版本以及下载路径</span><br><span class="line">platform-modules-device.mk      # 指定设备platform源文件路径，编译打包成debian</span><br><span class="line">one-image.mk                    # 指定SONiC系统安装镜像名称</span><br></pre></td></tr></table></figure>
 <p>sai由ASIC厂商维护，作为设备厂商，我们直接使用即可。Makefile中通过指定url在编译时下载指定版本sai，对于此类重要的模块文件，可以将之缓存到本地，指定本地url进行使用。</p>
@@ -1511,9 +1431,9 @@
 <p>通过在<code>one-image.mk</code>中增删<code>**_PLATFORM_MODULE</code>可以选择将在<code>platform-modules-device.mk</code>中编译好的对应机型的deb包拷贝到文件系统中。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">diff --git a&#x2F;platform&#x2F;broadcom&#x2F;one-image.mk b&#x2F;platform&#x2F;broadcom&#x2F;one-image.mk</span><br><span class="line">index 8cbf7269..edc51460 100644</span><br><span class="line">--- a&#x2F;platform&#x2F;broadcom&#x2F;one-image.mk</span><br><span class="line">+++ b&#x2F;platform&#x2F;broadcom&#x2F;one-image.mk</span><br><span class="line">@@ -54,8 +54,8 @@ $(SONIC_ONE_IMAGE)_LAZY_INSTALLS +&#x3D; $(DELL_S6000_PLATFORM_MODULE) \</span><br><span class="line">                                $(ALPHANETWORKS_SNH60B0_640F_PLATFORM_MODULE) \</span><br><span class="line">                                $(BRCM_XLR_GTS_PLATFORM_MODULE) \</span><br><span class="line">                                $(DELTA_AG9032V2A_PLATFORM_MODULE) \</span><br><span class="line">-                               $(JUNIPER_QFX5210_PLATFORM_MODULE) \</span><br><span class="line">-                               $(CEL_SILVERSTONE_PLATFORM_MODULE)</span><br><span class="line">+                               #$(JUNIPER_QFX5210_PLATFORM_MODULE) \</span><br><span class="line">+                               #$(CEL_SILVERSTONE_PLATFORM_MODULE)</span><br></pre></td></tr></table></figure>
 
-<p>对于打包好的platform文件，会在<code>sonic_debian_extension.sh</code>中拷贝到文件系统中去<br><img src="https://rancho333.github.io/uploads/platform_module.png"></p>
+<p>对于打包好的platform文件，会在<code>sonic_debian_extension.sh</code>中拷贝到文件系统中去<br><img src="https://rancho333.gitee.io/pictures/platform_module.png"></p>
 <p>上面这张图片上就是裁剪过后只会拷贝<code>cel-b3010</code>这一款机型的platform。有兴趣的同学可以研究下是如何实现的。</p>
-<p>在SONiC的安装镜像第一次启动时，会在<code>rc.local</code>中将其释放到文件系统中去.<br><img src="https://rancho333.github.io/uploads/platform_module_2.png"></p>
+<p>在SONiC的安装镜像第一次启动时，会在<code>rc.local</code>中将其释放到文件系统中去.<br><img src="https://rancho333.gitee.io/pictures/platform_module_2.png"></p>
 <p>对于<code>platform-modules-*_amd64.deb</code>，里面包含了device的驱动，会在systemd中添加服务完成驱动的加载。这个deb的生成规则参见<code>platform/broadcom/sonic-platform-modules-cel/debian/</code>，主要修改如下几个文件：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rules</span><br><span class="line">control</span><br></pre></td></tr></table></figure>
 <p>以及添加</p>
@@ -1525,6 +1445,302 @@
 <h1 id="SONiC启动简述"><a href="#SONiC启动简述" class="headerlink" title="SONiC启动简述"></a>SONiC启动简述</h1><p>对于从onie下面安装SONiC，在onie下面会维护一个<code>machine.conf</code>文件，这里面有设备的详细信息，之后SONiC会根据这里的信息完成初始化的文件加载流程。</p>
 <p>对于从SONiC下面直接安装SONiC，修改grub，暂不做深入研究。</p>
 <p>对于systemd的初始化，SDK的初始化，platform/chassis的初始化，后续有需要在继续研究。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2020/12/25/ARP%E5%8D%8F%E8%AE%AE%E7%AE%80%E8%BF%B0%E5%8F%8A%E5%BA%94%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/Rancho.png">
+      <meta itemprop="name" content="Rancho">
+      <meta itemprop="description" content="No pain, no gain!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rancho Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/25/ARP%E5%8D%8F%E8%AE%AE%E7%AE%80%E8%BF%B0%E5%8F%8A%E5%BA%94%E7%94%A8/" class="post-title-link" itemprop="url">ARP协议简述及应用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-12-25 13:22:08" itemprop="dateCreated datePublished" datetime="2020-12-25T13:22:08+00:00">2020-12-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-04-07 04:06:49" itemprop="dateModified" datetime="2021-04-07T04:06:49+00:00">2021-04-07</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>这篇文章分为两个部分ARP协议简介以及ARP协议的实际应用。</p>
+<h1 id="ARP协议简介"><a href="#ARP协议简介" class="headerlink" title="ARP协议简介"></a>ARP协议简介</h1><h2 id="ARP的作用"><a href="#ARP的作用" class="headerlink" title="ARP的作用"></a>ARP的作用</h2><p>ARP(Address Resolution Protocol，地址解析协议)是将IP地址解析为以太网MAC地址的协议。与之相对的，将MAC地址解析为IP地址的协议称为RARP。</p>
+<p>在局域网中，当终端设备需要将数据发送给另一个终端设备时，它必须知道对方网络的IP地址。但是仅仅有IP地址是不够的，因为IP数据必须封装成帧才能通过物理网络发送，因此发送端还必须有接收端的MAC地址，所以需要一个从IP地址到物理地址的映射。ARP就是实现这个功能的协议。</p>
+<h2 id="ARP报文的结构"><a href="#ARP报文的结构" class="headerlink" title="ARP报文的结构"></a>ARP报文的结构</h2><p><img src="https://rancho333.gitee.io/pictures/arp_protocol.png"> </p>
+<p>对于各个字段的解释如下</p>
+<table>
+<thead>
+<tr>
+<th align="left">字段</th>
+<th align="left">长度（bit）</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Ethernet Address of destination</td>
+<td align="left">48</td>
+<td align="left">目的以太网地址。发送ARP请求时，为广播MAC地址，0xFF.FF.FF.FF.FF.FF</td>
+</tr>
+<tr>
+<td align="left">Ethernet Address of sneder</td>
+<td align="left">48</td>
+<td align="left">源以太网地址</td>
+</tr>
+<tr>
+<td align="left">Frame Type</td>
+<td align="left">16</td>
+<td align="left">表示报文类型。对于ARP请求或应答，该字段为0x0806</td>
+</tr>
+<tr>
+<td align="left">Hardware Type</td>
+<td align="left">16</td>
+<td align="left">表示硬件地址的类型。对于以太网，该字段为1</td>
+</tr>
+<tr>
+<td align="left">Protocol Type</td>
+<td align="left">16</td>
+<td align="left">表示发送方要映射的协议地址类型。对于IP地址，该值为0x0800</td>
+</tr>
+<tr>
+<td align="left">Hardware Length</td>
+<td align="left">8</td>
+<td align="left">表示硬件地址的长度，单位是字节。对于ARP请求或应答来说，该值为6</td>
+</tr>
+<tr>
+<td align="left">Protocol Length</td>
+<td align="left">8</td>
+<td align="left">表示协议地址的长度，单位是字节。对于ARP请求或应答来说，该值为4</td>
+</tr>
+<tr>
+<td align="left">OP</td>
+<td align="left">16</td>
+<td align="left">表示操作类型。1 表示ARP请求，2 表示ARP应答，3表示RARP请求，4表示RARP应答</td>
+</tr>
+<tr>
+<td align="left">Ethernet Address of sneder</td>
+<td align="left">48</td>
+<td align="left">发送方以太网地址。这个字段和ARP报文首部的源以太网地址字段是重复信息</td>
+</tr>
+<tr>
+<td align="left">IP Address of sender</td>
+<td align="left">32</td>
+<td align="left">发送方IP地址</td>
+</tr>
+<tr>
+<td align="left">Ethernet Address of destination</td>
+<td align="left">48</td>
+<td align="left">接收方以太网地址，发送ARP请求时，该处填充全0</td>
+</tr>
+<tr>
+<td align="left">IP Address of destination</td>
+<td align="left">32</td>
+<td align="left">接收方IP地址</td>
+</tr>
+</tbody></table>
+<p>在Linux上可以通过tcpdump工具抓取ARP包</p>
+<p><img src="https://rancho333.gitee.io/pictures/arp_data_raw.png"><br>使用wireshark工具可以更为方便的查看报文中的各个字段：</p>
+<p><img src="https://rancho333.gitee.io/pictures/arp_data.png"> </p>
+<h2 id="ARP地址解析过程"><a href="#ARP地址解析过程" class="headerlink" title="ARP地址解析过程"></a>ARP地址解析过程</h2><p>假设主机A和B在同一个网段，主机A要向主机B发送信息，解析过程如下：</p>
+<ul>
+<li>主机A查看自己的ARP表，找到则直接使用</li>
+<li>如果A在ARP表中没有找到B，则<ul>
+<li>缓存IP数据报文</li>
+<li>发送ARP请求报文，请求B的MAC地址</li>
+</ul>
+</li>
+<li>主机B比较自己的IP地址与ARP请求报文中的IP地址，两者相同则：<ul>
+<li>将A的IP与MAC地址缓存到自己的ARP表中</li>
+<li>单播发送ARP应答报文给主机A，其中包含自己的MAC地址</li>
+</ul>
+</li>
+<li>主机A收到ARP响应后，缓存B的MAC到ARP表中，之后发送IP数据报文</li>
+</ul>
+<p>当主机A和B不在同一网段时，主机A会向网关发送ARP请求。如果网关有主机B的ARP表项，则直接应答A；否则网关广播ARP请求，目标IP地址为主机B的IP地址，网关收到响应报文之后再应答B。</p>
+<h2 id="ARP表"><a href="#ARP表" class="headerlink" title="ARP表"></a>ARP表</h2><p>ARP表分为动态ARP表和静态ARP表。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Address                  HWtype  HWaddress           Flags Mask            Iface</span><br><span class="line">10.204.113.138           ether   00:00:00:00:00:01   C                     ens160</span><br><span class="line">10.204.113.151                   (incomplete)                              ens160</span><br><span class="line">172.17.0.7               ether   02:42:ac:11:00:07   C                     docker0</span><br><span class="line">10.204.112.11            ether   00:e0:ec:47:33:1a   C                     ens160</span><br><span class="line">openbmc-develop.asia.ad  ether   00:e0:4c:06:00:95   C                     ens160</span><br><span class="line">10.204.112.44            ether   6c:b3:11:32:7f:12   C                     ens160</span><br><span class="line">172.17.0.2               ether   02:42:ac:11:00:02   C                     docker0</span><br><span class="line">sonic.asia.ad.celestica  ether   aa:ad:40:03:ba:19   C                     ens160</span><br></pre></td></tr></table></figure>
+
+<h3 id="动态ARP表"><a href="#动态ARP表" class="headerlink" title="动态ARP表"></a>动态ARP表</h3><p>动态ARP表由ARP协议通过ARP报文自动生成与维护，可以被老化，可以被新的ARP报文更新，可以被静态ARP表项覆盖。当到达老化时间、接口down时会删除相应的动态ARP表项。</p>
+<h3 id="静态ARP表项"><a href="#静态ARP表项" class="headerlink" title="静态ARP表项"></a>静态ARP表项</h3><p>静态ARP表项通过手工配置和维护，不会被老化，不会被动态ARP表项覆盖。</p>
+<p>配置静态ARP表项可以增加通信的安全性。静态ARP表项可以限制和指定IP地址的设备通信时使用指定的MAC地址，此时攻击报文无法修改此表项的IP地址和MAC地址的映射关系，<br>从而保护了本设备和指定设备间的正常通信。</p>
+<p>静态ARP表项分为短静态ARP表项和长静态ARP表项。</p>
+<ul>
+<li>长静态ARP表项必须配置IP地址、MAC地址、所在VLAN和出接口。长静态ARP表项可直接用于报文转发。</li>
+<li>短静态ARP表项只需要配置IP地址和MAC地址。<ul>
+<li>如果出接口是三层口，直接用于报文转发</li>
+<li>如果出接口是VLAN虚接口，短静态ARP表项不能直接用于报文转发，当要发送IP数据包时，先发送ARP请求报文，如果收到的response中的<br>源IP和源MAC与所配置的相同，则将收到response的接口加入该静态ARP中，之后用于IP数据包转发。</li>
+</ul>
+</li>
+</ul>
+<p>当希望设备和指定用户只能使用某个固定的IP地址和MAC地址通信时，可以配置短静态ARP表项，当进一步希望这个用户只在某个VLAN内的某个特定接口上连接时就可以配置长静态ARP表项</p>
+<h2 id="免费ARP"><a href="#免费ARP" class="headerlink" title="免费ARP"></a>免费ARP</h2><p>免费ARP是一种特殊的ARP报文，该报文中携带的发送端与目的端IP都是本机IP，发送端MAC时本机MAC，接收端MAC是全f。其本质是keep alive保活/心跳报文的应用。<br>免费ARP报文有以下功能:</p>
+<ul>
+<li>IP地址冲突检测。如果有冲突，冲突设备会给本机发送一个ARP应答，告知IP地址冲突</li>
+<li>设备改变MAC地址，发送免费ARP更新其它设备中的ARP表项</li>
+</ul>
+<p>定时发送免费ARP的应用场景：</p>
+<ul>
+<li>防止仿冒网关的ARP攻击（ARP欺骗）<ul>
+<li>如果攻击者仿冒网关发送免费ARP报文，可以将原本发送到网关的流量重定向到一个错误的MAC地址，导致用户无法正常访问网络。网关接口上使能免费ARP功能后，主机可以学习到正确的网关。</li>
+</ul>
+</li>
+<li>防止ARP表项老化</li>
+<li>防止VRRP虚拟IP地址冲突</li>
+<li>及时更新模糊终结VLAN内设备的MAC地址表</li>
+</ul>
+<h1 id="ARP协议应用"><a href="#ARP协议应用" class="headerlink" title="ARP协议应用"></a>ARP协议应用</h1><p>ARP协议的状态机比较简单，但是应用起来是比较有意思的，一些基础网络问题也是值得思考的。</p>
+<h2 id="二层通信与三层通信中ARP的应用"><a href="#二层通信与三层通信中ARP的应用" class="headerlink" title="二层通信与三层通信中ARP的应用"></a>二层通信与三层通信中ARP的应用</h2><p>二三层设备互通中arp是怎样工作的？</p>
+<p><img src="https://rancho333.gitee.io/pictures/ping_arp.png"><br>如图所示，两个vlan通过interface vlan路由接口实现互通。下文说明中，交换机和终端设备均为初始状态，不含有arp表项。</p>
+<h3 id="A和B之间的互通-二层"><a href="#A和B之间的互通-二层" class="headerlink" title="A和B之间的互通(二层)"></a>A和B之间的互通(二层)</h3><p>以A向B发起ping请求为例。</p>
+<ol>
+<li>A检查报文的目的IP地址发现和自己在同一个网段；</li>
+<li>A—-&gt;B ARP请求报文，该报文在VLAN1内广播<ol>
+<li>报文的dst mac是广播mac，src mac是A mac</li>
+<li>报文的sender MAC是A mac, sender ip是A ip; target mac是全0，target ip是B ip</li>
+</ol>
+</li>
+<li>B—-&gt;A  ARP回应报文<ol>
+<li>报文的dst mac是A mac, src mac是B mac</li>
+<li>报文的sender MAC是B mac(A请求的mac), sender ip是B ip; target mac是A mac，taaget ip是A ip</li>
+</ol>
+</li>
+<li>A—-&gt;B  icmp request</li>
+<li>B—-&gt;A  icmp reply</li>
+</ol>
+<h3 id="A和C之间的互通-三层"><a href="#A和C之间的互通-三层" class="headerlink" title="A和C之间的互通(三层)"></a>A和C之间的互通(三层)</h3><p>以A向C发起ping请求为例。</p>
+<ol>
+<li>A检查报文的目的IP地址，发现和自己不在同一个网段</li>
+<li>A—-&gt;switch(int vlan 1) ARP请求报文，该报文在vlan1内广播<ol>
+<li>报文的dst mac是广播mac，src mac是A mac</li>
+<li>报文的sender MAC是A mac, sender ip是A ip; target mac是全0，target ip是int vlan 1 ip</li>
+</ol>
+</li>
+<li>网关—-&gt; A ARP回应报文<ol>
+<li>报文的dst mac是A mac, src mac是int vlan 1 mac</li>
+<li>报文的sender MAC是int vlan 1 mac(A请求的mac), sender ip是int vlan 1 ip; target mac是A mac，taaget ip是A ip</li>
+</ol>
+</li>
+<li>A—-&gt;switch icmp request<ol>
+<li>报文dst mac是int vlan 1的mac，src mac是A的mac; dst ip是C ip，src ip是A ip</li>
+</ol>
+</li>
+<li>switch收到报文后判断出是三层报文，检查报文的目的IP地址，发现是在自己的直连网段</li>
+<li>switch(int vlan 2)—-&gt;C ARP请求报文，该报文在vlan2内广播</li>
+<li>C—-&gt;switch(int vlan 2) ARP回应报文</li>
+<li>switch(int vlan 2)—-&gt;C icmp request<ol>
+<li>报文的dst mac是C的mac, src mac是int vlan 2的mac; dst ip是C ip, src ip是A ip</li>
+</ol>
+</li>
+<li>C—-&gt;A icmp reply, 这以后的处理同前面icmp request的过程基本相同。</li>
+</ol>
+<p>对报文路由，会对报文的MAC头进行重新封装，而IP层以上的字段基本不变。通过说明报文dst/src MAC的变化，注意ARP在二三层通信中起的作用。后续设备中ARP表有了相应的条目之后，则不会给对方发送ARP请求报文。</p>
+<h2 id="ARP代理"><a href="#ARP代理" class="headerlink" title="ARP代理"></a>ARP代理</h2><p>如果ARP请求是从一个网络的主机发往同一网段却不在同一物理网络上的另一台主机，那么连接它们的具有代理ARP功能的设备就可以回答该请求，这个过程称作代理ARP（Proxy ARP）<br>代理ARP功能屏蔽分离的物理网络这一事实，使用户使用起来，好像在同一物理网络上。<br>代理ARP分为普通代理ARP和本地代理ARP，二者的应用场景有所区别。</p>
+<ul>
+<li>普通代理ARP的应用场景：想要互通的主机分别连接到设备的不同的三层接口上，且这些主机不在同一个广播域中</li>
+<li>本地代理ARP的应用环境为：想要互通的主机连接到设备的同一个三层接口在，且这些主机不在同一个广播域中</li>
+</ul>
+<h3 id="普通代理ARP"><a href="#普通代理ARP" class="headerlink" title="普通代理ARP"></a>普通代理ARP</h3><p>处于同一网段内的主机，当连接到设备的不同三层接口时，可以利用设备的代理ARP功能，通过三层转发实现互通。<br>拓扑如下图所示。设备Router通过两个三层接口Eth1/1和Eth1/2连接两个网络，两个三层接口的IP地址不在同一个网段，但是两个网络内的主机Host A和Host B的地址通过掩码的控制，既与相连设备的接口地址在同一网段，同时二者也处于同一个网段。<br><img src="https://rancho333.gitee.io/pictures/general_arp_agent.png"><br>这种组网场景下，当Host A需要与Host B通信时，由于dst ip与src ip在同一网段，因此Host A会直接对Host B进行ARP请求。但是，两台主机不在同一个广播域中，Host B无法收到Host A的ARP请求报文，当然也就无法应答。<br>通过在Router上启用代理ARP功能，可以解决此问题。启用代理ARP后,Router可以应答Host A的ARP请求。同时，Router相当于Host B的代理，把从其它主机发送过来的报文转发给它。<br>代理ARP的优点是，它可以只被应用在一个设备上（此时设备的作用相当于网关），不会影响到网络中其它设备的路由表。代理ARP功能可以在IP主机没有配置缺省网关或者IP主机没有任何路由能力的情况下使用。</p>
+<h3 id="本地代理ARP"><a href="#本地代理ARP" class="headerlink" title="本地代理ARP"></a>本地代理ARP</h3><p>拓扑如图所示。Host A与Host B属于同一个VLAN 2,但他们分别连接到被二层隔离的端口Eth1/3和Eth1/1上，通过在Router上启用本地代理ARP功能，可以实现Host A和Host B的三层互通。<br><img src="https://rancho333.gitee.io/pictures/local_arp_agent.png"></p>
+<p>本地代理ARP可以在下列三种情况下实现主机之间的三层互通：</p>
+<ul>
+<li>想要互通的主机分别连接到同一个VLAN中的不同的二层隔离端口下</li>
+<li>使能Super VLAN功能后，想要互通的主机属于不同的Sub VLAN</li>
+<li>使能Lsolate-user-vlan功能后，想要互通的主机属于不同的Secondary VLAN</li>
+</ul>
+<h2 id="ARP-Snooping"><a href="#ARP-Snooping" class="headerlink" title="ARP Snooping"></a>ARP Snooping</h2><p>ARP snooping功能是一个用于二层交换网络环境的特性，通过侦听ARP报文建立ARP Snooping表项，从而提供给ARP快速应答和MFF手动方式等使用。<br>设备上的一个VLAN使能ARP Snooping后，该VLAN内所有端口接收的ARP报文会被重定向到CPu。CPU对重定向上送的ARP报文进行分析，获取ARP报文的src ip, src mac, src vlan和入端口信息，建立记录用户信息的ARP Snooping表项。</p>
+<h2 id="ARP快速应答"><a href="#ARP快速应答" class="headerlink" title="ARP快速应答"></a>ARP快速应答</h2><p>在无线产品组网中，AC与AP会建立隧道连接，Client通过AP连接到AC，通过AC，client可以与网关建立连接。当Client发起ARP广播请求时，需要通过AC向所有的AP复制ARP请求，这样会导致ARP广播占用隧道的大量资源，导致性能下降。为了减少ARP广播占用的隧道资源，可以在AC上启用ARP快速应答功能，减少ARP广播报文的影响。</p>
+<p>ARP快速应答功能就是根据AC设备收集的用户信息（DHCP Snooping表项或者ARP Snooping表项），在指定的VLAN内，尽可能的对ARP请求进行应答，从而减少ARP广播报文。</p>
+<h3 id="ARP快速应答工作机制"><a href="#ARP快速应答工作机制" class="headerlink" title="ARP快速应答工作机制"></a>ARP快速应答工作机制</h3><p>ARP快速应答的工作机制如下：</p>
+<ol>
+<li>设备接收到ARP请求报文时，如果请求报文的目的IP地址是设备的VLAN虚接口的IP地址，则由ARP特性进行处理</li>
+<li>如果不是，则根据报文中的目的IP地址查找DHCP Snooping表项<ol>
+<li>如果查找成功，但是查找到的表项的接口和收到请求报文的接口一致，并且接口是以太网接口，则不进行应答，否则立即进行应答</li>
+<li>如果查找失败，则继续查找ARP Snooping表项。如果查找成功，但是查找到的表项的接口和收到请求报文的接口一致，并且接口是以太网接口，则不进行应答，否则立即进行应答。</li>
+<li>如果两个表项均查找失败，则直接转发请求报文或将报文交于其它特性处理。</li>
+</ol>
+</li>
+</ol>
+<h2 id="ARP防御攻击"><a href="#ARP防御攻击" class="headerlink" title="ARP防御攻击"></a>ARP防御攻击</h2><p>ARP协议有简单、易用的优点，但是也因为没有任何安全机制而容易被攻击发起者利用。</p>
+<ul>
+<li>攻击者可以仿冒用户、仿冒网关发送伪造的ARP报文，使网关或主机的ARP表项不正确，从而对网络进行攻击</li>
+<li>攻击者通过向设备发送大量目标IP地址不能解析的IP报文，使得设备试图反复地对目标IP地址进行解析，导致CPU负荷过重及网络流量过大</li>
+<li>攻击者向设备发送大量的ARP报文，对设备的CPU形成冲击。<br>目前ARP攻击和ARP病毒已经成为局域网安全的一大威胁。下面简单说明一下ARP攻防原理。</li>
+</ul>
+<h3 id="ARP防止IP报文攻击功能简介"><a href="#ARP防止IP报文攻击功能简介" class="headerlink" title="ARP防止IP报文攻击功能简介"></a>ARP防止IP报文攻击功能简介</h3><p>如果网络中有主机通过向设备发送大量目标IP地址不能解析的IP报文来攻击设备，则会造成下面的危害：</p>
+<ul>
+<li>设备向目的网段发送大量的ARP请求报文，加重目的网段的负载</li>
+<li>设备会试图反复地对目标IP地址进行解析，增加了CPU的负担</li>
+</ul>
+<p>为了避免这种IP报文攻击所带来的危害，设备提供了下列两个功能：</p>
+<ul>
+<li>如果发送攻击报文的源是固定的，可以采用ARP源抑制功能。开启该功能后，如果网络中某主机向设备某端口连续发送目标IP地址不能解析的IP报文，当每5秒内此主机发出IP报文出发ARP请求报文的流量超过设置的阈值，那么对于由此主机发出的IP报文，设备不允许其触发ARP请求，直至5秒后再处理，从而避免了恶意攻击所造成的危害。</li>
+<li>如果发送攻击报文的源不固定，设备立即产生一个黑洞路由，使得设备在一段时间内将去往该地址的报文直接丢弃。等待黑洞路由老化时间过后，如有报文触发则再次发起解析，如果解析成功则进行转发，否则仍然产生一个黑洞路由将去往改地址的报文丢弃。这种方式能够有效的防止IP报文的攻击，减轻CPU的负担。</li>
+</ul>
+<h3 id="ARP报文限速功能"><a href="#ARP报文限速功能" class="headerlink" title="ARP报文限速功能"></a>ARP报文限速功能</h3><p>ARP报文限速功能是指对上送CPU的ARP报文进行限速，可以防止大量ARP报文对CPU进行冲击。例如，在配置了ARP Detection功能后，设备会将收到的ARP报文重定向到CPU进行检查，这样会引入新的问题：如果攻击者恶意构造大量ARP报文发往设备，会导致设备的CPU负担过重，从而造成其它功能无法正常运行甚至设备瘫痪，这个时候可以启用ARP报文限速功能来控制上送CPU的ARP报文的速率。</p>
+<p>推荐用户在配置了ARP Detection、ARP Snooping、ARP快速应答、MFF，或者发现有ARP泛洪攻击的情况下，使用ARP报文限速功能。</p>
+<h3 id="源MAC地址固定的ARP攻击检测功能"><a href="#源MAC地址固定的ARP攻击检测功能" class="headerlink" title="源MAC地址固定的ARP攻击检测功能"></a>源MAC地址固定的ARP攻击检测功能</h3><p>本特性根据ARP报文的源MAC地址进行统计，在5秒内，如果收到同一源MAC地址的ARP报文超过一定的阈值，则认为存在攻击，系统会将此MAC地址添加到攻击检测表项中。在该攻击检测表项老化之前，如果设置的检查模式为过滤模式，则会打印告警信息并将该源MAC地址发送的ARP报文过滤掉。如果设置为监控模式，则只打印告警信息，不会将源MAC地址发送的ARP报文过滤掉。<br>对于网关或一些重要的服务器，可能会发送大量的ARP报文，为了使这些ARP报文不被过滤掉，可以将这类设备的MAC地址配置成保护MAC，这样，即使该MAC存在攻击也不会被检测过滤。只对上送CPU的ARP报文进行统计。</p>
+<h3 id="ARP报文源MAC一致性检查功能简介"><a href="#ARP报文源MAC一致性检查功能简介" class="headerlink" title="ARP报文源MAC一致性检查功能简介"></a>ARP报文源MAC一致性检查功能简介</h3><p>ARP报文源MAC一致性检查功能主要应用于网关设备上，防御以太网数据帧首部中的源MAC地址和ARP报文中sender mac地址不同的ARP攻击。</p>
+<p>在配置被特性后，网关设备在进行ARP学习前将对ARP报文进行检查。如果以太网数据帧首部中的源MAC地址和ARP报文中sender mac地址不同，则认为是攻击报文，将其丢弃，否则，继续进行ARP学习。</p>
+<h3 id="ARP主动确认功能"><a href="#ARP主动确认功能" class="headerlink" title="ARP主动确认功能"></a>ARP主动确认功能</h3><p>ARP的主动确认功能主要应用于网关设备上，防止攻击者仿冒用户欺骗网关设备。</p>
+<p>启用ARP主动确认功能后，设备在新建或更新ARP表项前需进行主动确认，防止产生错误的ARP表项。</p>
+<h2 id="MLAG结合VARP实现VRRP"><a href="#MLAG结合VARP实现VRRP" class="headerlink" title="MLAG结合VARP实现VRRP"></a>MLAG结合VARP实现VRRP</h2><p>VRRP(virtual router redundancy protocol，虚拟路由器冗余协议)将可以承担网关功能的一组路由器加入到备份组中，形成一台虚拟路由器，局域网内的终端设备只需将虚拟路由器配置为缺省网关即可。VRRP有两个版本，VRRPv2基于IPv4, VRRPv3基于IPv6。正统的VRRP实现起来可能有些复杂，通过MLAG结合VARP可以较为简单的实现VRRP的功能。拓扑如下。<br><img src="https://rancho333.gitee.io/pictures/varp_mlag_vrrp.png"></p>
+<p>原理说明：device作为leaf switch, 下行接host，上行通过mlag连接到两台网关。策略配置之后，host发往网关的流量只会通过mlag中的一个端口发往switch A或switch B, 当mlag中一条线路down掉时，通过另一条线路通信，在switch A和switch B上运行VARP协议，通过配置相同的VIP和VMAC实现网关虚拟化。这里面有两个关键点。</p>
+<ul>
+<li>主机流量同一时间只会发往一台物理网关</li>
+<li>物理网关上配置相同的VIP和VMAC实现网关虚拟化</li>
+</ul>
+<p>对于VARP说明，可以通过ip地址/mac地址确定唯一三层接口，但是三层接口可以被多个ip地址/mac地址定位到。对于虚拟网关，物理网关除了正常配置的ip与mac地址，还会配置一组相同的vip/vmac，主机将vip作为网关ip。对于物理网关：</p>
+<ul>
+<li>只有当主机请求vip时才回复vmac</li>
+<li>主动发送arp或者转发三层报文时，src mac使用的都是自己真实的router mac</li>
+</ul>
+<p>对于主机而言，网关是虚拟的，所以使用虚拟网关ip进行通信<br>对于交换机而言，自己与外界通信需要使用自己真实的ip和mac, 这样对方才能根据真实的ip和mac定位到自己。</p>
+<p>当MLAG交换机配置了VARP之后，host通过arp去请求VARP虚拟网关ip的mac地址，则MLAG-VARP交换机回应的自然是虚拟网关的mac;host发送icmp request给虚拟网关，虚拟网关使用真实的router-mac去回复。</p>
 
       
     </div>
@@ -1611,7 +1827,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-count">42</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

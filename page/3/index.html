@@ -200,302 +200,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2020/12/25/ARP%E5%8D%8F%E8%AE%AE%E7%AE%80%E8%BF%B0%E5%8F%8A%E5%BA%94%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/Rancho.png">
-      <meta itemprop="name" content="Rancho">
-      <meta itemprop="description" content="No pain, no gain!">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Rancho Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/25/ARP%E5%8D%8F%E8%AE%AE%E7%AE%80%E8%BF%B0%E5%8F%8A%E5%BA%94%E7%94%A8/" class="post-title-link" itemprop="url">ARP协议简述及应用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-12-25 13:22:08" itemprop="dateCreated datePublished" datetime="2020-12-25T13:22:08+00:00">2020-12-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-06 10:52:32" itemprop="dateModified" datetime="2021-04-06T10:52:32+00:00">2021-04-06</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>这篇文章分为两个部分ARP协议简介以及ARP协议的实际应用。</p>
-<h1 id="ARP协议简介"><a href="#ARP协议简介" class="headerlink" title="ARP协议简介"></a>ARP协议简介</h1><h2 id="ARP的作用"><a href="#ARP的作用" class="headerlink" title="ARP的作用"></a>ARP的作用</h2><p>ARP(Address Resolution Protocol，地址解析协议)是将IP地址解析为以太网MAC地址的协议。与之相对的，将MAC地址解析为IP地址的协议称为RARP。</p>
-<p>在局域网中，当终端设备需要将数据发送给另一个终端设备时，它必须知道对方网络的IP地址。但是仅仅有IP地址是不够的，因为IP数据必须封装成帧才能通过物理网络发送，因此发送端还必须有接收端的MAC地址，所以需要一个从IP地址到物理地址的映射。ARP就是实现这个功能的协议。</p>
-<h2 id="ARP报文的结构"><a href="#ARP报文的结构" class="headerlink" title="ARP报文的结构"></a>ARP报文的结构</h2><p><img src="https://rancho333.github.io/uploads/arp_protocol.png"> </p>
-<p>对于各个字段的解释如下</p>
-<table>
-<thead>
-<tr>
-<th align="left">字段</th>
-<th align="left">长度（bit）</th>
-<th align="left">含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">Ethernet Address of destination</td>
-<td align="left">48</td>
-<td align="left">目的以太网地址。发送ARP请求时，为广播MAC地址，0xFF.FF.FF.FF.FF.FF</td>
-</tr>
-<tr>
-<td align="left">Ethernet Address of sneder</td>
-<td align="left">48</td>
-<td align="left">源以太网地址</td>
-</tr>
-<tr>
-<td align="left">Frame Type</td>
-<td align="left">16</td>
-<td align="left">表示报文类型。对于ARP请求或应答，该字段为0x0806</td>
-</tr>
-<tr>
-<td align="left">Hardware Type</td>
-<td align="left">16</td>
-<td align="left">表示硬件地址的类型。对于以太网，该字段为1</td>
-</tr>
-<tr>
-<td align="left">Protocol Type</td>
-<td align="left">16</td>
-<td align="left">表示发送方要映射的协议地址类型。对于IP地址，该值为0x0800</td>
-</tr>
-<tr>
-<td align="left">Hardware Length</td>
-<td align="left">8</td>
-<td align="left">表示硬件地址的长度，单位是字节。对于ARP请求或应答来说，该值为6</td>
-</tr>
-<tr>
-<td align="left">Protocol Length</td>
-<td align="left">8</td>
-<td align="left">表示协议地址的长度，单位是字节。对于ARP请求或应答来说，该值为4</td>
-</tr>
-<tr>
-<td align="left">OP</td>
-<td align="left">16</td>
-<td align="left">表示操作类型。1 表示ARP请求，2 表示ARP应答，3表示RARP请求，4表示RARP应答</td>
-</tr>
-<tr>
-<td align="left">Ethernet Address of sneder</td>
-<td align="left">48</td>
-<td align="left">发送方以太网地址。这个字段和ARP报文首部的源以太网地址字段是重复信息</td>
-</tr>
-<tr>
-<td align="left">IP Address of sender</td>
-<td align="left">32</td>
-<td align="left">发送方IP地址</td>
-</tr>
-<tr>
-<td align="left">Ethernet Address of destination</td>
-<td align="left">48</td>
-<td align="left">接收方以太网地址，发送ARP请求时，该处填充全0</td>
-</tr>
-<tr>
-<td align="left">IP Address of destination</td>
-<td align="left">32</td>
-<td align="left">接收方IP地址</td>
-</tr>
-</tbody></table>
-<p>在Linux上可以通过tcpdump工具抓取ARP包</p>
-<p><img src="https://rancho333.gitee.io/uploads/arp_data_raw.png"><br>使用wireshark工具可以更为方便的查看报文中的各个字段：</p>
-<p><img src="https://rancho333.github.io/uploads/arp_data.png"> </p>
-<h2 id="ARP地址解析过程"><a href="#ARP地址解析过程" class="headerlink" title="ARP地址解析过程"></a>ARP地址解析过程</h2><p>假设主机A和B在同一个网段，主机A要向主机B发送信息，解析过程如下：</p>
-<ul>
-<li>主机A查看自己的ARP表，找到则直接使用</li>
-<li>如果A在ARP表中没有找到B，则<ul>
-<li>缓存IP数据报文</li>
-<li>发送ARP请求报文，请求B的MAC地址</li>
-</ul>
-</li>
-<li>主机B比较自己的IP地址与ARP请求报文中的IP地址，两者相同则：<ul>
-<li>将A的IP与MAC地址缓存到自己的ARP表中</li>
-<li>单播发送ARP应答报文给主机A，其中包含自己的MAC地址</li>
-</ul>
-</li>
-<li>主机A收到ARP响应后，缓存B的MAC到ARP表中，之后发送IP数据报文</li>
-</ul>
-<p>当主机A和B不在同一网段时，主机A会向网关发送ARP请求。如果网关有主机B的ARP表项，则直接应答A；否则网关广播ARP请求，目标IP地址为主机B的IP地址，网关收到响应报文之后再应答B。</p>
-<h2 id="ARP表"><a href="#ARP表" class="headerlink" title="ARP表"></a>ARP表</h2><p>ARP表分为动态ARP表和静态ARP表。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Address                  HWtype  HWaddress           Flags Mask            Iface</span><br><span class="line">10.204.113.138           ether   00:00:00:00:00:01   C                     ens160</span><br><span class="line">10.204.113.151                   (incomplete)                              ens160</span><br><span class="line">172.17.0.7               ether   02:42:ac:11:00:07   C                     docker0</span><br><span class="line">10.204.112.11            ether   00:e0:ec:47:33:1a   C                     ens160</span><br><span class="line">openbmc-develop.asia.ad  ether   00:e0:4c:06:00:95   C                     ens160</span><br><span class="line">10.204.112.44            ether   6c:b3:11:32:7f:12   C                     ens160</span><br><span class="line">172.17.0.2               ether   02:42:ac:11:00:02   C                     docker0</span><br><span class="line">sonic.asia.ad.celestica  ether   aa:ad:40:03:ba:19   C                     ens160</span><br></pre></td></tr></table></figure>
-
-<h3 id="动态ARP表"><a href="#动态ARP表" class="headerlink" title="动态ARP表"></a>动态ARP表</h3><p>动态ARP表由ARP协议通过ARP报文自动生成与维护，可以被老化，可以被新的ARP报文更新，可以被静态ARP表项覆盖。当到达老化时间、接口down时会删除相应的动态ARP表项。</p>
-<h3 id="静态ARP表项"><a href="#静态ARP表项" class="headerlink" title="静态ARP表项"></a>静态ARP表项</h3><p>静态ARP表项通过手工配置和维护，不会被老化，不会被动态ARP表项覆盖。</p>
-<p>配置静态ARP表项可以增加通信的安全性。静态ARP表项可以限制和指定IP地址的设备通信时使用指定的MAC地址，此时攻击报文无法修改此表项的IP地址和MAC地址的映射关系，<br>从而保护了本设备和指定设备间的正常通信。</p>
-<p>静态ARP表项分为短静态ARP表项和长静态ARP表项。</p>
-<ul>
-<li>长静态ARP表项必须配置IP地址、MAC地址、所在VLAN和出接口。长静态ARP表项可直接用于报文转发。</li>
-<li>短静态ARP表项只需要配置IP地址和MAC地址。<ul>
-<li>如果出接口是三层口，直接用于报文转发</li>
-<li>如果出接口是VLAN虚接口，短静态ARP表项不能直接用于报文转发，当要发送IP数据包时，先发送ARP请求报文，如果收到的response中的<br>源IP和源MAC与所配置的相同，则将收到response的接口加入该静态ARP中，之后用于IP数据包转发。</li>
-</ul>
-</li>
-</ul>
-<p>当希望设备和指定用户只能使用某个固定的IP地址和MAC地址通信时，可以配置短静态ARP表项，当进一步希望这个用户只在某个VLAN内的某个特定接口上连接时就可以配置长静态ARP表项</p>
-<h2 id="免费ARP"><a href="#免费ARP" class="headerlink" title="免费ARP"></a>免费ARP</h2><p>免费ARP是一种特殊的ARP报文，该报文中携带的发送端与目的端IP都是本机IP，发送端MAC时本机MAC，接收端MAC是全f。其本质是keep alive保活/心跳报文的应用。<br>免费ARP报文有以下功能:</p>
-<ul>
-<li>IP地址冲突检测。如果有冲突，冲突设备会给本机发送一个ARP应答，告知IP地址冲突</li>
-<li>设备改变MAC地址，发送免费ARP更新其它设备中的ARP表项</li>
-</ul>
-<p>定时发送免费ARP的应用场景：</p>
-<ul>
-<li>防止仿冒网关的ARP攻击（ARP欺骗）<ul>
-<li>如果攻击者仿冒网关发送免费ARP报文，可以将原本发送到网关的流量重定向到一个错误的MAC地址，导致用户无法正常访问网络。网关接口上使能免费ARP功能后，主机可以学习到正确的网关。</li>
-</ul>
-</li>
-<li>防止ARP表项老化</li>
-<li>防止VRRP虚拟IP地址冲突</li>
-<li>及时更新模糊终结VLAN内设备的MAC地址表</li>
-</ul>
-<h1 id="ARP协议应用"><a href="#ARP协议应用" class="headerlink" title="ARP协议应用"></a>ARP协议应用</h1><p>ARP协议的状态机比较简单，但是应用起来是比较有意思的，一些基础网络问题也是值得思考的。</p>
-<h2 id="二层通信与三层通信中ARP的应用"><a href="#二层通信与三层通信中ARP的应用" class="headerlink" title="二层通信与三层通信中ARP的应用"></a>二层通信与三层通信中ARP的应用</h2><p>二三层设备互通中arp是怎样工作的？</p>
-<p><img src="https://rancho333.github.io/uploads/ping_arp.png"><br>如图所示，两个vlan通过interface vlan路由接口实现互通。下文说明中，交换机和终端设备均为初始状态，不含有arp表项。</p>
-<h3 id="A和B之间的互通-二层"><a href="#A和B之间的互通-二层" class="headerlink" title="A和B之间的互通(二层)"></a>A和B之间的互通(二层)</h3><p>以A向B发起ping请求为例。</p>
-<ol>
-<li>A检查报文的目的IP地址发现和自己在同一个网段；</li>
-<li>A—-&gt;B ARP请求报文，该报文在VLAN1内广播<ol>
-<li>报文的dst mac是广播mac，src mac是A mac</li>
-<li>报文的sender MAC是A mac, sender ip是A ip; target mac是全0，target ip是B ip</li>
-</ol>
-</li>
-<li>B—-&gt;A  ARP回应报文<ol>
-<li>报文的dst mac是A mac, src mac是B mac</li>
-<li>报文的sender MAC是B mac(A请求的mac), sender ip是B ip; target mac是A mac，taaget ip是A ip</li>
-</ol>
-</li>
-<li>A—-&gt;B  icmp request</li>
-<li>B—-&gt;A  icmp reply</li>
-</ol>
-<h3 id="A和C之间的互通-三层"><a href="#A和C之间的互通-三层" class="headerlink" title="A和C之间的互通(三层)"></a>A和C之间的互通(三层)</h3><p>以A向C发起ping请求为例。</p>
-<ol>
-<li>A检查报文的目的IP地址，发现和自己不在同一个网段</li>
-<li>A—-&gt;switch(int vlan 1) ARP请求报文，该报文在vlan1内广播<ol>
-<li>报文的dst mac是广播mac，src mac是A mac</li>
-<li>报文的sender MAC是A mac, sender ip是A ip; target mac是全0，target ip是int vlan 1 ip</li>
-</ol>
-</li>
-<li>网关—-&gt; A ARP回应报文<ol>
-<li>报文的dst mac是A mac, src mac是int vlan 1 mac</li>
-<li>报文的sender MAC是int vlan 1 mac(A请求的mac), sender ip是int vlan 1 ip; target mac是A mac，taaget ip是A ip</li>
-</ol>
-</li>
-<li>A—-&gt;switch icmp request<ol>
-<li>报文dst mac是int vlan 1的mac，src mac是A的mac; dst ip是C ip，src ip是A ip</li>
-</ol>
-</li>
-<li>switch收到报文后判断出是三层报文，检查报文的目的IP地址，发现是在自己的直连网段</li>
-<li>switch(int vlan 2)—-&gt;C ARP请求报文，该报文在vlan2内广播</li>
-<li>C—-&gt;switch(int vlan 2) ARP回应报文</li>
-<li>switch(int vlan 2)—-&gt;C icmp request<ol>
-<li>报文的dst mac是C的mac, src mac是int vlan 2的mac; dst ip是C ip, src ip是A ip</li>
-</ol>
-</li>
-<li>C—-&gt;A icmp reply, 这以后的处理同前面icmp request的过程基本相同。</li>
-</ol>
-<p>对报文路由，会对报文的MAC头进行重新封装，而IP层以上的字段基本不变。通过说明报文dst/src MAC的变化，注意ARP在二三层通信中起的作用。后续设备中ARP表有了相应的条目之后，则不会给对方发送ARP请求报文。</p>
-<h2 id="ARP代理"><a href="#ARP代理" class="headerlink" title="ARP代理"></a>ARP代理</h2><p>如果ARP请求是从一个网络的主机发往同一网段却不在同一物理网络上的另一台主机，那么连接它们的具有代理ARP功能的设备就可以回答该请求，这个过程称作代理ARP（Proxy ARP）<br>代理ARP功能屏蔽分离的物理网络这一事实，使用户使用起来，好像在同一物理网络上。<br>代理ARP分为普通代理ARP和本地代理ARP，二者的应用场景有所区别。</p>
-<ul>
-<li>普通代理ARP的应用场景：想要互通的主机分别连接到设备的不同的三层接口上，且这些主机不在同一个广播域中</li>
-<li>本地代理ARP的应用环境为：想要互通的主机连接到设备的同一个三层接口在，且这些主机不在同一个广播域中</li>
-</ul>
-<h3 id="普通代理ARP"><a href="#普通代理ARP" class="headerlink" title="普通代理ARP"></a>普通代理ARP</h3><p>处于同一网段内的主机，当连接到设备的不同三层接口时，可以利用设备的代理ARP功能，通过三层转发实现互通。<br>拓扑如下图所示。设备Router通过两个三层接口Eth1/1和Eth1/2连接两个网络，两个三层接口的IP地址不在同一个网段，但是两个网络内的主机Host A和Host B的地址通过掩码的控制，既与相连设备的接口地址在同一网段，同时二者也处于同一个网段。<br><img src="https://rancho333.github.io/uploads/general_arp_agent.png"><br>这种组网场景下，当Host A需要与Host B通信时，由于dst ip与src ip在同一网段，因此Host A会直接对Host B进行ARP请求。但是，两台主机不在同一个广播域中，Host B无法收到Host A的ARP请求报文，当然也就无法应答。<br>通过在Router上启用代理ARP功能，可以解决此问题。启用代理ARP后,Router可以应答Host A的ARP请求。同时，Router相当于Host B的代理，把从其它主机发送过来的报文转发给它。<br>代理ARP的优点是，它可以只被应用在一个设备上（此时设备的作用相当于网关），不会影响到网络中其它设备的路由表。代理ARP功能可以在IP主机没有配置缺省网关或者IP主机没有任何路由能力的情况下使用。</p>
-<h3 id="本地代理ARP"><a href="#本地代理ARP" class="headerlink" title="本地代理ARP"></a>本地代理ARP</h3><p>拓扑如图所示。Host A与Host B属于同一个VLAN 2,但他们分别连接到被二层隔离的端口Eth1/3和Eth1/1上，通过在Router上启用本地代理ARP功能，可以实现Host A和Host B的三层互通。<br><img src="https://rancho333.github.io/uploads/local_arp_agent.png"></p>
-<p>本地代理ARP可以在下列三种情况下实现主机之间的三层互通：</p>
-<ul>
-<li>想要互通的主机分别连接到同一个VLAN中的不同的二层隔离端口下</li>
-<li>使能Super VLAN功能后，想要互通的主机属于不同的Sub VLAN</li>
-<li>使能Lsolate-user-vlan功能后，想要互通的主机属于不同的Secondary VLAN</li>
-</ul>
-<h2 id="ARP-Snooping"><a href="#ARP-Snooping" class="headerlink" title="ARP Snooping"></a>ARP Snooping</h2><p>ARP snooping功能是一个用于二层交换网络环境的特性，通过侦听ARP报文建立ARP Snooping表项，从而提供给ARP快速应答和MFF手动方式等使用。<br>设备上的一个VLAN使能ARP Snooping后，该VLAN内所有端口接收的ARP报文会被重定向到CPu。CPU对重定向上送的ARP报文进行分析，获取ARP报文的src ip, src mac, src vlan和入端口信息，建立记录用户信息的ARP Snooping表项。</p>
-<h2 id="ARP快速应答"><a href="#ARP快速应答" class="headerlink" title="ARP快速应答"></a>ARP快速应答</h2><p>在无线产品组网中，AC与AP会建立隧道连接，Client通过AP连接到AC，通过AC，client可以与网关建立连接。当Client发起ARP广播请求时，需要通过AC向所有的AP复制ARP请求，这样会导致ARP广播占用隧道的大量资源，导致性能下降。为了减少ARP广播占用的隧道资源，可以在AC上启用ARP快速应答功能，减少ARP广播报文的影响。</p>
-<p>ARP快速应答功能就是根据AC设备收集的用户信息（DHCP Snooping表项或者ARP Snooping表项），在指定的VLAN内，尽可能的对ARP请求进行应答，从而减少ARP广播报文。</p>
-<h3 id="ARP快速应答工作机制"><a href="#ARP快速应答工作机制" class="headerlink" title="ARP快速应答工作机制"></a>ARP快速应答工作机制</h3><p>ARP快速应答的工作机制如下：</p>
-<ol>
-<li>设备接收到ARP请求报文时，如果请求报文的目的IP地址是设备的VLAN虚接口的IP地址，则由ARP特性进行处理</li>
-<li>如果不是，则根据报文中的目的IP地址查找DHCP Snooping表项<ol>
-<li>如果查找成功，但是查找到的表项的接口和收到请求报文的接口一致，并且接口是以太网接口，则不进行应答，否则立即进行应答</li>
-<li>如果查找失败，则继续查找ARP Snooping表项。如果查找成功，但是查找到的表项的接口和收到请求报文的接口一致，并且接口是以太网接口，则不进行应答，否则立即进行应答。</li>
-<li>如果两个表项均查找失败，则直接转发请求报文或将报文交于其它特性处理。</li>
-</ol>
-</li>
-</ol>
-<h2 id="ARP防御攻击"><a href="#ARP防御攻击" class="headerlink" title="ARP防御攻击"></a>ARP防御攻击</h2><p>ARP协议有简单、易用的优点，但是也因为没有任何安全机制而容易被攻击发起者利用。</p>
-<ul>
-<li>攻击者可以仿冒用户、仿冒网关发送伪造的ARP报文，使网关或主机的ARP表项不正确，从而对网络进行攻击</li>
-<li>攻击者通过向设备发送大量目标IP地址不能解析的IP报文，使得设备试图反复地对目标IP地址进行解析，导致CPU负荷过重及网络流量过大</li>
-<li>攻击者向设备发送大量的ARP报文，对设备的CPU形成冲击。<br>目前ARP攻击和ARP病毒已经成为局域网安全的一大威胁。下面简单说明一下ARP攻防原理。</li>
-</ul>
-<h3 id="ARP防止IP报文攻击功能简介"><a href="#ARP防止IP报文攻击功能简介" class="headerlink" title="ARP防止IP报文攻击功能简介"></a>ARP防止IP报文攻击功能简介</h3><p>如果网络中有主机通过向设备发送大量目标IP地址不能解析的IP报文来攻击设备，则会造成下面的危害：</p>
-<ul>
-<li>设备向目的网段发送大量的ARP请求报文，加重目的网段的负载</li>
-<li>设备会试图反复地对目标IP地址进行解析，增加了CPU的负担</li>
-</ul>
-<p>为了避免这种IP报文攻击所带来的危害，设备提供了下列两个功能：</p>
-<ul>
-<li>如果发送攻击报文的源是固定的，可以采用ARP源抑制功能。开启该功能后，如果网络中某主机向设备某端口连续发送目标IP地址不能解析的IP报文，当每5秒内此主机发出IP报文出发ARP请求报文的流量超过设置的阈值，那么对于由此主机发出的IP报文，设备不允许其触发ARP请求，直至5秒后再处理，从而避免了恶意攻击所造成的危害。</li>
-<li>如果发送攻击报文的源不固定，设备立即产生一个黑洞路由，使得设备在一段时间内将去往该地址的报文直接丢弃。等待黑洞路由老化时间过后，如有报文触发则再次发起解析，如果解析成功则进行转发，否则仍然产生一个黑洞路由将去往改地址的报文丢弃。这种方式能够有效的防止IP报文的攻击，减轻CPU的负担。</li>
-</ul>
-<h3 id="ARP报文限速功能"><a href="#ARP报文限速功能" class="headerlink" title="ARP报文限速功能"></a>ARP报文限速功能</h3><p>ARP报文限速功能是指对上送CPU的ARP报文进行限速，可以防止大量ARP报文对CPU进行冲击。例如，在配置了ARP Detection功能后，设备会将收到的ARP报文重定向到CPU进行检查，这样会引入新的问题：如果攻击者恶意构造大量ARP报文发往设备，会导致设备的CPU负担过重，从而造成其它功能无法正常运行甚至设备瘫痪，这个时候可以启用ARP报文限速功能来控制上送CPU的ARP报文的速率。</p>
-<p>推荐用户在配置了ARP Detection、ARP Snooping、ARP快速应答、MFF，或者发现有ARP泛洪攻击的情况下，使用ARP报文限速功能。</p>
-<h3 id="源MAC地址固定的ARP攻击检测功能"><a href="#源MAC地址固定的ARP攻击检测功能" class="headerlink" title="源MAC地址固定的ARP攻击检测功能"></a>源MAC地址固定的ARP攻击检测功能</h3><p>本特性根据ARP报文的源MAC地址进行统计，在5秒内，如果收到同一源MAC地址的ARP报文超过一定的阈值，则认为存在攻击，系统会将此MAC地址添加到攻击检测表项中。在该攻击检测表项老化之前，如果设置的检查模式为过滤模式，则会打印告警信息并将该源MAC地址发送的ARP报文过滤掉。如果设置为监控模式，则只打印告警信息，不会将源MAC地址发送的ARP报文过滤掉。<br>对于网关或一些重要的服务器，可能会发送大量的ARP报文，为了使这些ARP报文不被过滤掉，可以将这类设备的MAC地址配置成保护MAC，这样，即使该MAC存在攻击也不会被检测过滤。只对上送CPU的ARP报文进行统计。</p>
-<h3 id="ARP报文源MAC一致性检查功能简介"><a href="#ARP报文源MAC一致性检查功能简介" class="headerlink" title="ARP报文源MAC一致性检查功能简介"></a>ARP报文源MAC一致性检查功能简介</h3><p>ARP报文源MAC一致性检查功能主要应用于网关设备上，防御以太网数据帧首部中的源MAC地址和ARP报文中sender mac地址不同的ARP攻击。</p>
-<p>在配置被特性后，网关设备在进行ARP学习前将对ARP报文进行检查。如果以太网数据帧首部中的源MAC地址和ARP报文中sender mac地址不同，则认为是攻击报文，将其丢弃，否则，继续进行ARP学习。</p>
-<h3 id="ARP主动确认功能"><a href="#ARP主动确认功能" class="headerlink" title="ARP主动确认功能"></a>ARP主动确认功能</h3><p>ARP的主动确认功能主要应用于网关设备上，防止攻击者仿冒用户欺骗网关设备。</p>
-<p>启用ARP主动确认功能后，设备在新建或更新ARP表项前需进行主动确认，防止产生错误的ARP表项。</p>
-<h2 id="MLAG结合VARP实现VRRP"><a href="#MLAG结合VARP实现VRRP" class="headerlink" title="MLAG结合VARP实现VRRP"></a>MLAG结合VARP实现VRRP</h2><p>VRRP(virtual router redundancy protocol，虚拟路由器冗余协议)将可以承担网关功能的一组路由器加入到备份组中，形成一台虚拟路由器，局域网内的终端设备只需将虚拟路由器配置为缺省网关即可。VRRP有两个版本，VRRPv2基于IPv4, VRRPv3基于IPv6。正统的VRRP实现起来可能有些复杂，通过MLAG结合VARP可以较为简单的实现VRRP的功能。拓扑如下。<br><img src="https://rancho333.github.io/uploads/varp_mlag_vrrp.png"></p>
-<p>原理说明：device作为leaf switch, 下行接host，上行通过mlag连接到两台网关。策略配置之后，host发往网关的流量只会通过mlag中的一个端口发往switch A或switch B, 当mlag中一条线路down掉时，通过另一条线路通信，在switch A和switch B上运行VARP协议，通过配置相同的VIP和VMAC实现网关虚拟化。这里面有两个关键点。</p>
-<ul>
-<li>主机流量同一时间只会发往一台物理网关</li>
-<li>物理网关上配置相同的VIP和VMAC实现网关虚拟化</li>
-</ul>
-<p>对于VARP说明，可以通过ip地址/mac地址确定唯一三层接口，但是三层接口可以被多个ip地址/mac地址定位到。对于虚拟网关，物理网关除了正常配置的ip与mac地址，还会配置一组相同的vip/vmac，主机将vip作为网关ip。对于物理网关：</p>
-<ul>
-<li>只有当主机请求vip时才回复vmac</li>
-<li>主动发送arp或者转发三层报文时，src mac使用的都是自己真实的router mac</li>
-</ul>
-<p>对于主机而言，网关是虚拟的，所以使用虚拟网关ip进行通信<br>对于交换机而言，自己与外界通信需要使用自己真实的ip和mac, 这样对方才能根据真实的ip和mac定位到自己。</p>
-<p>当MLAG交换机配置了VARP之后，host通过arp去请求VARP虚拟网关ip的mac地址，则MLAG-VARP交换机回应的自然是虚拟网关的mac;host发送icmp request给虚拟网关，虚拟网关使用真实的router-mac去回复。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2020/12/21/%E5%8A%A0%E5%BC%98%E8%B7%91%E5%9B%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -617,7 +321,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-06 10:52:32" itemprop="dateModified" datetime="2021-04-06T10:52:32+00:00">2021-04-06</time>
+                <time title="Modified: 2021-04-07 04:06:49" itemprop="dateModified" datetime="2021-04-07T04:06:49+00:00">2021-04-07</time>
               </span>
 
           
@@ -632,8 +336,7 @@
 
       
           <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>最初，SONiC的所有测试用例都是用ansible playbook写的。2019年开始使用pytest， 2020年9月份之后，只有用pytest写的测试用例才被采纳。<br>但是ansible依然很重要，pytest-ansible插件连接pytest与ansible。pytest通过ansible进行多设备协同工作。</p>
-<h2 id="物理拓扑"><a href="#物理拓扑" class="headerlink" title="物理拓扑"></a>物理拓扑</h2>
-
+<h2 id="物理拓扑"><a href="#物理拓扑" class="headerlink" title="物理拓扑"></a>物理拓扑</h2><p><img src="https://rancho333.gitee.io/pictures/physical-topology.png"></p>
 <ol>
 <li>DUT和leaf fanout的端口一一互联</li>
 <li>leaf fanout与DUT相连的端口进行VLAN隔离</li>
@@ -648,8 +351,7 @@
 <li>使能LACP/LLDP</li>
 <li>关闭STP功能</li>
 </ul>
-<h3 id="Testbed-server"><a href="#Testbed-server" class="headerlink" title="Testbed server"></a>Testbed server</h3>
-
+<h3 id="Testbed-server"><a href="#Testbed-server" class="headerlink" title="Testbed server"></a>Testbed server</h3><p><img src="https://rancho333.gitee.io/pictures/testbed_server.png"></p>
 <h4 id="网络连接"><a href="#网络连接" class="headerlink" title="网络连接"></a>网络连接</h4><ul>
 <li>testbed server有两个网络接口<ul>
 <li>trunk端口连接root fanout</li>
@@ -658,12 +360,9 @@
 </li>
 </ul>
 <h3 id="VMs"><a href="#VMs" class="headerlink" title="VMs"></a>VMs</h3><p>VMs使用的是Arista的vEOS。它们用来设置测试协议，例如BGP、LACP、LLDP等。它们通过<code>testbed-cli.sh start-vms</code>进行创建。每一个VM使用2G内存并且拥有10个网络接口。<br>    * 8个前面板端口。这些端口用来连接到openvswitch网桥，连接到vlan interfaces.vlan interface通过物理接口连接到fanout。<br>    * 一个后背板端口。所有VMs通过这个背板口互联。<br>    * 一个管理网口。用来管理VMs.</p>
-<h3 id="PTF"><a href="#PTF" class="headerlink" title="PTF"></a>PTF</h3><p>PTF容器通过发送和接收数据包来验证DUT的数据面。<br>PTF with direct port</p>
-
-
+<h3 id="PTF"><a href="#PTF" class="headerlink" title="PTF"></a>PTF</h3><p>PTF容器通过发送和接收数据包来验证DUT的数据面。<br>PTF with direct port<br><img src="https://rancho333.gitee.io/pictures/testbed-direct.png"></p>
 <p>DUT的前面板口直连到一个PTF容器的端口。一般的PTF容器的eth0连接到DUT的Ethernet0，eth1连接到Ethernet4。这一般在PTF拓扑中用来连接DUT端口和PTF容器端口。</p>
-
-
+<p><img src="https://rancho333.gitee.io/pictures/testbed-injected.png"></p>
 <p>DUT的前面板口和一个VM的接口直连。但是我们在这个连接上有个tap。从vlan interface中收到的包被发送给VMs和PTF容器。从VM和PTF容器中发出的包被送到vlan interface。这允许我们可以同时从PTF host往DUT注入包和维持VM与DUT之间的BGP会话。</p>
 <h3 id="SONiC-Tested-with-keysight-IxNetwork-as-Traffic-Generator"><a href="#SONiC-Tested-with-keysight-IxNetwork-as-Traffic-Generator" class="headerlink" title="SONiC Tested with keysight IxNetwork as Traffic Generator"></a>SONiC Tested with keysight IxNetwork as Traffic Generator</h3><p>TO BE DONE！！</p>
 <h2 id="Testbed设置"><a href="#Testbed设置" class="headerlink" title="Testbed设置"></a>Testbed设置</h2><p>下面讲述testbed的设置步骤以及拓扑的部署。</p>
@@ -795,27 +494,26 @@
 </ul>
 </li>
 </ul>
-<h3 id="当前的拓扑"><a href="#当前的拓扑" class="headerlink" title="当前的拓扑"></a>当前的拓扑</h3><h4 id="t1"><a href="#t1" class="headerlink" title="t1"></a>t1</h4>
+<h3 id="当前的拓扑"><a href="#当前的拓扑" class="headerlink" title="当前的拓扑"></a>当前的拓扑</h3><h4 id="t1"><a href="#t1" class="headerlink" title="t1"></a>t1</h4><p><img src="https://rancho333.gitee.io/pictures/testbed-t1.png"></p>
 <ul>
 <li>需要32个VMs</li>
 <li>所有的DUT端口直连VMs</li>
 <li>PTF容器只有注入端口</li>
 </ul>
-<h4 id="t1-lag"><a href="#t1-lag" class="headerlink" title="t1-lag"></a>t1-lag</h4>
+<h4 id="t1-lag"><a href="#t1-lag" class="headerlink" title="t1-lag"></a>t1-lag</h4><p><img src="https://rancho333.gitee.io/pictures/testbed-ti-lag.png"></p>
 <ul>
 <li>需要24个VMs</li>
 <li>所有的DUT端口直连VMs</li>
 <li>PTF容器只有注入端口</li>
 </ul>
-<h4 id="ptf32"><a href="#ptf32" class="headerlink" title="ptf32"></a>ptf32</h4>
+<h4 id="ptf32"><a href="#ptf32" class="headerlink" title="ptf32"></a>ptf32</h4><p><img src="https://rancho333.gitee.io/pictures/testbed-ptf32.png"></p>
 <ul>
 <li>不需要VMs</li>
 <li>所有的DUT端口直连PTF容器</li>
 <li>PTF容器没有注入端口</li>
 </ul>
-<h4 id="ptf64"><a href="#ptf64" class="headerlink" title="ptf64"></a>ptf64</h4>
-<p>和ptf32一样</p>
-<h4 id="t0"><a href="#t0" class="headerlink" title="t0"></a>t0</h4>
+<h4 id="ptf64"><a href="#ptf64" class="headerlink" title="ptf64"></a>ptf64</h4><p><img src="https://rancho333.gitee.io/pictures/testbed-ptf64.png"><br>和ptf32一样</p>
+<h4 id="t0"><a href="#t0" class="headerlink" title="t0"></a>t0</h4><p><img src="https://rancho333.gitee.io/pictures/testbed-t0.png"></p>
 <ul>
 <li>需要4个VMs</li>
 <li>4个DUT端口连接到VMs</li>
@@ -1125,7 +823,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-06 10:52:32" itemprop="dateModified" datetime="2021-04-06T10:52:32+00:00">2021-04-06</time>
+                <time title="Modified: 2021-04-07 04:06:49" itemprop="dateModified" datetime="2021-04-07T04:06:49+00:00">2021-04-07</time>
               </span>
 
           
@@ -1140,12 +838,7 @@
 
       
           <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>本文旨在综合性的描述Linux下程序调试的方法和思路，不会过于细节的描述某种工具的使用，如gdb，这些方法通过man以及google都能找到答案。包含知识点：strip, addr2line, strace, gdb, readelf。</p>
-<h2 id="strip相关"><a href="#strip相关" class="headerlink" title="strip相关"></a>strip相关</h2><p>嵌入式系统要求小巧精简，最大限度去除冗余数据。Linux下编译出来elf文件是带有符号表的，通过<code>nm</code>命令可以查看，如：</p>
-
-<p>这些符号表是进行程序调试的关键，例如通过<code>addr2line</code>进行地址和文件名或行数的转换，例如在<code>gdb</code>中通过<code>bt</code>显示函数调用栈信息，没有符号表这些工具都无法提供有价值信息。<br><code>strip</code>命令可以去掉这些符号信息，进而减小文件大小，同时不会影响elf的正常执行。</p>
-
-<p>可以看到，<code>strip app</code>之后，app中没有符号表相关信息了。<br>在进行rootfs制作时，对于发行版本，我们进行<code>strip</code>操作，对于开发人员调试版本，我们保留符号表信息。</p>
-
+<h2 id="strip相关"><a href="#strip相关" class="headerlink" title="strip相关"></a>strip相关</h2><p>嵌入式系统要求小巧精简，最大限度去除冗余数据。Linux下编译出来elf文件是带有符号表的，通过<code>nm</code>命令可以查看，如：<br><img src="https://rancho333.gitee.io/pictures/nm.png"><br>这些符号表是进行程序调试的关键，例如通过<code>addr2line</code>进行地址和文件名或行数的转换，例如在<code>gdb</code>中通过<code>bt</code>显示函数调用栈信息，没有符号表这些工具都无法提供有价值信息。<br><code>strip</code>命令可以去掉这些符号信息，进而减小文件大小，同时不会影响elf的正常执行。<br><img src="https://rancho333.gitee.io/pictures/compare.png"><br>可以看到，<code>strip app</code>之后，app中没有符号表相关信息了。<br>在进行rootfs制作时，对于发行版本，我们进行<code>strip</code>操作，对于开发人员调试版本，我们保留符号表信息。<br><img src="https://rancho333.gitee.io/pictures/strip.png"></p>
 <h2 id="gdb简述"><a href="#gdb简述" class="headerlink" title="gdb简述"></a>gdb简述</h2><p>遇到<code>core dump</code>最常使用的就是<code>gdb</code>了，<code>gdb</code>的一般使用方法<code>gdb app core</code>。常见子命令如下：</p>
 <table>
 <thead>
@@ -1179,9 +872,7 @@
 <td align="left">设置断点</td>
 </tr>
 </tbody></table>
-<p>gdb一般使用<em>断点</em>和<em>堆栈</em>进行程序调试，注意调试的程序一定要是<code>not stripped</code>的。<br>简单示例如下：</p>
-
-
+<p>gdb一般使用<em>断点</em>和<em>堆栈</em>进行程序调试，注意调试的程序一定要是<code>not stripped</code>的。<br>简单示例如下：<br><img src="https://rancho333.gitee.io/pictures/gdb.png"></p>
 <h2 id="strace介绍"><a href="#strace介绍" class="headerlink" title="strace介绍"></a>strace介绍</h2><p>strace可以跟踪app的<code>system call</code>和<code>signals</code>，一般使用方法<code>strace app</code>，常见参数如下：</p>
 <table>
 <thead>
@@ -1227,19 +918,9 @@
 <td align="left">在打印系统调用同时打印指令指针</td>
 </tr>
 </tbody></table>
-<p>举个之前在ENOS飞腾移植过程中的一个例子，先使用gdb做一个基本的错误定位</p>
-
-<p>看起来像是没有进入main函数就已经挂了。<br>使用strace查看命令执行过程中的系统调用和信号：</p>
-
-<p>找到源码中的对应位置：</p>
-
-<p>iv_signal_init在main函数之前会执行并挂掉，将之注释掉测试通过。</p>
-<h2 id="so库相关"><a href="#so库相关" class="headerlink" title="so库相关"></a>so库相关</h2><p>使用<code>ldd</code>命令可以查看app的依赖库，<code>readelf</code>命令可以获取到更多的内容</p>
-
-
-<p>如果app的依赖库找不到，报错格式一般如下：</p>
-
-
+<p>举个之前在ENOS飞腾移植过程中的一个例子，先使用gdb做一个基本的错误定位<br><img src="https://rancho333.gitee.io/pictures/strace1.png"><br>看起来像是没有进入main函数就已经挂了。<br>使用strace查看命令执行过程中的系统调用和信号：<br><img src="https://rancho333.gitee.io/pictures/strace2.png"><br>找到源码中的对应位置：<br><img src="https://rancho333.gitee.io/pictures/strace3.png"><br>iv_signal_init在main函数之前会执行并挂掉，将之注释掉测试通过。</p>
+<h2 id="so库相关"><a href="#so库相关" class="headerlink" title="so库相关"></a>so库相关</h2><p>使用<code>ldd</code>命令可以查看app的依赖库，<code>readelf</code>命令可以获取到更多的内容<br><img src="https://rancho333.gitee.io/pictures/so.png"></p>
+<p>如果app的依赖库找不到，报错格式一般如下：<br><img src="https://rancho333.gitee.io/pictures/so.png"></p>
 <p>这里面缺少一些动态库，二进制可执行文件，分3种情况：</p>
 <ol>
 <li>文件不存在</li>
@@ -1296,7 +977,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-06 10:52:32" itemprop="dateModified" datetime="2021-04-06T10:52:32+00:00">2021-04-06</time>
+                <time title="Modified: 2021-04-07 04:06:49" itemprop="dateModified" datetime="2021-04-07T04:06:49+00:00">2021-04-07</time>
               </span>
 
           
@@ -1314,22 +995,12 @@
 <h1 id="移植总述"><a href="#移植总述" class="headerlink" title="移植总述"></a>移植总述</h1><p>嵌入式系统移植分为四个大块，分别是构建交叉编译工具，rootfs的制作，kernel的配置、编译、移植，BootLoader的移植。需要移植的系统可以在MIPS上跑起来，我只需要顺着原有的编译框架完成ARM64的编译，之后再上板子做具体的调试。</p>
 <h2 id="构建交叉编译工具"><a href="#构建交叉编译工具" class="headerlink" title="构建交叉编译工具"></a>构建交叉编译工具</h2><p>toolchain一般芯片厂家会提供，当然自己通过buildroot构建也是可以的。<br>使用buildroot构建交叉编译工具，下载buildroot2015</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;buildroot.uclibc.org&#x2F;downloads&#x2F;buildroot-2015.08.tar.gz</span><br></pre></td></tr></table></figure>
-<p><code>make menuconfig ARCH=arm64</code>配置buildroot，将target和toolchain两项配置成如下所示</p>
-
-<p>之后<code>make</code>等待完成即可，buildroot有些源码下载速度很慢，下载网站也不尽相同，比较麻烦，不像Linux发行版可以改成国内镜像软件源，有的可能会等待比较长的时间。<br>将生成的toolchain打包，释放到服务器docker编译环境中，如下所示：</p>
-
-<p>之后可以根据container构建image将编译环境发布出去，大家就可以直接使用了。</p>
-<h2 id="kernel的配置、编译、移植"><a href="#kernel的配置、编译、移植" class="headerlink" title="kernel的配置、编译、移植"></a>kernel的配置、编译、移植</h2><p>kernel的配置结果保存在<code>.config</code>文件中，根据实际的需求会选配一些内核选项，如开启nat以及veth相关的配置</p>
-
-
-<p>这些配置实际上是系统构建完成后跑起来报错才知道需要的，只需要在<code>make menuconfig</code>中搜索对应关键字即可找到编译选项。<br>关于内核编译的一些说明，可以参考这篇文章<br><a target="_blank" rel="noopener" href="https://rancho333.github.io/2020/03/11/kernel%E7%BC%96%E8%AF%91%E7%AE%80%E8%BF%B0/">kernel编译简述</a></p>
-<h2 id="rootfs的制作"><a href="#rootfs的制作" class="headerlink" title="rootfs的制作"></a>rootfs的制作</h2><p>在这一步其实花的时间是最多的，因为这里涉及到大量的上层应用模块的编译，然后这些模块的依赖库在交叉工具链中是不存在的，还有部分是需要编译一些独立的Linux命令。解决办法很简单，下载源码，编译出库，之后放到交叉工具链和文件系统中即可。<br>这里说下开源代码交叉编译的经典三部曲<code>configure, make, make install</code>，在configure中会指定交叉编译工具，编译生成文件的install路径,关于动态库的一些理解可以查看这篇文章<br><a target="_blank" rel="noopener" href="https://rancho333.github.io/2020/02/26/%E5%85%B3%E4%BA%8E%E5%8A%A8%E6%80%81%E5%BA%93%E4%BB%A5%E5%8F%8Aconstructor%E5%B1%9E%E6%80%A7%E7%9A%84%E4%BD%BF%E7%94%A8/">关于动态库以及constructor属性的使用</a><br>嗯，rootfs以前一直用buildroot来制作，这里发现一个不一样的方式</p>
+<p><code>make menuconfig ARCH=arm64</code>配置buildroot，将target和toolchain两项配置成如下所示<br><img src="https://rancho333.gitee.io/pictures/buildroot.png"><br>之后<code>make</code>等待完成即可，buildroot有些源码下载速度很慢，下载网站也不尽相同，比较麻烦，不像Linux发行版可以改成国内镜像软件源，有的可能会等待比较长的时间。<br>将生成的toolchain打包，释放到服务器docker编译环境中，如下所示：<br><img src="https://rancho333.gitee.io/pictures/toolchain.png"><br>之后可以根据container构建image将编译环境发布出去，大家就可以直接使用了。</p>
+<h2 id="kernel的配置、编译、移植"><a href="#kernel的配置、编译、移植" class="headerlink" title="kernel的配置、编译、移植"></a>kernel的配置、编译、移植</h2><p>kernel的配置结果保存在<code>.config</code>文件中，根据实际的需求会选配一些内核选项，如开启nat以及veth相关的配置<br><img src="https://rancho333.gitee.io/pictures/nat.png"><br><img src="https://rancho333.gitee.io/pictures/veth.png"><br>这些配置实际上是系统构建完成后跑起来报错才知道需要的，只需要在<code>make menuconfig</code>中搜索对应关键字即可找到编译选项。<br>关于内核编译的一些说明，可以参考这篇文章<br><a href="https://rancho333.gitee.io/2020/03/11/kernel%E7%BC%96%E8%AF%91%E7%AE%80%E8%BF%B0/">kernel编译简述</a></p>
+<h2 id="rootfs的制作"><a href="#rootfs的制作" class="headerlink" title="rootfs的制作"></a>rootfs的制作</h2><p>在这一步其实花的时间是最多的，因为这里涉及到大量的上层应用模块的编译，然后这些模块的依赖库在交叉工具链中是不存在的，还有部分是需要编译一些独立的Linux命令。解决办法很简单，下载源码，编译出库，之后放到交叉工具链和文件系统中即可。<br>这里说下开源代码交叉编译的经典三部曲<code>configure, make, make install</code>，在configure中会指定交叉编译工具，编译生成文件的install路径,关于动态库的一些理解可以查看这篇文章<br><a href="https://rancho333.gitee.io/2020/02/26/%E5%85%B3%E4%BA%8E%E5%8A%A8%E6%80%81%E5%BA%93%E4%BB%A5%E5%8F%8Aconstructor%E5%B1%9E%E6%80%A7%E7%9A%84%E4%BD%BF%E7%94%A8/">关于动态库以及constructor属性的使用</a><br>嗯，rootfs以前一直用buildroot来制作，这里发现一个不一样的方式</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. 使用mktemp命令创建一个临时文件</span><br><span class="line">2. 使用shell命令构建文件系统，就是echo命令然后重定向到临时文件</span><br><span class="line">3. 使用gen_init_cpio和压缩软件构建cpio格式的压缩包</span><br><span class="line">4. 删除临时文件</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="BootLoader的移植"><a href="#BootLoader的移植" class="headerlink" title="BootLoader的移植"></a>BootLoader的移植</h2><p>给的开发板上直接烧有uboot，所以这里不涉及自己构建bootloader了。在bring up的过程中遇到一个问题卡了很久：</p>
-
-<p>返回错误8的含义<code>文件没有可执行权限</code>,确认过busybox的执行权限，并且是静态编译，并且可以在同平台的其它机器上执行。<br>真实的错误是kernel在rootfs中没有找到文件系统，比较详细的描述见上文提到的<code>kernel编译简述</code>。</p>
+<p><img src="https://rancho333.gitee.io/pictures/rootfs.png"></p>
+<h2 id="BootLoader的移植"><a href="#BootLoader的移植" class="headerlink" title="BootLoader的移植"></a>BootLoader的移植</h2><p>给的开发板上直接烧有uboot，所以这里不涉及自己构建bootloader了。在bring up的过程中遇到一个问题卡了很久：<br><img src="https://rancho333.gitee.io/pictures/panic.png"><br>返回错误8的含义<code>文件没有可执行权限</code>,确认过busybox的执行权限，并且是静态编译，并且可以在同平台的其它机器上执行。<br>真实的错误是kernel在rootfs中没有找到文件系统，比较详细的描述见上文提到的<code>kernel编译简述</code>。</p>
 <p>参考资料：<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/kernel-style/p/3397705.html">linux init启动分析</a></p>
 
       
@@ -1381,7 +1052,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-06 10:52:32" itemprop="dateModified" datetime="2021-04-06T10:52:32+00:00">2021-04-06</time>
+                <time title="Modified: 2021-04-07 04:06:49" itemprop="dateModified" datetime="2021-04-07T04:06:49+00:00">2021-04-07</time>
               </span>
 
           
@@ -1418,12 +1089,8 @@
 <li>各子目录下的Makefile，如drivers下的，负责所在子目录下源代码的管理</li>
 <li>Rules.make：规则文件，被所有的Makefile使用</li>
 </ol>
-<p>用户通过make config后，这里实际就是收集各目录下的Kconfig/deconfig文件生成配置界面，供用户进行功能选择，最后产生<code>.config</code>，如果.config文件存在，则是直接通过.config生成配置界面。顶层Makefile读入.config中的配置选择进行具体模块的编译。顶层Makefiel中会包含具体arch的Makefile</p>
-
-<p>Rules.make其实就是不同模块之间会共用到的Makefile规则。</p>
-<p>在ENOS中，系统架构人员将生成好的ARCH的config文件存放ARCH的目录下，上层开发人员编译时直接使用指定的config文件编译即可。</p>
-
-<p>之后在指定的<code>O</code>目录下会生成编译过程中生成的文件，这样可以避免污染源码（make clean不能清除么），或者是更便于管理和模块化考虑。<br>如果需要进行kernel的二次配置，需要到<code>O</code>目录下去执行make menuconfig，之后将重新生成的<code>.config</code>拷回<code>ARCH</code>目录覆盖之前的配置文件。这是基于ARCH缺省配置的一种应用，在向内核代码增加了新的功能后，如果新功能对于这个ARCH是必需的，就需要修改此ARCH的缺省配置，修改方法如下：</p>
+<p>用户通过make config后，这里实际就是收集各目录下的Kconfig/deconfig文件生成配置界面，供用户进行功能选择，最后产生<code>.config</code>，如果.config文件存在，则是直接通过.config生成配置界面。顶层Makefile读入.config中的配置选择进行具体模块的编译。顶层Makefiel中会包含具体arch的Makefile<br><img src="https://rancho333.gitee.io/pictures/arch.png"><br>Rules.make其实就是不同模块之间会共用到的Makefile规则。</p>
+<p>在ENOS中，系统架构人员将生成好的ARCH的config文件存放ARCH的目录下，上层开发人员编译时直接使用指定的config文件编译即可。<br><img src="https://rancho333.gitee.io/pictures/config.png"><br>之后在指定的<code>O</code>目录下会生成编译过程中生成的文件，这样可以避免污染源码（make clean不能清除么），或者是更便于管理和模块化考虑。<br>如果需要进行kernel的二次配置，需要到<code>O</code>目录下去执行make menuconfig，之后将重新生成的<code>.config</code>拷回<code>ARCH</code>目录覆盖之前的配置文件。这是基于ARCH缺省配置的一种应用，在向内核代码增加了新的功能后，如果新功能对于这个ARCH是必需的，就需要修改此ARCH的缺省配置，修改方法如下：</p>
 <ol>
 <li>备份.config文件</li>
 <li>cp arch/arm/deconfig .config</li>
@@ -1437,9 +1104,7 @@
 <li><code>m</code> 表示本编译选项对应的内核代码被编译成模块</li>
 <li><code>n</code>表示不选择此编译选项<br>如果根本没有选择某模块，该模块是被注释掉的</li>
 </ol>
-<h1 id="vmlinux-uImage-Image的关系或区别"><a href="#vmlinux-uImage-Image的关系或区别" class="headerlink" title="vmlinux,uImage,Image的关系或区别"></a>vmlinux,uImage,Image的关系或区别</h1><p>Linux内核有多种格式的镜像，包括vmlinux、Image、zImage、bzImage、uImage、xipImage、bootpImage等。<br>vmlinux是编译出来的最原始的内核文件，未经压缩，vm代表virtual memory Linux支持虚拟内存；<br>Image是经过objcopy处理的只包含二进制数据的内核代码，未经压缩，不是elf格式；objcopy的实质是将所有的符号和 重定位信息都抛弃，只剩下二进制数据。<br>zImage是vmlinux加上解压代码经gzip压缩而成，是ARM linux常用的一种压缩镜像文件。这种格式的Linux镜像多存放在NAND上。bzImage与之类似，只不过是采用了压缩率更高的算法。<br>uImage是uboot专用的镜像文件，它是在zImage之前加上一个长度为0x40的tag，里面包含了镜像文件的类型、加载位置、生成时间、大小等信息。通过mkimage命令可以制作uImage。<br>xipImage多放在NorFlash上直接运行。<br>这里只是一些简单的描述，有待在今后的项目中去加深理解各种格式的使用，存在肯定是有其对应的使用场景的！</p>
-
-
+<h1 id="vmlinux-uImage-Image的关系或区别"><a href="#vmlinux-uImage-Image的关系或区别" class="headerlink" title="vmlinux,uImage,Image的关系或区别"></a>vmlinux,uImage,Image的关系或区别</h1><p>Linux内核有多种格式的镜像，包括vmlinux、Image、zImage、bzImage、uImage、xipImage、bootpImage等。<br>vmlinux是编译出来的最原始的内核文件，未经压缩，vm代表virtual memory Linux支持虚拟内存；<br>Image是经过objcopy处理的只包含二进制数据的内核代码，未经压缩，不是elf格式；objcopy的实质是将所有的符号和 重定位信息都抛弃，只剩下二进制数据。<br>zImage是vmlinux加上解压代码经gzip压缩而成，是ARM linux常用的一种压缩镜像文件。这种格式的Linux镜像多存放在NAND上。bzImage与之类似，只不过是采用了压缩率更高的算法。<br>uImage是uboot专用的镜像文件，它是在zImage之前加上一个长度为0x40的tag，里面包含了镜像文件的类型、加载位置、生成时间、大小等信息。通过mkimage命令可以制作uImage。<br>xipImage多放在NorFlash上直接运行。<br>这里只是一些简单的描述，有待在今后的项目中去加深理解各种格式的使用，存在肯定是有其对应的使用场景的！<br><img src="https://rancho333.gitee.io/pictures/vmlinux.png"></p>
 <h1 id="对于文件系统的一点理解"><a href="#对于文件系统的一点理解" class="headerlink" title="对于文件系统的一点理解"></a>对于文件系统的一点理解</h1><p>加在这里可能不是很符合这篇文章的主题！<br>Linux下一切皆文件。Linux系统中任何文件系统的挂载必须满足两个条件：挂载点和文件系统。rootfs之所以存在，是因为需要在VFS机制下给系统提供最原始的挂载点。<br>rootfs其实就是文件系统顶层的<code>/</code>，使用pwd命令后看到的第一个字符，它有三个特点：</p>
 <ol>
 <li>它是系统自己创建并加载的第一个文件系统，是Linux内核自己创建的，并不是我们常说的外部根文件系统，将外部根文件系统解压或者说挂载到<code>/</code>后就是用户能看到的Linux文件系统，里面有很多的文件夹，如’etc’、’bin’等。<em>不能被unmount或者删除</em>，通过<code>cat /proc/mounts</code>也可以看出。下述的rootfs特指<code>/</code></li>
@@ -1452,17 +1117,14 @@
 <li>他只是一个zip压缩的文件系统，而不是cpio文件</li>
 <li>initrd中的/initrd程序只是做一些setup操作并最后返回到kernel中执行，而initramfs中的/init执行完后不返回到kernel</li>
 </ol>
-<p>对于initramfs，也就是系统移植时需要制作的文件系统。它存在于两处，一种是内核编译后自动生成的内部initramfs(在/usr目录下)，另一种是用户自己制作的，通过cmdline将地址传递给kernel的外部initramfs<br>对于内部initramfs，这个文件系统里面实际上啥也没有：</p>
-
-<p>rootfs挂载之后，首先会先释放这个内部的initramfs到rootfs（很显然啥也干不了！<em>没搞清楚为什么会存在，但肯定有原因！</em>）,然后kernel会尝试在rootfs中寻找/init，一旦找到就执行init，kernel也就完成了启动工作，之后init就会接管接下来的工作。如果kernel找不到，就会去找外部initramfs然后释放（uboot下通过initrd参数指定位置）或者按照标准做法解析参数<code>root=</code>（这里面是解压好到某个介质分区的文件系统），试图找到一个文件系统并挂载到rootfs，之后就init。</p>
+<p>对于initramfs，也就是系统移植时需要制作的文件系统。它存在于两处，一种是内核编译后自动生成的内部initramfs(在/usr目录下)，另一种是用户自己制作的，通过cmdline将地址传递给kernel的外部initramfs<br>对于内部initramfs，这个文件系统里面实际上啥也没有：<br><img src="https://rancho333.gitee.io/pictures/initramfs_kernel.png"><br>rootfs挂载之后，首先会先释放这个内部的initramfs到rootfs（很显然啥也干不了！<em>没搞清楚为什么会存在，但肯定有原因！</em>）,然后kernel会尝试在rootfs中寻找/init，一旦找到就执行init，kernel也就完成了启动工作，之后init就会接管接下来的工作。如果kernel找不到，就会去找外部initramfs然后释放（uboot下通过initrd参数指定位置）或者按照标准做法解析参数<code>root=</code>（这里面是解压好到某个介质分区的文件系统），试图找到一个文件系统并挂载到rootfs，之后就init。</p>
 <p>所以我们实际使用的肯定是外部文件系统了，对于外部的文件系统，我们可以通过不同的方法将它挂载到rootfs。</p>
 <ol>
 <li>制作一个独立的cpio.lzma包，然后告诉bootloader它的地址，通过cmdline将参数传递给kernel</li>
 <li>制作一个独立的包，通过mkimge(只针对于uboot)将kernel+initramfs+dtb打包成一个文件，在uboot下启动（实验过可行）</li>
 <li>用外部的initramfs替换kernel自动生成的initramfs，有两种方法：<ol>
 <li>先编译kernel，让它生成内部intramfs，然后制作外部initramfs，拷贝替换掉，最后重新编译内核。外部initramfs就会和kernel编成一个文件。ENOS里面使用的是这种方法。</li>
-<li>使用内核编译选项CONFIG_INITRAMFS_SOURCE指定根文件系统路径，即kernel会根据给定的文件生成内部initramfs，这里面又有集中不同的给定方式，这里不表。
-外部initramfs替换内部initramfs之后，kernel会在第一时间找到/init,所以<code>root=，initrd=</code>这些参数都不会起作用了。</li>
+<li>使用内核编译选项CONFIG_INITRAMFS_SOURCE指定根文件系统路径，即kernel会根据给定的文件生成内部initramfs，这里面又有集中不同的给定方式，这里不表。<br><img src="https://rancho333.gitee.io/pictures/kernel_initramfs.png"><br>外部initramfs替换内部initramfs之后，kernel会在第一时间找到/init,所以<code>root=，initrd=</code>这些参数都不会起作用了。</li>
 </ol>
 </li>
 </ol>
@@ -1517,7 +1179,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-06 10:52:32" itemprop="dateModified" datetime="2021-04-06T10:52:32+00:00">2021-04-06</time>
+                <time title="Modified: 2021-04-07 04:06:49" itemprop="dateModified" datetime="2021-04-07T04:06:49+00:00">2021-04-07</time>
               </span>
 
           
@@ -1536,9 +1198,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. 轮询（polling）内核定期对设备的状态进行查询，然后做出相应的处理</span><br><span class="line">2. 中断（interrupt）让硬件在需要的时候向内核发出信号（变内核主动为硬件主动）</span><br></pre></td></tr></table></figure>
 <p>轮询是周期性的重复执行，大量耗用CPU的时间，效率比较低，对于实时性比较高的操作，肯定是不适用的。</p>
 <p>从物理学的角度看，中断是一种电信号，由硬件设备产生，并直接送入中断控制器（如8259A）的输入引脚上，然后再由中断控制器向CPU发送相应的信号。处理器检测到该信号，便中断当前正在处理的工作，转而去处理中断。对于软件开发人员，一般需要用到的就是中断号和中断处理函数。</p>
-<p>提一下，PCIE可以通过MSI(message signaled interrupts)方式实现中断：</p>
-
-<p>CPu里面有一段特殊的寄存器空间，往这个寄存器里面写数据，就会触发CPU中断。pci设备经过配置以后，一旦需要上报中断就会往cpu这种寄存器里面写一个值，触发cpu中断。</p>
+<p>提一下，PCIE可以通过MSI(message signaled interrupts)方式实现中断：<br><img src="https://rancho333.gitee.io/pictures/msi.png"><br>CPu里面有一段特殊的寄存器空间，往这个寄存器里面写数据，就会触发CPU中断。pci设备经过配置以后，一旦需要上报中断就会往cpu这种寄存器里面写一个值，触发cpu中断。</p>
 <p>中断的处理流程：</p>
 <ol>
 <li>保存现场</li>
@@ -1583,11 +1243,7 @@
 <td align="left">不会返回</td>
 </tr>
 </tbody></table>
-<h2 id="中断控制器"><a href="#中断控制器" class="headerlink" title="中断控制器"></a>中断控制器</h2><p>常见的中断控制器有两种，两片8259A外部芯片’级联’和多级I/O APIC系统，见下图：</p>
-
-<p>至于硬件实现细节这里不做过多描述。辨别一个系统是否正在使用I/O APIC，可以使用如下命令查看：</p>
-
-<p>可以看到第6列上显示的是IO-APIC,如果上面显示的是XY-APIC，说明系统正在使用8259A芯片。<br>对上面文件的输出，解释如下：</p>
+<h2 id="中断控制器"><a href="#中断控制器" class="headerlink" title="中断控制器"></a>中断控制器</h2><p>常见的中断控制器有两种，两片8259A外部芯片’级联’和多级I/O APIC系统，见下图：<br><img src="https://rancho333.gitee.io/pictures/interrupt_ctl.png"><br>至于硬件实现细节这里不做过多描述。辨别一个系统是否正在使用I/O APIC，可以使用如下命令查看：<br><img src="https://rancho333.gitee.io/pictures/interrupts.png"><br>可以看到第6列上显示的是IO-APIC,如果上面显示的是XY-APIC，说明系统正在使用8259A芯片。<br>对上面文件的输出，解释如下：</p>
 <ol>
 <li>第一列表示IRQ中断号</li>
 <li>第二、三、四、五列表示相应的CPu核心被中断的次数</li>
@@ -1616,7 +1272,7 @@
 <li>cat /proc/interrupts查看中断号，注意如果是使用ssh或telent到linux上的是不会响应键盘中断的，需要使用虚拟机来实验</li>
 <li>加载驱动<code>sudo insmod ./first_interrupt.ko irq=1 devname=zhwirq</code></li>
 <li>查看驱动<code>lsmod | grep first</code>,查看中断<code>cat /proc/interrupts | grep zhw</code></li>
-<li>dmesg查看内核日志文件，dmesg | tail -20 </li>
+<li>dmesg查看内核日志文件，dmesg | tail -20<br><img src="https://rancho333.gitee.io/pictures/dmesg.png"></li>
 <li>卸载驱动<code>sudo rmmod first_interrupt</code></li>
 </ol>
 <p>加载驱动后，先进行驱动初始化，之后每当有键盘中断触发后，都会进入ISR，卸载驱动后不会再触发。</p>
@@ -1671,7 +1327,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-06 10:52:32" itemprop="dateModified" datetime="2021-04-06T10:52:32+00:00">2021-04-06</time>
+                <time title="Modified: 2021-04-07 04:06:49" itemprop="dateModified" datetime="2021-04-07T04:06:49+00:00">2021-04-07</time>
               </span>
 
           
@@ -1685,29 +1341,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>在做交换机Linux系统移植的过程中，发现进入shell的密码还是上一家的默认密码，还是改改吧。简单交代一下，ENOS上kernel加载完成之后应用的启动顺序如下如：</p>
-
-<p>这里是不进入shell的，而是直接进入klish作为交换机的命令行交互界面，类似于quagga的vtysh。之后在<code>configure</code>视图下面执行<code>start shell</code>进入linux shell的。</p>
-
-<p>在fnconvert里面会获取用户<code>root</code>的密码，其实就是使用<code>getspnam</code>获取<code>passwd或者shadow</code>的口令。既然这玩意使用的是Linux的账户和密码，那就是修改<code>/etc/passwd</code>文件了。</p>
-
-
+          <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>在做交换机Linux系统移植的过程中，发现进入shell的密码还是上一家的默认密码，还是改改吧。简单交代一下，ENOS上kernel加载完成之后应用的启动顺序如下如：<br><img src="https://rancho333.gitee.io/pictures/inittab.png"><br>这里是不进入shell的，而是直接进入klish作为交换机的命令行交互界面，类似于quagga的vtysh。之后在<code>configure</code>视图下面执行<code>start shell</code>进入linux shell的。<br><img src="https://rancho333.gitee.io/pictures/shell.png"><br>在fnconvert里面会获取用户<code>root</code>的密码，其实就是使用<code>getspnam</code>获取<code>passwd或者shadow</code>的口令。既然这玩意使用的是Linux的账户和密码，那就是修改<code>/etc/passwd</code>文件了。<br><img src="https://rancho333.gitee.io/pictures/spnam.png"></p>
 <h1 id="passwd文件简介"><a href="#passwd文件简介" class="headerlink" title="passwd文件简介"></a>passwd文件简介</h1><p>Linux中每个用户在/etc/passwd文件中都有一个对应的记录行，每一行被冒号<code>:</code>分隔为7个字段，具体含义如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用户名：口令：用户标识号：组标识号：注释性描述：主目录：登陆shell</span><br></pre></td></tr></table></figure>
-<p>发行版中口令字段一般是<code>*或x</code>，<code>*</code>表示账号锁定, <code>x</code>表示密码存放在<code>/etc/shadown</code>文件中（访问需要sudo权限，而passwd文件不需要），当然我们的嵌入式系统密文是直接放在passwd中，如下：</p>
-
-
-<p>其它字段除了<code>登陆shell</code>就没啥好玩的了，有些账号出于安全限制，并不会允许登陆进shell，而采用<code>nologin</code>的方式可以让这些用户使用部分系统功能。</p>
-
-
+<p>发行版中口令字段一般是<code>*或x</code>，<code>*</code>表示账号锁定, <code>x</code>表示密码存放在<code>/etc/shadown</code>文件中（访问需要sudo权限，而passwd文件不需要），当然我们的嵌入式系统密文是直接放在passwd中，如下：<br><img src="https://rancho333.gitee.io/pictures/passwd.png"></p>
+<p>其它字段除了<code>登陆shell</code>就没啥好玩的了，有些账号出于安全限制，并不会允许登陆进shell，而采用<code>nologin</code>的方式可以让这些用户使用部分系统功能。<br><img src="https://rancho333.gitee.io/pictures/nologin.png"></p>
 <h2 id="修改用户密码"><a href="#修改用户密码" class="headerlink" title="修改用户密码"></a>修改用户密码</h2><p>常规的在linux命令行下面修改密码没啥好说的，直接敲<code>passwd</code>然后输入新密码就行了，之后你会发现<code>passwd或者shadow</code>中的口令发生变化了。这里介绍一下口令了列的组成，不同的特殊字符表示不同的特殊意义：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. 该列留空，即&quot;::&quot;，表示该用户没有密码。</span><br><span class="line">2. 该列为&quot;!&quot;，即&quot;:!:&quot;，表示该用户被锁，被锁将无法登陆，但是可能其他的登录方式是不受限制的，如ssh公钥认证的方式，su的方式。</span><br><span class="line">3. 该列为&quot;*&quot;，即&quot;:*:&quot;，也表示该用户被锁，和&quot;!&quot;效果是一样的。</span><br><span class="line">4. 该列以&quot;!&quot;或&quot;!!&quot;开头，则也表示该用户被锁。</span><br><span class="line">5. 该列为&quot;!!&quot;，即&quot;:!!:&quot;，表示该用户从来没设置过密码。</span><br><span class="line">6. 如果格式为&quot;$id$salt$hashed&quot;，则表示该用户密码正常。其中$id$的id表示密码的加密算法，$1$表示使用MD5算法，$2a$表示使用Blowfish算法，&quot;$2y$&quot;是另一算法长度的Blowfish,&quot;$5$&quot;表示SHA-256算法，而&quot;$6$&quot;表示SHA-512算法。加密算法会根据salt进行特定的加密，hashed是生成的密文</span><br></pre></td></tr></table></figure>
-<p>我看自己的linux服务器上面都是使用SHA-512加密的，而嵌入式系统上面用的是MD5，使用命令</p>
-
-<p>就可以生成密码了，将原来的口令字段替换掉即可完成密码的修改。</p>
-<p>有个小问题，实验过程中，发现在嵌入式系统上直接在命令行中修改密码不是按照<code>$id$salt$hashed</code>模式生成的口令，而是：</p>
-
-<p>但是在发行版Linux上面是符合预期的，有可能是嵌入式系统的某些差异吧，这里留个记录！</p>
+<p>我看自己的linux服务器上面都是使用SHA-512加密的，而嵌入式系统上面用的是MD5，使用命令<br><img src="https://rancho333.gitee.io/pictures/openssl.png"><br>就可以生成密码了，将原来的口令字段替换掉即可完成密码的修改。</p>
+<p>有个小问题，实验过程中，发现在嵌入式系统上直接在命令行中修改密码不是按照<code>$id$salt$hashed</code>模式生成的口令，而是：<br><img src="https://rancho333.gitee.io/pictures/abnormal.png"><br>但是在发行版Linux上面是符合预期的，有可能是嵌入式系统的某些差异吧，这里留个记录！</p>
 
       
     </div>
@@ -1758,7 +1400,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-06 10:52:32" itemprop="dateModified" datetime="2021-04-06T10:52:32+00:00">2021-04-06</time>
+                <time title="Modified: 2021-04-07 04:06:49" itemprop="dateModified" datetime="2021-04-07T04:06:49+00:00">2021-04-07</time>
               </span>
 
           
@@ -1773,16 +1415,12 @@
 
       
           <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>在没有接触过嵌入式之前，对于计算机存储的认知仅限于知道硬盘和内存，然后硬盘掉电可以保存数据，内存掉电丢失数据。后来逐渐听到更多的专业名词，什么ROM，RAM，SRAM，DRAM，FLASH,，NandFlash，NorFlash等等了。以前将自己的定位总是局限在协议工程师，对于和硬件和驱动相关的东西有些抵触，随着工作的深入，也时常会用到一些I2C,gpio之类的东东。本着沉下来，归零，再出发的心态，这篇文章用来梳理一下自己对于计算机存储体系的认知。</p>
-<h1 id="总体架构"><a href="#总体架构" class="headerlink" title="总体架构"></a>总体架构</h1><p>下面这张图大家应该都很熟悉了</p>
-
-<p>生活中的大部分物品，基本都满足“好的不一定是最贵的，但是最贵的一定是好的”，在计算机存储体系中，基本满足了上面这句话。塔尖上的那一小撮是最贵的，最快的，存储空间最小的。在实际生产中需要做到价格与性能（或者说实际需求）的平衡。下面从上到下梳理一下吧。</p>
+<h1 id="总体架构"><a href="#总体架构" class="headerlink" title="总体架构"></a>总体架构</h1><p>下面这张图大家应该都很熟悉了<br><img src="https://rancho333.gitee.io/pictures/storage.png"><br>生活中的大部分物品，基本都满足“好的不一定是最贵的，但是最贵的一定是好的”，在计算机存储体系中，基本满足了上面这句话。塔尖上的那一小撮是最贵的，最快的，存储空间最小的。在实际生产中需要做到价格与性能（或者说实际需求）的平衡。下面从上到下梳理一下吧。</p>
 <h2 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h2><p>恩，之前软考《网络工程师》的时候接触过一点点.哦，文章有点跑题了，但是还是想记录一下。CPU执行指令分为：取指令，分析指令，执行指令三部曲，这里面会用到一系列的寄存器，有分别属于控制器和运算器，列举几个常见的。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">控制器</span><br><span class="line">    程序计数器PC：存放下一条指令的地址</span><br><span class="line">    指令寄存器IR:存放正在运行的指令</span><br></pre></td></tr></table></figure>
 <p>指令包括操作码和地址码（操作数所在的地址）</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">运算器：</span><br><span class="line">    累加寄存器AC</span><br><span class="line">    数据缓冲寄存器</span><br><span class="line">    状态条件寄存器</span><br></pre></td></tr></table></figure>
-<p>具体见下图：</p>
-
-<p>寄存器是CPU的内部组成单元，是CPU运算是取指令和数据最快的地方。当然不仅仅是CPU了，比如交换芯片及很多其它的ASIC都是用寄存器来实现某些功能的，你会发现芯片SDK提供的API最底层就是读写某些寄存器来实现具体功能。</p>
+<p>具体见下图：<br><img src="https://rancho333.gitee.io/pictures/register.png"><br>寄存器是CPU的内部组成单元，是CPU运算是取指令和数据最快的地方。当然不仅仅是CPU了，比如交换芯片及很多其它的ASIC都是用寄存器来实现某些功能的，你会发现芯片SDK提供的API最底层就是读写某些寄存器来实现具体功能。</p>
 <h2 id="cache与主存"><a href="#cache与主存" class="headerlink" title="cache与主存"></a>cache与主存</h2><p>cache与主存都是RAM（Random-Access Memory, 随机访问存储器），cache使用的是静态SRAM，主存使用的是DRAM。这两种器件掉电数据都会丢失。</p>
 <p>SRAM只要存储器保持通电，里面存储的数据就可以保持不变。<br>DRAM需要周期性的充电刷新，主存也就是我们PC中的内存条了。</p>
 <h2 id="ROM与flash"><a href="#ROM与flash" class="headerlink" title="ROM与flash"></a>ROM与flash</h2><p>以前一直纳闷为啥只读存储还能改里面的数据。<br>ROM一般用来存放bootloader(一般叫做固件，firmware)，这里面的内容在程序运行期间是无法更改的，掉电数据依然存在。<br>早期ROM在工厂里用特殊方法烧录进去，一旦烧录进去，用户只能验证写入的资料是否正确，不能再做任何修改。<br>后来人们发明了PROM（Programmable ROM， 可编程ROM），工厂制作的PROM内部没有数据，用户可以使用专用的编程期间烧写资料进去，但只能写一次，一旦写入也无法修改。<br>再后来发明了EPROM（Erasable Programmable ROM, 可擦写可编程ROM），芯片可以重复擦除和写入，但是需要使用紫外线照射芯片，比较麻烦。<br>再后来发明了EEPROM（Electrically Erasable Programmable ROM，电可擦除可编程ROM）,用专门的烧录器和烧录软件就可以直接烧录了，很方便。现在用的ROM大部分是这种。</p>
@@ -1790,6 +1428,102 @@
 <p>顺带提一下eMMC，这玩意没见过。eMMC相当于NandFlash+主控IC ，对外的接口协议与SD、TF卡一样，主要是针对手机或平板电脑等产品的内嵌式存储器标准规格。eMMC的一个明显优势是在封装中集成了一个控制器。eMMC由一个嵌入式存储解决方案组成，带有MMC（多媒体卡）接口、快闪存储器设备（Nand Flash）及主控制器，所有都在一个小型的BGA 封装。</p>
 <h1 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h1><p>其实就是RAM的分类，ROM的分类，以及Flash的分类有点迷！搞清楚特性，对应上用途！</p>
 <p>参考资料：<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/iva_brother/article/details/80463578">计算机存储器结构体系详解</a><br><a target="_blank" rel="noopener" href="https://baijiahao.baidu.com/s?id=1610041455262486965&wfr=spider&for=pc">NorFlash、NandFlash、eMMC闪存的比较与区别</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_38880380/article/details/78884522">NAND flash和NOR flash的区别详解</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2020/03/06/%E4%B8%80%E4%BA%9Bshell%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/Rancho.png">
+      <meta itemprop="name" content="Rancho">
+      <meta itemprop="description" content="No pain, no gain!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rancho Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/06/%E4%B8%80%E4%BA%9Bshell%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-title-link" itemprop="url">一些shell基础知识</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-03-06 16:35:48" itemprop="dateCreated datePublished" datetime="2020-03-06T16:35:48+00:00">2020-03-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-04-07 04:06:49" itemprop="dateModified" datetime="2021-04-07T04:06:49+00:00">2021-04-07</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>最开始接触到的命令行是windows的cmd，一次用它来查ip感觉很神奇。后来接触到Linux，vim，从起初的抵触不适应，到后来的得心应手。使用命令行，离计算机更近。这篇文章记录一下shell下面的一些细节。分为</p>
+<ol>
+<li>标准输入和命令参数的区别</li>
+<li>在后台运行的命令退出终端也就全部退出了</li>
+<li>单引号和双引号表示字符串的区别</li>
+<li>有的命令和<code>sudo</code>一起用就<code>command not found</code></li>
+</ol>
+<h1 id="标准输入和参数的区别"><a href="#标准输入和参数的区别" class="headerlink" title="标准输入和参数的区别"></a>标准输入和参数的区别</h1><p>最初遇到这个问题的时候是在shell下面使用<code>管道</code>操作，例如：<code>find ./ -name &quot;*.c&quot; | xargs grep -rn zhw</code>,这条命令的含义是：在当前路径下的所有<code>.c</code>文件中查找<code>zhw</code>关键字，注意这里在管道的右侧加了关键字<code>xargs</code>，表示将<code>find</code>找到的结果作为<em>参数</em>传递给<code>grep</code>，grep是不接受标准输入的。</p>
+<p>标准输入就是编程语言中诸如<code>scanf</code>或者<code>readline</code>获取到的信息；而参数是指程序的<code>main</code>函数传入的<code>args</code>字符串数组。管道符和重定向符都是将数据作为程序的标准输入，下面这个示例：<br><img src="https://rancho333.gitee.io/pictures/grep.png"></p>
+<ol>
+<li>grep要搜索的文件作为参数是可选的，<code>-r</code>可以在当前路径下递归查找</li>
+<li>find不加xargs和直接grep效果是一样的，说明没有指定查找文件，而使用xargs则指定了查找文件作为参数传递给grep</li>
+</ol>
+<p>这里多说一点：<br><img src="https://rancho333.gitee.io/pictures/find.png"><br>通常使用find命令查找特定的文件，然后再这些文件中用grep去匹配关键字，但是如果find的结果是空，那么通过xargs方式就相当于没有给grep指明特定查找文件（它就会在当前目录递归）,而通过<code>-exec</code>则表示对匹配的文件执行该参数所给出的shell命令，此时grep实际并没有执行，这才符合我们的预期结果。</p>
+<p>上面两个小例子，理解问题的本质是多么的重要，基础打牢固，花哨的东西就随便玩了！<br>除了<code>xargs</code>可以读取数据作为命令参数外，通过<code>$(cmd)</code>形式也能达到同样的效果，例如：<br><img src="https://rancho333.gitee.io/pictures/grep.png"></p>
+<p><code>$(cmd)</code>读取<code>cmd</code>命令输出的数据作为参数。</p>
+<p>最后说一下如何区分命令能够接受标准输入还是参数：如果命令能够让终端阻塞，说明该命令能接受标准输入，反之就是不接受。<code>rm</code>命令是不接受标准输入的。<br><img src="https://rancho333.gitee.io/pictures/block.png"></p>
+<h1 id="后台运行程序"><a href="#后台运行程序" class="headerlink" title="后台运行程序"></a>后台运行程序</h1><p>如果一些服务需要长时间运行，比如main函数里面有个<code>while(1)</code>的死循环，程序运行后命令行会阻塞。在命令后加上<code>&amp;</code>后程序就可以在后台运行而不会阻塞命令行。底层的原理或者说这是怎么实现的呢？</p>
+<p>每一个命令行终端都是一个shell进程，每当有命令需要执行是shell会fork一个子进程去执行命令，而shell进程会阻塞，等待子shell进程退出才重新响应。写一个很简单的demo</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">void main()                                                                                           </span><br><span class="line">&#123;</span><br><span class="line">    while(1)</span><br><span class="line">    &#123;&#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>加上<code>&amp;</code>后，只是让shell进程不再阻塞，可以继续响应你的新命令，但是当你关掉这个shell命令行中终端后，依附于它的所有子进程都会退出。如下：<br><img src="https://rancho333.gitee.io/pictures/ps.png"><br>但是如果<code>(cmd &amp;)</code>这样来运行命令，则是将<code>cmd</code>挂到一个<code>systemd</code>系统守护进程下，这样即使当终端退出后，对于刚才的命令也没有影响。如下：<br><img src="https://rancho333.gitee.io/pictures/nohup.png"><br>不过<code>nohup cmd &amp;</code>的做法似乎常见一些，原理类似。此外还可以试试<code>tmux</code>这个小工具，如果利用晚上的时候在服务器编译大型项目，这玩意挺好用的，不用担心断网（终端被kill）。</p>
+<h1 id="单引号和双引号的区别"><a href="#单引号和双引号的区别" class="headerlink" title="单引号和双引号的区别"></a>单引号和双引号的区别</h1><p>使用<code>set -x</code>命令，可以开启shell的命令回显。</p>
+<p>对于单引号：所见即所得，会将单引号内的内容原样输出</p>
+<p>对于双引号：把双引号内的内容输出出来；如果内容中有命令、变量等，会先把变量、命令解析出结果，然后在输出最终内容来。</p>
+<p>不加引号：不会将含有空格的字符串视为一个整体输出, 如果内容中有命令、变量等，会先把变量、命令解析出结果，然后在输出最终内容来，如果字符串中带有空格等特殊字符，则不能完整的输出，需要改加双引号，一般连续的字符串，数字，路径等可以用。所以在写shell脚本的时候一定注意使用小括号和双引号哈！</p>
+<p>示例如下：<br><img src="https://rancho333.gitee.io/pictures/ds.png"></p>
+<h1 id="sudo-找不到命令"><a href="#sudo-找不到命令" class="headerlink" title="sudo 找不到命令"></a>sudo 找不到命令</h1><p>有时候普通用户可以印的命令，加上<code>sudo</code>之后却报错<code>command not found</code>，原因在于这个命令仅存在与该用户的环境变量PATH中。解决方法是：</p>
+<ol>
+<li>使用绝对路径调用命令</li>
+<li>将命令添加到需要使用的用户的环境变量中<br>同样的道理，root用户或其他用户的命令另外一些用户也可能找不到。</li>
+</ol>
+<p>参考资料：<br><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Nj58VYQc955bFukrt4Jm2Q">关于Linux shell你必须知道的</a></p>
 
       
     </div>
@@ -1876,7 +1610,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-count">42</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
