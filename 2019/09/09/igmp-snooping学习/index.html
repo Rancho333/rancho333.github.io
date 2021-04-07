@@ -23,7 +23,7 @@
   <meta name="description" content="写在前面恩，18年做了半年的组播，算入门吧！最近有个igmp snooping（下面简称igsp）的bug，是个机缘接触一下igsp！ 使用需求简述很多情况下，组播报文要不可避免的经过一些二层交换设备，尤其是在局域网环境里。如下图：  上图中switch会将组播报文当做广播在vlan内进行flood，这是因为组播报文的目的地址为组播地址，在二层设备上学习不到这一类的MAC表项，这样不但浪费网络带宽">
 <meta property="og:type" content="article">
 <meta property="og:title" content="igmp-snooping学习">
-<meta property="og:url" content="https://rancho333.gitee.io/2019/09/10/igmp-snooping%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:url" content="https://rancho333.gitee.io/2019/09/09/igmp-snooping%E5%AD%A6%E4%B9%A0/index.html">
 <meta property="og:site_name" content="Rancho Blog">
 <meta property="og:description" content="写在前面恩，18年做了半年的组播，算入门吧！最近有个igmp snooping（下面简称igsp）的bug，是个机缘接触一下igsp！ 使用需求简述很多情况下，组播报文要不可避免的经过一些二层交换设备，尤其是在局域网环境里。如下图：  上图中switch会将组播报文当做广播在vlan内进行flood，这是因为组播报文的目的地址为组播地址，在二层设备上学习不到这一类的MAC表项，这样不但浪费网络带宽">
 <meta property="og:locale">
@@ -38,7 +38,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://rancho333.gitee.io/pictures/environment.png">
 
-<link rel="canonical" href="https://rancho333.gitee.io/2019/09/10/igmp-snooping%E5%AD%A6%E4%B9%A0/">
+<link rel="canonical" href="https://rancho333.gitee.io/2019/09/09/igmp-snooping%E5%AD%A6%E4%B9%A0/">
 
 
 <script id="page-configurations">
@@ -208,7 +208,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2019/09/10/igmp-snooping%E5%AD%A6%E4%B9%A0/">
+    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2019/09/09/igmp-snooping%E5%AD%A6%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/pictures/Rancho.png">
@@ -231,14 +231,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-09-10 06:07:29" itemprop="dateCreated datePublished" datetime="2019-09-10T06:07:29+08:00">2019-09-10</time>
+              <time title="Created: 2019-09-09 22:07:29" itemprop="dateCreated datePublished" datetime="2019-09-09T22:07:29+00:00">2019-09-09</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-07 12:06:49" itemprop="dateModified" datetime="2021-04-07T12:06:49+08:00">2021-04-07</time>
+                <time title="Modified: 2021-04-07 04:06:49" itemprop="dateModified" datetime="2021-04-07T04:06:49+00:00">2021-04-07</time>
               </span>
 
           
@@ -317,7 +317,7 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/09/06/Linux%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%E8%AE%B0%E5%BD%95/" rel="prev" title="Linux科学上网记录">
+    <a href="/2019/09/05/Linux%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%E8%AE%B0%E5%BD%95/" rel="prev" title="Linux科学上网记录">
       <i class="fa fa-chevron-left"></i> Linux科学上网记录
     </a></div>
       <div class="post-nav-item">

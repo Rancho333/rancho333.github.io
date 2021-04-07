@@ -435,7 +435,7 @@
   </entry>
   <entry>
     <title>Linux科学上网记录</title>
-    <url>/2019/09/06/Linux%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%E8%AE%B0%E5%BD%95/</url>
+    <url>/2019/09/05/Linux%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%E8%AE%B0%E5%BD%95/</url>
     <content><![CDATA[<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>之前在AWS部署了自己的shadowsocks的服务端，这个比较简单，参见ss的<a href="https://github.com/shadowsocks/shadowsocks/tree/master">github</a>上面介绍就可以很容易的部署起来了，之后在windows上Android安装了对应的客户端，可以顺利科学上网，此处对这一部分就不多做说明了。最近做SONiC（哈，又是SONiC），编译过程中需要在google上下载一些资源，那么就需要在Linux服务器上翻墙，并且在docker中可以访问google。</p>
 <h2 id="在linux上安装ss"><a href="#在linux上安装ss" class="headerlink" title="在linux上安装ss"></a>在linux上安装ss</h2><p>Linux环境是ubuntu 16.04 server，没有图形界面，纯命令行。<br>使用pip安装</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install python-pip</span><br><span class="line">sudo apt-get install python-setuptools m2crypto</span><br><span class="line">pip install shadowsocks</span><br></pre></td></tr></table></figure>
@@ -889,7 +889,7 @@
   </entry>
   <entry>
     <title>igmp-snooping学习</title>
-    <url>/2019/09/10/igmp-snooping%E5%AD%A6%E4%B9%A0/</url>
+    <url>/2019/09/09/igmp-snooping%E5%AD%A6%E4%B9%A0/</url>
     <content><![CDATA[<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>恩，18年做了半年的组播，算入门吧！最近有个igmp snooping（下面简称igsp）的bug，是个机缘接触一下igsp！</p>
 <h2 id="使用需求简述"><a href="#使用需求简述" class="headerlink" title="使用需求简述"></a>使用需求简述</h2><p>很多情况下，组播报文要不可避免的经过一些二层交换设备，尤其是在局域网环境里。如下图：</p>
 <p><img src="https://rancho333.gitee.io/pictures/environment.png"></p>
@@ -1479,7 +1479,7 @@
   </entry>
   <entry>
     <title>关于Ubuntu的软件源source.list学习</title>
-    <url>/2019/07/25/%E5%85%B3%E4%BA%8EUbuntu%E7%9A%84%E8%BD%AF%E4%BB%B6%E6%BA%90source-list%E5%AD%A6%E4%B9%A0/</url>
+    <url>/2019/07/24/%E5%85%B3%E4%BA%8EUbuntu%E7%9A%84%E8%BD%AF%E4%BB%B6%E6%BA%90source-list%E5%AD%A6%E4%B9%A0/</url>
     <content><![CDATA[<h2 id="背景说明"><a href="#背景说明" class="headerlink" title="背景说明"></a>背景说明</h2><p>最近参与到公司的白盒交换机项目中，需要编译ONL和sonic，其中软件源的设置让我非常头疼，编译依赖有很大的问题。决定深入学习一下Linux软件源.主机环境为ubuntu16.04.  </p>
 <h2 id="软件库存储文件-list"><a href="#软件库存储文件-list" class="headerlink" title="软件库存储文件*.list"></a>软件库存储文件*.list</h2><p>ubuntu使用apt来管理软件包，apt将软件库存储在如下文件中:  </p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;etc&#x2F;apt&#x2F;sources.list</span><br><span class="line">&#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;目录中带.list后缀的文件</span><br></pre></td></tr></table></figure>
