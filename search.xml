@@ -262,6 +262,9 @@
     <url>/2019/07/14/Hexo%E4%BD%BF%E7%94%A8%E4%BC%98%E5%8C%96/</url>
     <content><![CDATA[<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">站点配置文件：位于站点根目录下，主要包含Hexo本身的配置</span><br><span class="line">主题配置文件：位于主题目录下，主要用于配置主题相关的选项</span><br></pre></td></tr></table></figure>
 
+<p>版本说明, 当前配置基于以下版本进行修改，hexo代码环境打包在<a href="https://hub.docker.com/repository/docker/rancho123/ubuntu">docker</a>中，避免生产环境改变带来的问题。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo: 5.4.0</span><br><span class="line">hexo-cli: 4.2.0</span><br><span class="line">next: 7.8.0</span><br></pre></td></tr></table></figure>
+
 <h2 id="hexo的一些规则"><a href="#hexo的一些规则" class="headerlink" title="hexo的一些规则"></a>hexo的一些规则</h2><ol>
 <li>放在<code>source</code>下所有不以下划线开头的文件，在<code>hexo g</code>的时候会拷贝到<code>public</code>下面</li>
 <li>hexo默认渲染所有的html和markdown文件 </li>
@@ -272,15 +275,15 @@
 <h3 id="选择scheme"><a href="#选择scheme" class="headerlink" title="选择scheme"></a>选择scheme</h3><p>next提供4种不同外观，找到<code>scheme</code>字段，启用其中一种scheme，这里我选择Gemini.  </p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Schemes                                  </span></span><br><span class="line"><span class="comment">#scheme: Muse</span></span><br><span class="line"><span class="comment">#scheme: Mist</span></span><br><span class="line"><span class="comment">#scheme: Pisces</span></span><br><span class="line">scheme: Gemini</span><br></pre></td></tr></table></figure>
 
-<h3 id="设置语言"><a href="#设置语言" class="headerlink" title="设置语言"></a>设置语言</h3><p>找到<code>language</code>字段，修改为(中文，英文为：en)：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">language: zh-Hans</span><br></pre></td></tr></table></figure>
-
+<h3 id="设置语言"><a href="#设置语言" class="headerlink" title="设置语言"></a>设置语言</h3><p>在站点配置文件中找到<code>language</code>字段，修改为(中文，英文为：en)：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">language: zh-CN</span><br></pre></td></tr></table></figure>
+<p>注意需要在<code>themes/next/languages/</code>下面有对应的语言文件，否则不生效（使用默认）</p>
 <h3 id="设置侧栏"><a href="#设置侧栏" class="headerlink" title="设置侧栏"></a>设置侧栏</h3><p>找到<code>sidebar</code>字段，修改如下：  </p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sidebar:</span><br><span class="line">  <span class="comment">#靠左放置</span></span><br><span class="line">  position: left</span><br><span class="line">  <span class="comment">#显示时机</span></span><br><span class="line">  display: always</span><br></pre></td></tr></table></figure>
 
 <h3 id="设置头像"><a href="#设置头像" class="headerlink" title="设置头像"></a>设置头像</h3><p>在主题配置文件中，找到<code>avatar</code>字段，值设置成头像的链接地址</p>
 <h3 id="设置作者昵称"><a href="#设置作者昵称" class="headerlink" title="设置作者昵称"></a>设置作者昵称</h3><p>在站点配置文件中，找到<code>author</code>字段，进行设置  </p>
-<h2 id="修改标签图标"><a href="#修改标签图标" class="headerlink" title="修改标签图标"></a>修改标签图标</h2><p>可以在<code>https://www.iconfont.cn/</code>上找合适的图标，下载两个尺寸(16x16和32x32)的png格式图片，放到主题下的images文件夹中。在主题配置文件中找到：</p>
+<h2 id="修改网址图标"><a href="#修改网址图标" class="headerlink" title="修改网址图标"></a>修改网址图标</h2><p>可以在<code>https://www.iconfont.cn/</code>上找合适的图标，下载两个尺寸(16x16和32x32)的png格式图片，放到主题下的images文件夹中。在主题配置文件中找到：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">favicon:                         </span><br><span class="line">  small: /images/R-16x16.png  </span><br><span class="line">  medium: /images/R-32x32.png </span><br></pre></td></tr></table></figure>
 <p>替换small和medium两项，分别对应两种尺寸的图标。</p>
 <h2 id="给文章添加”categories”属性"><a href="#给文章添加”categories”属性" class="headerlink" title="给文章添加”categories”属性"></a>给文章添加”categories”属性</h2><p>创建<code>categories</code>页面  </p>
@@ -298,20 +301,35 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new page tags</span><br></pre></td></tr></table></figure>
 
 <p>后面的操作与添加<code>categories</code>属性类似，一篇文章可以添加多个<code>tags</code>  </p>
-<h2 id="使用资源文件夹"><a href="#使用资源文件夹" class="headerlink" title="使用资源文件夹"></a>使用资源文件夹</h2><p>在站点配置文件找到<code>post_asset_folder</code>关键字,设置成如下：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">_config.yml</span><br><span class="line">post_asset_folder: <span class="literal">true</span></span><br></pre></td></tr></table></figure>
-
-<p>当资源管理功能打开后，Hexo将会在每一次通过hexo new创建md时在相同路径下面创建一个同名的文件夹，与该md相关的资源都可以放在该文件夹里面。之后即可使用标签通过相对路径引用资源。  </p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&#123;% asset_img image_name.jpg tag %&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="关于图片"><a href="#关于图片" class="headerlink" title="关于图片"></a>关于图片</h1><p>有时候会分享md文件给别人，这时候要求图片的标识是因特网可达的，而不能使用资源文件夹这种方式。可以将图片放在<code>public/pictures</code>文件夹中，<code>hexo clean</code>命令会删除该文件夹。图片调用：<code>![](https://rancho333.gitee.io/uploads/arp_protocol.png) </code><br><code>hexo g</code>会将<code>source</code>下面非下划线开头的文件或文件夹拷贝到<code>public</code>下面，所以图片的源文件就放在<code>source/pictures</code>下面就可以，提交源码的时候还可以备份</p>
+<h1 id="关于图片"><a href="#关于图片" class="headerlink" title="关于图片"></a>关于图片</h1><p>有时候会分享md文件给别人，这时候要求图片的标识是因特网可达的，而不能使用资源文件夹这种方式。可以将图片放在<code>public/pictures</code>文件夹中，<code>hexo clean</code>命令会删除该文件夹。图片调用：<code>![](https://rancho333.gitee.io/pictures/arp_protocol.png) </code></p>
+<ol>
+<li>将图片源文件放到<code>source/pictures</code>路径下（源码可以备份，<code>hexo clean</code>命令会删除public文件夹）</li>
+<li><code>hexo g</code>会将<code>source</code>下面非下划线开头的文件或文件夹拷贝到<code>public</code>下面</li>
+<li><code>public</code>里面的内容会上传到master分支，所以我们可以使用上面的链接进行访问</li>
+</ol>
 <h1 id="文章搜索功能"><a href="#文章搜索功能" class="headerlink" title="文章搜索功能"></a>文章搜索功能</h1><p>安装搜索功能插件：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure>
 <p>在站点配置文件中添加：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">search:                                                                                                                                                                                          </span><br><span class="line">  path: search.xml    搜索文件path，所有的可搜索内容都静态写到了该文件中</span><br><span class="line">  field: post         搜索范围</span><br><span class="line">  format: html</span><br><span class="line">  <span class="built_in">limit</span>: 100         限制搜索的条目</span><br></pre></td></tr></table></figure>
 <p>在主题配置文件中：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">local_search:                                                                                       <span class="built_in">enable</span>: <span class="literal">true</span> </span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">local_search:                                                                                       </span><br><span class="line">  <span class="built_in">enable</span>: <span class="literal">true</span> </span><br></pre></td></tr></table></figure>
 
+<h1 id="查看插件以及脚本"><a href="#查看插件以及脚本" class="headerlink" title="查看插件以及脚本"></a>查看插件以及脚本</h1><p><code>hexo --debug</code>可以查看插件以及使用的脚本</p>
+<h1 id="添加看板娘"><a href="#添加看板娘" class="headerlink" title="添加看板娘"></a>添加看板娘</h1><p>安装插件<code>hexo-helper-live2d</code><br>安装看板模型<code>live2d-widget-model-shizuku</code><br>在站点配置文件中增加如下配置</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Live2D</span><br><span class="line"># https:&#x2F;&#x2F;github.com&#x2F;EYHN&#x2F;hexo-helper-live2d</span><br><span class="line">live2d:</span><br><span class="line">  enable: true</span><br><span class="line">  pluginRootPath: live2dw&#x2F;</span><br><span class="line">  pluginJsPath: lib&#x2F;</span><br><span class="line">  pluginModelPath: assets&#x2F; Relative)</span><br><span class="line"> </span><br><span class="line">  # 脚本加载源</span><br><span class="line">  scriptFrom: local # 默认从本地加载脚本</span><br><span class="line">  # scriptFrom: jsdelivr # 从 jsdelivr CDN 加载脚本</span><br><span class="line">  # scriptFrom: unpkg # 从 unpkg CDN 加载脚本</span><br><span class="line">  # scriptFrom: https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;live2d-widget@3.x&#x2F;lib&#x2F;L2Dwidget.min.js # 从自定义地址加载脚本</span><br><span class="line">  tagMode: false # 只在有 &#123;&#123; live2d() &#125;&#125; 标签的页面上加载 &#x2F; 在所有页面上加载</span><br><span class="line">  log: false # 是否在控制台打印日志</span><br><span class="line"> </span><br><span class="line">  # 选择看板娘模型</span><br><span class="line">  model:</span><br><span class="line">    use: live2d-widget-model-shizuku  # npm package的名字</span><br><span class="line">    # use: wanko # &#x2F;live2d_models&#x2F; 目录下的模型文件夹名称</span><br><span class="line">    # use: .&#x2F;wives&#x2F;wanko # 站点根目录下的模型文件夹名称</span><br><span class="line">    # use: https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;live2d-widget-model-wanko@1.0.5&#x2F;assets&#x2F;wanko.model.json # 自定义网络数据源</span><br><span class="line">  display:</span><br><span class="line">    position: left # 显示在左边还是右边</span><br><span class="line">    width: 100 # 宽度</span><br><span class="line">    height: 180 # 高度</span><br><span class="line">  mobile:</span><br><span class="line">    show: false</span><br><span class="line">  react:</span><br><span class="line">    opacityDefault: 0.7 # 默认透明度</span><br></pre></td></tr></table></figure>
+
+<h2 id="添加字数统计"><a href="#添加字数统计" class="headerlink" title="添加字数统计"></a>添加字数统计</h2><p>安装插件<code>npm install hexo-wordcount --save</code><br>在<code>themes/next/layout/_macro/post.swig</code>文件的<code>busuazi</code>所在的模块的<code>endif</code>前面加上：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;span class&#x3D;&quot;post-meta-divider&quot;&gt;|&lt;&#x2F;span&gt;</span><br><span class="line">&lt;span title&#x3D;&quot;&#123;&#123; __(&#39;post.wordcount&#39;) &#125;&#125;&quot;&gt;&lt;span class&#x3D;&quot;post-meta-item-icon&quot;&gt;&lt;i class&#x3D;&quot;fa fa-file-word-o&quot;&gt;&lt;&#x2F;i&gt;&lt;&#x2F;span&gt;字数： &#123;&#123; wordcount(post.content) &#125;&#125;&lt;&#x2F;span&gt;</span><br></pre></td></tr></table></figure>
+<p>在<code>themes/next/layout/_partials/footer.swig</code>文件的最后一行之前加上：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;div class&#x3D;&quot;theme-info&quot;&gt;</span><br><span class="line">  &lt;div class&#x3D;&quot;powered-by&quot;&gt;&lt;&#x2F;div&gt;</span><br><span class="line">&lt;span class&#x3D;&quot;post-count&quot;&gt;全站共 &#123;&#123; totalcount(site) &#125;&#125; 字&lt;&#x2F;span&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="圆角设置"><a href="#圆角设置" class="headerlink" title="圆角设置"></a>圆角设置</h2><p>在 hexo/source/_data 目录下新建 variables.styl 文件，填写下面内容。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 圆角设置</span><br><span class="line">$border-radius-inner     &#x3D; 20px 20px 20px 20px;</span><br><span class="line">$border-radius           &#x3D; 20px;</span><br></pre></td></tr></table></figure>
+<p>主题配置文件 next.yml 去除 variables.styl 的注释。</p>
+<h2 id="设置网站背景"><a href="#设置网站背景" class="headerlink" title="设置网站背景"></a>设置网站背景</h2><p>除了设置背景图片，还需要设置博客文章博客文章透明度才能看到背景图片。<br>主题配置文件 next.yml 去除 style.styl 的注释。<br>在 hexo/source/_data/style.styl 文件中写入下面代码。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 设置背景图片</span><br><span class="line">body &#123;</span><br><span class="line">    background:url(&#x2F;images&#x2F;background.png);</span><br><span class="line">    background-repeat: no-repeat;</span><br><span class="line">    background-attachment:fixed; &#x2F;&#x2F;不重复</span><br><span class="line">    background-size: cover;      &#x2F;&#x2F;填充</span><br><span class="line">    background-position:50% 50%;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>next 主题的博客文章都是不透明的，这样即使设置了背景图片也无法看到，在 hexo/source/_data/styles.styl 中写入下面内容，使博客文章透明化。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;博客内容透明化</span><br><span class="line">&#x2F;&#x2F;文章内容的透明度设置</span><br><span class="line">.content-wrap &#123;</span><br><span class="line">  opacity: 0.9;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;侧边框的透明度设置</span><br><span class="line">.sidebar &#123;</span><br><span class="line">  opacity: 0.9;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;菜单栏的透明度设置</span><br><span class="line">.header-inner &#123;</span><br><span class="line">  background: rgba(255,255,255,0.9);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;搜索框（local-search）的透明度设置</span><br><span class="line">.popup &#123;</span><br><span class="line">  opacity: 0.9;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>参考资料：</strong><br><a href="http://theme-next.iissnan.com/">NexT官方</a>  </p>
 ]]></content>
       <categories>

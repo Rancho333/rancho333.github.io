@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Rancho Blog</title>
+    <link>https://rancho333.gitee.io/</link>
+    
+    <atom:link href="https://rancho333.gitee.io/rss2.xml" rel="self" type="application/rss+xml"/>
+    
+    <description>No pain, no gain!</description>
+    <pubDate>Wed, 07 Apr 2021 07:09:11 GMT</pubDate>
+    <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>sonic-testbed的理解</title>
+      <link>https://rancho333.gitee.io/2021/03/03/sonic-testbed%E7%9A%84%E7%90%86%E8%A7%A3/</link>
+      <guid>https://rancho333.gitee.io/2021/03/03/sonic-testbed%E7%9A%84%E7%90%86%E8%A7%A3/</guid>
+      <pubDate>Tue, 02 Mar 2021 19:00:15 GMT</pubDate>
+      
+      <description>&lt;h1 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h1&gt;&lt;p&gt;这篇文章用来记录对sonic testbed的一些理解以及一些较核心的知识点。&lt;/p&gt;</description>
+      
+      
+      
+      <content:encoded><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>这篇文章用来记录对sonic testbed的一些理解以及一些较核心的知识点。</p><span id="more"></span><p>sonic-mgmt代码运行在docker-sonic-mgmt环境中中，镜像在sonic-buildimage中编译生成，docker-ptf也是在里面生成的。docker-sonic-mgmt环境集成了ansible-playbook、pytest、spytest等所需的依赖。</p>]]></content:encoded>
+      
+      
+      
+      <category domain="https://rancho333.gitee.io/tags/SONiC/">SONiC</category>
+      
+      
+      <comments>https://rancho333.gitee.io/2021/03/03/sonic-testbed%E7%9A%84%E7%90%86%E8%A7%A3/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>对SONiC项目的认识</title>
+      <link>https://rancho333.gitee.io/2021/02/25/%E5%AF%B9SONiC%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AE%A4%E8%AF%86/</link>
+      <guid>https://rancho333.gitee.io/2021/02/25/%E5%AF%B9SONiC%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AE%A4%E8%AF%86/</guid>
+      <pubDate>Thu, 25 Feb 2021 13:36:57 GMT</pubDate>
+      
+      <description>&lt;h1 id=&quot;SONiC简介&quot;&gt;&lt;a href=&quot;#SONiC简介&quot; class=&quot;headerlink&quot; title=&quot;SONiC简介&quot;&gt;&lt;/a&gt;SONiC简介&lt;/h1&gt;&lt;p&gt;不做过多赘述，SONiC本质就是一个Linux交换机网络操作系统，它有两个特点。&lt;/p&gt;</description>
+      
+      
+      
+      <content:encoded><![CDATA[<h1 id="SONiC简介"><a href="#SONiC简介" class="headerlink" title="SONiC简介"></a>SONiC简介</h1><p>不做过多赘述，SONiC本质就是一个Linux交换机网络操作系统，它有两个特点。</p><span id="more"></span><p>第一，它是基于SAI的，在没有SAI之前所有的芯片都要通过自己的SDK与上层软件进行通信，相当于用自己的“方言”与上层操作系统通信，SAI把这个“方言”标准化，大家的芯片用同样的语言同上层的控制软件交流，因为有了SAI，所以才能建立一个操作系统。有了SAI之后，适配ASIC的工作由芯片厂商完成，白盒交换机厂商推出一款新产品所花费的时间大大缩短。</p><p>第二，基于Docker，Sonic有丰富的扩展性。依托于Linux,Docker生态，Sonic孕育了丰富的管理软件和解决方案。而其自身也于Redis, Quagga, LLDP等开源技术碰撞出更多火花。</p><p>2016年，SONiC的理念就是将传统交换机OS拆分成多个容器化组件的解决方案，进而也定义了控制面的容器化架构，囊括了组件和编程接口。</p><p>2017年微软对SONiC的性能进行了大幅升级，全面支持IDV，并且融合了更多的容器特性。</p><p>2018年微软又在管理性上下了大力气（如ConfigDB）</p><h1 id="对SONiC项目的学习"><a href="#对SONiC项目的学习" class="headerlink" title="对SONiC项目的学习"></a>对SONiC项目的学习</h1><p>相比于传统Linux交换机操作系统几十M的镜像大小，SONiC镜像动辄几百M甚至超1G，这也说明了里面包含的内容极其庞杂。如果有比较深厚的Linux功底，上手会很快。因为里面大多是Linux本质性、不变性和可复用性的东西。以自己对SONiC项目的认知，将其划分为5个大块比较合适。分别是：</p><ul><li>SONiC的编译</li><li>SONiC的安装</li><li>SONiC的bring up</li><li>SONiC的上层应用</li><li>TestBed自动化测试</li></ul><h2 id="SONiC的编译"><a href="#SONiC的编译" class="headerlink" title="SONiC的编译"></a>SONiC的编译</h2><p>这一步本身就是一个庞大的源码编译出Linux安装镜像的过程，类比于LFS。这里可以借用嵌入式操作系统移植的4个步骤用来辅助说明。</p><ol><li>交叉编译环境的制作。一般而言，SONiC的宿主机与目标机都是x86，所以没有交叉编译这种说法，但是sonic是支持ARM和ARM64的，只是现阶段我没玩过。值得关注的是，SONiC在编译之前会制作一个docker用来打包编译环境，之后所有的编译在里面完成。</li><li>kernel的配置、编译、移植。SONiC在kernel编译时会指定config，参见kernel的Makefile，我们可以按需修改。</li><li>根文件系统的制作。SONiC使用debootstrap完成文件系统的基础架构，之后会将编译好的deb包，whl包等target释放或拷贝到rootfs中去，最终生成的sonic-platform.bin是一个fs.zip、fs.squashfa、docker.tar.gz以及初始化脚本的打包可执行文件。</li><li>bootloader的移植。裸机装bios没有玩过，SONiC盒子需要在bios之上安装一个ONIE，ONIE本质是一个小的Linux，提供SONiC安装环境</li></ol><p>对于这一部分，如果有一个比较全面的概览，当有porting或任何需要修改源码的需求时，将会有一定方向性。SONiC的编译框架主要由shell脚本，Makefile，Dockefile以及j2模板文件构成，需要有一定的Makefile、shell脚本基础。</p><h2 id="SONiC的安装"><a href="#SONiC的安装" class="headerlink" title="SONiC的安装"></a>SONiC的安装</h2><p>SONiC的安装是某种程度上是生成镜像的一个逆向过程。sonic-asic.bin是一个shell脚本，可以在shell下直接执行一下看看会发生什么事情。SONiC安装的本质其实就是bash ./sonic-asic.bin的执行过程。</p><p>SONiC可以在ONIE和SONiC环境下完成安装，这里面会调用两个脚本sharch_body.sh和install.sh。SONiC的安装时会有一些打印，参照打印与shell脚本可以发现里面做了什么,关注一下<code>/boot</code>目录。在此处简单说明一下：</p><ul><li>在sharch_body.sh中<ul><li>对image文件进行hash校验</li><li>为install.sh准备运行环境并执行install.sh</li></ul></li><li>在install.sh中<ul><li>确定安装环境（ONIE、SONiC、build）</li><li>调用machine.conf，准备platform相关环境变量，配置console，默认是ttyS0和9600。参数设置不匹配将导致SONiC bring up失败。新安装的onie，需要在onie下修改eeprom以及machine.conf(这个可以在onie编译的时候指定)。需要关注修改三个字段：onie_switch_asic、onie_machine、onie_platform。</li><li>安排安装os的分区（uefi+gpt）</li><li>解压fs.zip(boot+platform+docker+fs.squashfs)至分区，onie和SONiC安装会有一些细微差别。这里将创建boot和platform文件夹（在sonic的/host/image*下面，不是根目录），将驱动放到对应文件夹下，在rc.local中会释放出来。</li><li>配置grub，安装完成 </li><li>重启之后会按照安装时设置的grud启动新的操作系统</li></ul></li></ul><h2 id="SONiC的bring-up"><a href="#SONiC的bring-up" class="headerlink" title="SONiC的bring up"></a>SONiC的bring up</h2><p>SONiC基于SAI可以： 一个镜像适配相同ASIC厂家的不同设备型号，每一个款设备都有自己的差异性配置文件，如端口，led，波特率等。SONiC是如何正确加载对应设备型号的配置文件的？这里留个问题可以自己查查。</p><p>SONiC是Linux, 所以遵循Linux的启动过程。</p><ol><li><p>bootloader + onie阶段<br>我们可以在onie下安装sonic，grub将cmdline参数传递给kernel，kernel启动，加载驱动</p></li><li><p>kernel启动之后systemd初始化阶段这里面可以细分</p><ul><li>systemd相关，使用<code>systemctl list-dependencies graphical.target</code>查看当前加载的服务 </li><li>rc.local，这里面有一些启动后执行的动作，自己瞅瞅吧</li></ul></li></ol><p>需要关注一下SONiC的文件系统</p><ul><li>fdisk -l     查看有哪些分区,以及分区大小。那么如何调整分区大小？改那个配置文件？</li><li>df 查看下那些文件夹挂载在物理硬盘分区上</li><li>cat /proc/cmdline    查看内核启动参数</li><li>blkid            查看分区对应的PARTUUID</li></ul><h2 id="SONiC的上层应用"><a href="#SONiC的上层应用" class="headerlink" title="SONiC的上层应用"></a>SONiC的上层应用</h2><p>SONiC的服务跑在docker中，如PMON、syncd、frr等。关于这些服务是如何启动的？可以参见《SONIC中docker运行服务的单分析》，源码中注意下<code>docker_image_ctl.j2</code>文件，这是docker的启动管理模板。</p><p>SONiC核心的功能就是交换路由，所以交换路由协议在里面是很重要的，与传统交换机相比，SONiC中的服务运行在docker中，使用redis集中式进行数据管理，其它并没有什么本质区别。</p><p>后续考虑以vxlan为切入点，深入了解学习SONiC的系统架构，对于vxlan，参见<a href="https://rancho333.gitee.io/2021/02/03/vxlan%E5%AD%A6%E4%B9%A0/">vxlan学习</a>。</p><p>如何配置管理SONiC呢？传统的交换机会做一个命令行程序，指定用户登录后执行该程序，可以称之为CLI，在里面可以进入shell，也可以从shell退回CLI。社区版SONiC登录之后运行bash，用python做了一套简单的命令行，可以进行配置管理，这玩意解析速度极慢，使用体验极差。除此之外，还可以通过修改<code>config_db.json</code>然后重新加载或者直接使用<code>redis</code>命令行进行配置。当然SONiC支持SDN，可以通过openflow方式集中式管理配置。阿里在SONiC上面做了一套传统CLI，称之为<code>lambda-cli</code>，比社区版SONiC的命令行好用多了。</p><h2 id="TestBed自动化测试"><a href="#TestBed自动化测试" class="headerlink" title="TestBed自动化测试"></a>TestBed自动化测试</h2><p>TBD</p>]]></content:encoded>
+      
+      
+      
+      <category domain="https://rancho333.gitee.io/tags/SONiC/">SONiC</category>
+      
+      
+      <comments>https://rancho333.gitee.io/2021/02/25/%E5%AF%B9SONiC%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AE%A4%E8%AF%86/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>shell重定向</title>
+      <link>https://rancho333.gitee.io/2021/02/23/shell%E9%87%8D%E5%AE%9A%E5%90%91/</link>
+      <guid>https://rancho333.gitee.io/2021/02/23/shell%E9%87%8D%E5%AE%9A%E5%90%91/</guid>
+      <pubDate>Tue, 23 Feb 2021 13:28:38 GMT</pubDate>
+      
+      <description>&lt;h1 id=&quot;shell重定向&quot;&gt;&lt;a href=&quot;#shell重定向&quot; class=&quot;headerlink&quot; title=&quot;shell重定向&quot;&gt;&lt;/a&gt;shell重定向&lt;/h1&gt;&lt;p&gt;shell重定向即重新确定数据的流向，是通过改变文件描述符目标来实现的，如流向&lt;code&gt;1&lt;/code&gt;的数据让其流向&lt;code&gt;/tmp/a.c&lt;/code&gt;。&lt;/p&gt;</description>
+      
+      
+      
+      <content:encoded><![CDATA[<h1 id="shell重定向"><a href="#shell重定向" class="headerlink" title="shell重定向"></a>shell重定向</h1><p>shell重定向即重新确定数据的流向，是通过改变文件描述符目标来实现的，如流向<code>1</code>的数据让其流向<code>/tmp/a.c</code>。</p><span id="more"></span><p>shell中，基础重定向有以下几种方式：</p><ul><li><p><code>[n]&gt;file</code>：覆盖式输出重定向，输出到fd=n的数据改变流向输出到file文件中，file不存在则创建，file存在则先清空再写入数据</p><ul><li>n可省略，默认值为<code>1</code>，即标准输出覆盖重定向到file中</li><li><code>&gt;&gt;</code>表示追加式输出重定向</li></ul></li><li><p><code>[n]&lt;file</code>:输入重定向，以读取模式打开文件并分配fd=n,file不存在则报错</p><ul><li>n可省略，默认值为0，即直接冲file中读数据</li><li>通常程序只是从0中都数据，所以当n不等于0时，需要多做一步<code>3&lt;file &lt;&amp;3</code></li></ul></li></ul><p><code>cat</code>命令中经常使用到重定向，要明白<code>cat file</code>和<code>cat &lt;file</code>的区别。cat命令会读取指定的文件然后输出到标准输出，如果没有指定，则从标准输入读取数字符，然后输出字符。<code>cat file</code>是直接读取file这个文件中的内容，<code>cat &lt;file</code>是file文件被读取后内容重定向到标准输入，然后cat从标准输入读取到里面的数据，虽然结果都一样，但是里面的内容不一样。一个很经典的在shell脚本中创建配置文件的方式：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;EOF&gt;a.c           #这一行的EOF表示doc的起始符</span><br><span class="line">zhw</span><br><span class="line">wan</span><br><span class="line">EOF                     #这一行的doc表示doc的终止符，前后必须一致</span><br></pre></td></tr></table></figure><p>这里需要解释一下，输入重定向是<code>&lt;</code>，除此之外，还有<code>&lt;&lt;</code>与<code>&lt;&lt;&lt;</code>，我们一般也就用到<code>&lt;&lt;</code>.<br><code>&lt;&lt;</code>符号表示here doc。也就是说，它后面跟的是一篇文档，就像一个文件一样，只不过这个文件的内容是临时定义在<code>&lt;&lt;</code>符号后面的。here doc常用语指定多行数据输入。<br>既然是文档，就有文档的起始符和终止符，这中间的内容全部是文档的内容，文档内容会被作为标准输入的数据读取。起始符和终止符可以随意定义，但是前后必须一致，一般用<code>EOF</code>来表示。</p><p><code>&lt;&lt;&lt;</code>表示here string,即后面跟的是字符串，注意</p><ul><li>双引号包围的字符串shell会对其进行解释</li><li>单引号包围的字符串shell不会对其进行解释</li></ul><p>在脚本中创建配置文件还可以使用<code>tee</code>命令,tee从标准输入中读取数据，然后写到标准输出和0或多个文件中去。换言之，tee可以实现数据多重定向。实现如下：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tee a.c &lt;&lt;EOF</span><br><span class="line">zhw</span><br><span class="line">wan</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>]]></content:encoded>
+      
+      
+      
+      <category domain="https://rancho333.gitee.io/tags/shell/">shell</category>
+      
+      
+      <comments>https://rancho333.gitee.io/2021/02/23/shell%E9%87%8D%E5%AE%9A%E5%90%91/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>shell变量</title>
+      <link>https://rancho333.gitee.io/2021/02/23/shell%E5%8F%98%E9%87%8F/</link>
+      <guid>https://rancho333.gitee.io/2021/02/23/shell%E5%8F%98%E9%87%8F/</guid>
+      <pubDate>Mon, 22 Feb 2021 16:28:14 GMT</pubDate>
+      
+      <description>&lt;h1 id=&quot;shell变量&quot;&gt;&lt;a href=&quot;#shell变量&quot; class=&quot;headerlink&quot; title=&quot;shell变量&quot;&gt;&lt;/a&gt;shell变量&lt;/h1&gt;&lt;p&gt;标准的UNIX变量分为两类，环境变量和shell变量。广义上而言，&lt;code&gt;shell变量&lt;/code&gt;只应用于当前的shell实例，是用来设置短期工作情况的; &lt;code&gt;环境变量&lt;/code&gt;有更长远的意义，这些变量在登录时设置，在整个会话期都是有效的。一般约定，环境变量使用大写变量表示，shell变量使用小写表示。&lt;/p&gt;</description>
+      
+      
+      
+      <content:encoded><![CDATA[<h1 id="shell变量"><a href="#shell变量" class="headerlink" title="shell变量"></a>shell变量</h1><p>标准的UNIX变量分为两类，环境变量和shell变量。广义上而言，<code>shell变量</code>只应用于当前的shell实例，是用来设置短期工作情况的; <code>环境变量</code>有更长远的意义，这些变量在登录时设置，在整个会话期都是有效的。一般约定，环境变量使用大写变量表示，shell变量使用小写表示。</p><span id="more"></span><p>通过<code>printenv</code>命令列出所有的环境变量，<code>set</code>命令列出所有的shell变量。环境变量中存储的更多是永久性的变量,例如：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HOME&#x3D;&#x2F;home&#x2F;rancho</span><br></pre></td></tr></table></figure><p>这些变量很少改变，而shell变量存储本地的、临时性的、shell特有的变量,如：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PWD&#x3D;&#x2F;tmp            #切换到不同的文件夹下查看该变量，该变量的值就是pwd命令的打印</span><br></pre></td></tr></table></figure><p>shell变量是shell专有的变量，不会被子进程继承，环境变量才会被继承。</p><h1 id="变量相关的一些命令"><a href="#变量相关的一些命令" class="headerlink" title="变量相关的一些命令"></a>变量相关的一些命令</h1><p>对于几个关于变量的命令的说明：</p><ul><li>set             设置和显示shell变量（包括环境变量，shell变量，函数定义, 等效于declare</li><li>env,printenv    显示环境变量</li><li>export          将shell变量导出为环境变量, 显示导出成环境变量的shell变量，并显示变量属性，等效于declare -x</li></ul><p>对于变量，其核心的点</p><ul><li>变量对应的值</li><li>变量的作用域</li></ul><p>其中，shell变量的值只能为字符串，可以用<code>declare -i</code>强制声明为数值、<br>关于变量作用域：<br>shell变量与环境变量的作用域差异主要体现在子shell继承上面；<code>source</code>或<code>.</code>与直接执行脚本的作用域差异主要体现在对当前shell环境的设置上面<br>shell命令行或shell脚本中定义的变量均为全局的，哪怕是在shell函数中定义的变量也是全局的shell变量，这与其它编程语言不同，在shell函数中使用内建命令<code>local</code>声明的变量作用域只在函数中，<code>local</code>命令也只能在函数中使用<br>同时，这一点也是很合理的，对于普通程序，如<code>ls</code>，程序执行完内存就释放了，所以里面的变量都没了；而<code>bash</code>本身也是一个程序，它并没有结束，所以里面的变量还在，如果你<code>exit</code>退出了，变量也就没了。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[rancho ~]$ type -t local</span><br><span class="line">builtin</span><br><span class="line">[rancho ~]$ local a&#x3D;10</span><br><span class="line">-bash: local: can only be used in a function</span><br></pre></td></tr></table></figure><p>如果变量的作用域只想在脚本内生效，使用完之后用<code>unset</code>将之释放</p><p>此外，使用<code>var=value cmd</code>方式定义的变量作用域只在cmd的执行环境中。</p><h1 id="特殊变量"><a href="#特殊变量" class="headerlink" title="特殊变量"></a>特殊变量</h1><p>shell上有一些特殊变量，这些变量由shell自身动态维护，不允许用户手动修改。</p><p>这些特殊变量没有变量名，而是使用变量引用去使用这些变量。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$1,$2,$N：          脚本的位置参数</span><br><span class="line">$0:                 shell或shell脚本的名称，注意BASH_SOURCE变量</span><br><span class="line">$*:                 扩展为位置参数，“$*”等价于“$1 $2 $3 ... $N”</span><br><span class="line">$@:                 扩展为位置参数，“$@”等价于“$1” &quot;$2&quot; &quot;$3&quot; ... &quot;$N&quot;</span><br><span class="line">$#:                 位置参数的个数</span><br><span class="line">$$:                 当前shell进程的PID，在某些shell(如小括号开启的子shell)下会被继承。注意BASHPID变量</span><br><span class="line">$?:                 最近一个前台命令的退出状态码</span><br><span class="line">$!:                 最近一个后台命令的退出代码</span><br><span class="line">$-:                 当前shell环境的一些特殊设置，如是否是交互式，一般是himBH, 比如可以设置set -x,变成himxBH，取消set +x</span><br></pre></td></tr></table></figure><h1 id="常见环境变量"><a href="#常见环境变量" class="headerlink" title="常见环境变量"></a>常见环境变量</h1><p><code>$TERM</code>变量表示终端类型，值会是以下之一：</p><ul><li>xterm             一般是这个值</li><li>vt220             是xterm的子集，不支持颜色，可以top命令后输入z测试</li><li>xterm-color       如果在老系统，并且屏幕颜色不对时用这个类型</li><li>putty,konsole     使用终端模拟器</li><li>screen            if running inside GNU screen（or tmux）</li><li>linux             通过linux串口登录 ctrl+alt+f1</li></ul>]]></content:encoded>
+      
+      
+      
+      <category domain="https://rancho333.gitee.io/tags/shell/">shell</category>
+      
+      
+      <comments>https://rancho333.gitee.io/2021/02/23/shell%E5%8F%98%E9%87%8F/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>shell核心机制之子shell与shell环境</title>
+      <link>https://rancho333.gitee.io/2021/02/22/shell%E6%A0%B8%E5%BF%83%E6%9C%BA%E5%88%B6%E4%B9%8B%E5%AD%90shell%E4%B8%8Eshell%E7%8E%AF%E5%A2%83/</link>
+      <guid>https://rancho333.gitee.io/2021/02/22/shell%E6%A0%B8%E5%BF%83%E6%9C%BA%E5%88%B6%E4%B9%8B%E5%AD%90shell%E4%B8%8Eshell%E7%8E%AF%E5%A2%83/</guid>
+      <pubDate>Mon, 22 Feb 2021 10:49:31 GMT</pubDate>
+      
+      <description>&lt;h1 id=&quot;深入了解shell必备的两个知识点&quot;&gt;&lt;a href=&quot;#深入了解shell必备的两个知识点&quot; class=&quot;headerlink&quot; title=&quot;深入了解shell必备的两个知识点&quot;&gt;&lt;/a&gt;深入了解shell必备的两个知识点&lt;/h1&gt;&lt;p&gt;子shell与shell环境是深入了解shell所必备的两个知识点。shell的实现方式有多种，如bash，sh，zsh等，这些软件本质就是一个shell解释器，最常用的是bash，因为其在几乎所有的Linux发行版中都预安装了。&lt;br&gt;子shell是shell命令的运行机制，而shell环境是shell命令的运行环境，就是我们常说的环境变量了。&lt;/p&gt;</description>
+      
+      
+      
+      <content:encoded><![CDATA[<h1 id="深入了解shell必备的两个知识点"><a href="#深入了解shell必备的两个知识点" class="headerlink" title="深入了解shell必备的两个知识点"></a>深入了解shell必备的两个知识点</h1><p>子shell与shell环境是深入了解shell所必备的两个知识点。shell的实现方式有多种，如bash，sh，zsh等，这些软件本质就是一个shell解释器，最常用的是bash，因为其在几乎所有的Linux发行版中都预安装了。<br>子shell是shell命令的运行机制，而shell环境是shell命令的运行环境，就是我们常说的环境变量了。</p><span id="more"></span><h1 id="命令类型与子shell"><a href="#命令类型与子shell" class="headerlink" title="命令类型与子shell"></a>命令类型与子shell</h1><p>并不是在shell里执行的所有命令都会在子shell里执行，我们需要先认识一下shell命令分类。</p><p><code>type</code>命令可以可以显示出命令的类型，对于不同的类型shell解释器有不同的处理方式。命令类型有以下几种：</p><ul><li>alias(shell alias)</li><li>function(shell functions)，shell函数</li><li>builtin(shell builtin)，shell内建命令</li><li>file(disk file)，磁盘文件，需要有可执行权限，我们安装的第三方软件一般就是这种类型，在PATH下找到，这个是外部命令，如ssh、ls</li><li>keyword(shell reserved word)，shell保留关键字，如for、done、while等，在shell脚本中很常用</li></ul><p><code>type</code>的常用参数如下</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-t      打印命令类型，上述5种类型之一</span><br><span class="line">-a      打印所有包含该命令的文件位置</span><br></pre></td></tr></table></figure><p>shell对于不同的命令类型，处理方式如下：</p><ul><li>file(外部命令)的执行：先fork shell子进程，在后在子shell进程中exec调用外部命令</li><li>function、builtin、keyword: 这些命令依赖于shell进程，没有shell进程，他们都没有意义。他们都是直接在当前shell进程内执行的，不会创建新的子shell进程来执行</li><li>alias:在命令解析阶段替换成对应的内容，然后重新执行命令解析</li></ul><p>当alias、keyword、function、builtion、file冲突时，会按照优先级进行执行，优先级从左至右依次递减。</p><p>对于使用子shell方式执行cmd</p><ol><li>当前shell进程fork创建一个子shell进程，子shell继承父shell大量属性，如变量</li><li>子shell进程通过exec调用执行cmd, 并用cmd代码替换刚才创建的子shell进程(子shell进程继承自父shell进程的属性会被覆盖)，于是子shell进程就变成cmd进程，所以父shell的子进程变成了cmd进程</li><li>父shell进程wait子cmd进程退出</li></ol><p>伪代码描述如下, 以执行<code>ls -lah</code>命令为例：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">pid &#x3D; fork();</span><br><span class="line">if(pid &#x3D;&#x3D; 0 ) &#123;</span><br><span class="line">    &#x2F;&#x2F;子进程中，调用exec</span><br><span class="line">    exec(&quot;ls -lah&quot;)</span><br><span class="line">&#125; else if (pid &gt; 0) &#123;</span><br><span class="line">    &#x2F;&#x2F;父进程中，waitpid等待子进程退出</span><br><span class="line">    waitpid(pid);</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure><p>通过<code>$BASHPID</code>可以查看当前bash进程的pid，从而判断在那个shell(父还是子).</p><h1 id="shell命令的运行环境"><a href="#shell命令的运行环境" class="headerlink" title="shell命令的运行环境"></a>shell命令的运行环境</h1><p>每个shell进程有一个自己的运行环境，不同的shell进程有不同的shell环境。shell解析命令行、调用命令行的过程都在这个环境中完成。</p><p>shell运行环境由配置文件来完成初始化，bash会读取的配置文件有：</p><ul><li>/etc/profile</li><li>/etc/profile.d/*.sh</li><li>~/.bash_profile</li><li>~/.bashrc</li><li>/etc/bashrc</li></ul><p>shell分为login shell、non-login shell与interactive shell、non-interactive shell，不同的shell加载的配置文件是不同的。</p><p>环境主要体现在对环境的设置，包括但不限于环境的设置有：</p><ul><li><code>cd /tmp</code>表示设置当前shell环境的工作目录</li><li>shopt或set命令进行shell的功能设置，可在配置文件中找到相关设置</li><li>环境变量设置<ul><li>主要用于shell进程和其子进程之间的数据传递</li><li>子进程（不仅仅是子shell进程）可以继承父shell环境中的环境变量</li><li>环境变量通常以大写字母定义，非一定</li><li>使用bash内置命令<code>export</code>可以定义环境变量</li><li>命令前定义变量<code>var=value cmd</code>，表示定义一个专属环境变量，该环境变量只能在cmd进程环境中可以访问，cmd进程退出后，var环境变量也消失</li></ul></li><li><code>export var=value</code>表示在当前shell环境下定义一个环境变量var，以便让子进程继承这个变量</li></ul><p>每当提到shell内置命令，就要想到这个命令的作用有可能是在当前shell环境下进行某项设置<br>shell内置命令不会创建新进程，而是直接在当前shell环境内部执行<br>内置命令<code>source</code>或<code>.</code>执行脚本时，表示在当前shell环境下执行脚本内容，即脚本中所有设置操作都会直接作用于当前shell环境<br>父shell环境可能影响子shell环境，但子shell环境一定不影响父shell环境，比如子shell脚本中的环境变量不会粘滞到父shell环境中</p><h2 id="shell环境-属性设置"><a href="#shell环境-属性设置" class="headerlink" title="shell环境/属性设置"></a>shell环境/属性设置</h2><p><code>bash</code>也是一个程序，一个命令，它可以通过设置选项来修改其某些属性，这些属性可以提高bash的安全性和可维护性。</p><ul><li>-u        遇到未定义的变量抛出错误，bash默认忽略它，当作空来处理</li><li>-x        显示bash执行的执行命令，在前面用<code>+</code>来区分命令和命令的输出；如果遇到-u的错误，不会打印该命令(测试所得)</li><li>-e        脚本发生错误，终止执行</li></ul><p>这里注意一个特殊场景即管道命令，bash会把管道命令最后一个子命令的返回值作为整个命令的返回值，也就是说，只要最后一个命令不失败，管道命令总是会执行成功。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">set -eux</span><br><span class="line">demo | echo adsad</span><br><span class="line">echo afe</span><br></pre></td></tr></table></figure><p>此处<code>demo</code>未定义，执行失败，但是<code>echo adsad</code>会执行成功，所以管道命令<code>demo | echo adsad</code>的返回值是<code>0</code>,脚本接下来的命令<code>echo afe</code>会继续执行，<code>set -e</code>在这里就失效了。使用<code>set -o pipefaile</code>可以解决这种情况，只要一个子命令失败，整个管道命令就失败，脚本就会终止执行。注意配合<code>set -e</code>一起使用才会生效，即<code>set -o pipeline</code>是<code>set -e</code>的一个补丁。</p><p>养成好习惯，在所有bash脚本开头加上</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set -euxo pipefail</span><br></pre></td></tr></table></figure><p>如果有意让退出状态不为0的程序使用<code>cmd || true</code></p><p>此外，shell可以关闭模式扩展</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">set -o noglob</span><br><span class="line">或者</span><br><span class="line">set -f</span><br></pre></td></tr></table></figure><h1 id="关于引号"><a href="#关于引号" class="headerlink" title="关于引号"></a>关于引号</h1><p>子shell和shell环境是shell机制方面的核心，其实引号在shell中的重要性与之可比肩。<br>在许多编程语言中，引号被用来表明：包含在里面的文本会被解析成字符串。但是在shell中，只有一种数据类型就是字符串。因此，字符串相关的引号和转义，对bash来说就非常重要。</p><p>引号的功能：</p><ul><li>防止保留字符被替换，如<code>echo &#39;$&#39;</code></li><li>防止域分割和通配符，如包含空格的文件名</li><li>参数扩展，如<code>&quot;$@&quot;</code></li></ul><p>有三种标准的引号(如果算上转义是4种)，和2种非标准的bash扩展用法。</p><ul><li>单引号(single quotes)：移除在单引号之间所有字符的特殊含义, 避免被bash自动扩展。单引号之间的所有东东都会变成字符串(literal string)，唯一不能安全的被单引号修饰的字符就是单引号本身，即使使用了转义符也不行</li><li>双引号(double quotes)：双引号中不会进行文件名扩展，但是三个字符除外<code>$</code> <code>反引号</code> <code>\</code>，如果开启了<code>!</code>引用历史命令，则<code>!</code>也除外。大部分特殊字符在双引号中会失去特殊含义，变成普通字符，如<code>*</code></li><li>反引号(<code>backticks</code>)：这是命令替换语法的遗产，现在使用<code>$(...)</code>替代，但因为历史问题，现在依然被允许使用</li><li>转义符()：将<code>\</code>放在元字符($、&amp;、*、)前面去掉其特殊含义，如 <code>echo \$？</code>, 在双引号和没有引号中有效，在单引号中无效.反斜杠除了用于转义，还可以表示一些不可打印的字符<ul><li>\a    响铃</li><li>\b    退格</li><li>\n    换行</li><li>\r    回车</li><li>\t    制表符<br>所以在命令结尾结尾加上<code>\</code>，其实就是在换行符前加上转义，使得换行符变成一个普通字符，bash会将其当作空格处理，从而可以将一行命令写成多行。</li></ul></li></ul><p>这里举一个<code>find</code>使用的小例子：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[rancho test]$ ls</span><br><span class="line">a.c  c  deb  kernel  linux  make  python  shell</span><br><span class="line"></span><br><span class="line">[rancho test]$ find .&#x2F; -name &quot;*.c&quot;</span><br><span class="line">.&#x2F;shell&#x2F;a.c</span><br><span class="line">.&#x2F;shell&#x2F;b.c</span><br><span class="line">.&#x2F;a.c</span><br><span class="line">.&#x2F;deb&#x2F;zhw-1.0.0&#x2F;a.c</span><br><span class="line">.&#x2F;python&#x2F;a.c</span><br><span class="line">.&#x2F;linux&#x2F;a.c</span><br><span class="line">.&#x2F;c&#x2F;syntax.c</span><br><span class="line"></span><br><span class="line">[rancho test]$ find .&#x2F; -name *.c</span><br><span class="line">.&#x2F;shell&#x2F;a.c</span><br><span class="line">.&#x2F;a.c</span><br><span class="line">.&#x2F;deb&#x2F;zhw-1.0.0&#x2F;a.c</span><br><span class="line">.&#x2F;python&#x2F;a.c</span><br><span class="line">.&#x2F;linux&#x2F;a.c</span><br><span class="line">[rancho test]$ </span><br></pre></td></tr></table></figure><p>第一次使用find，传给它的参数是<code>*.c</code>，find会在当前目录下面去找所有以<code>.c</code>结尾的文件<br>第二次使用find, 传给它的参数是<code>a.c</code>，注意当前目录下面有<code>a.c</code>，所以<code>*.c</code>会被shell模式扩展为<code>a.c</code>；如果当前目录下没有<code>.c</code>文件，则扩展失败，原样输出<code>*.c</code>，这时候和用双引号修饰效果是一样的。<br>shell模式扩展完之后才会调用命令，所以一定要主要哪些词元是给shell做模式扩展的，哪些是直接传递给命令的，我们通过引号进行标识告知bash。</p><h1 id="shell核心知识点"><a href="#shell核心知识点" class="headerlink" title="shell核心知识点"></a>shell核心知识点</h1><p>最开始是想记录下<code>子shell</code>与<code>shell环境</code>这两个知识点的，后来越来越多的发现自己不知道某些知识点或者知识点认识模糊，shell笔记也有好几个文件了，这里列举一下shell中比较重要的知识点。</p><ul><li>子shell</li><li>shell命令执行环境</li><li>模式扩展(通配符扩展、变量扩展、子命令扩展、算术扩展)，expansion，globbing and word splitting</li><li>引用(引号和转义)</li><li>shell变量(变量引用，变量替换)</li><li>退出和退出状态</li><li>各种test(文件测试、字符串测试、数值测试)</li><li>循环和分支</li><li>shellcheck   这个并不是shell的知识点，而是一个shell脚本的检查工具，python，C都有这种检查工具，可以很好的帮我们检查一些通用的易错的语法问题，强烈建议使用</li></ul><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="https://wangdoc.com/bash/">Bash脚本教程</a><br><a href="https://google.github.io/styleguide/shellguide.html">Google shell脚本代码规法</a><br><a href="https://coolshell.cn/articles/19219.html">打造高效工作环境-shell篇</a></p>]]></content:encoded>
+      
+      
+      
+      <category domain="https://rancho333.gitee.io/tags/shell/">shell</category>
+      
+      
+      <comments>https://rancho333.gitee.io/2021/02/22/shell%E6%A0%B8%E5%BF%83%E6%9C%BA%E5%88%B6%E4%B9%8B%E5%AD%90shell%E4%B8%8Eshell%E7%8E%AF%E5%A2%83/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>shell语法简析</title>
+      <link>https://rancho333.gitee.io/2021/02/21/shell%E8%AF%AD%E6%B3%95%E7%AE%80%E6%9E%90/</link>
+      <guid>https://rancho333.gitee.io/2021/02/21/shell%E8%AF%AD%E6%B3%95%E7%AE%80%E6%9E%90/</guid>
+      <pubDate>Sat, 20 Feb 2021 16:14:32 GMT</pubDate>
+      
+      <description>&lt;h1 id=&quot;问题说明&quot;&gt;&lt;a href=&quot;#问题说明&quot; class=&quot;headerlink&quot; title=&quot;问题说明&quot;&gt;&lt;/a&gt;问题说明&lt;/h1&gt;&lt;p&gt;在shell下遇到一个赋值的问题&lt;/p&gt;</description>
+      
+      
+      
+      <content:encoded><![CDATA[<h1 id="问题说明"><a href="#问题说明" class="headerlink" title="问题说明"></a>问题说明</h1><p>在shell下遇到一个赋值的问题</p><span id="more"></span><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[rancho ~]$ a&#x3D;10</span><br><span class="line">[rancho ~]$ demo$a&#x3D;$(echo 123)</span><br><span class="line">demo10&#x3D;123: command not found</span><br></pre></td></tr></table></figure><h1 id="shell下的命令格式"><a href="#shell下的命令格式" class="headerlink" title="shell下的命令格式"></a>shell下的命令格式</h1><p>shell下我们常用的命令格式如下：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var&#x3D;value           #变量赋值，例如a&#x3D;1</span><br><span class="line">cmd [args]          #命令执行，例如ls -l</span><br><span class="line">&gt;redirection        #重定向,例如:&gt;a.c </span><br></pre></td></tr></table></figure><p>实际上，bash中的一个简单命令的完整格式如下：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var&#x3D;value ... cmd args &gt;redirection ...</span><br></pre></td></tr></table></figure><p>一个完整的简单命令由三部分组成：变量赋值部分、命令和参数部分、重定向部分，只是很多时候我们会省略一些部分的内容。<br>其中：</p><ul><li>变量赋值和重定向可以有多个</li><li>变量赋值必须在cmd前面，并且变量名必须符合bash要求的命令规则<ul><li>定义变量时，普通变量名是字母、数字、下划线的组合，且不能以数字开头</li><li>调用变量时，在变量名前加<code>$</code>，shell有一部分特殊变量如<code>$0 $1 $$</code></li></ul></li></ul><p>对于变量赋值：</p><ul><li>如果有变量赋值而没有命令执行部分，则变量赋值在当前shell下生效</li><li>如果有变量赋值也有命令执行部分，则变量赋值只作用于改命令，对当前shell无影响</li><li>如果变量名不符合bash的命令规范，则不认为是变量赋值语句，而是当作cmd部分</li></ul><h1 id="问题说明-1"><a href="#问题说明-1" class="headerlink" title="问题说明"></a>问题说明</h1><p><code>demo$a</code>不是一个有效的变量名，所以会当作cmd来执行，但是在执行之前会从左到右执行shell命令解析规则，得到<code>demo10=123</code>，之后将其作为命令进行执行，找不到改命令从而报错。类似的，输入<code>123das=10</code>也会报这种错误。</p>]]></content:encoded>
+      
+      
+      
+      <category domain="https://rancho333.gitee.io/tags/shell/">shell</category>
+      
+      
+      <comments>https://rancho333.gitee.io/2021/02/21/shell%E8%AF%AD%E6%B3%95%E7%AE%80%E6%9E%90/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>shell_tips_tricks</title>
+      <link>https://rancho333.gitee.io/2021/02/20/shell-tips-tricks/</link>
+      <guid>https://rancho333.gitee.io/2021/02/20/shell-tips-tricks/</guid>
+      <pubDate>Sat, 20 Feb 2021 15:09:00 GMT</pubDate>
+      
+      <description>&lt;h1 id=&quot;写在前面&quot;&gt;&lt;a href=&quot;#写在前面&quot; class=&quot;headerlink&quot; title=&quot;写在前面&quot;&gt;&lt;/a&gt;写在前面&lt;/h1&gt;&lt;p&gt;这篇文章用来记录shell的一些使用技巧，使用场景&lt;/p&gt;</description>
+      
+      
+      
+      <content:encoded><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>这篇文章用来记录shell的一些使用技巧，使用场景</p><span id="more"></span><h1 id="Tips-amp-Tricks"><a href="#Tips-amp-Tricks" class="headerlink" title="Tips &amp; Tricks"></a>Tips &amp; Tricks</h1><p>获取shell脚本所在的目录</p><p><code>dirname &quot;$(realpath &quot;$(BASH_SOURC[0])&quot;)&quot;</code></p>]]></content:encoded>
+      
+      
+      
+      <category domain="https://rancho333.gitee.io/tags/shell/">shell</category>
+      
+      
+      <comments>https://rancho333.gitee.io/2021/02/20/shell-tips-tricks/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>shell脚本执行的几种方式</title>
+      <link>https://rancho333.gitee.io/2021/02/20/shell%E8%84%9A%E6%9C%AC%E6%89%A7%E8%A1%8C%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/</link>
+      <guid>https://rancho333.gitee.io/2021/02/20/shell%E8%84%9A%E6%9C%AC%E6%89%A7%E8%A1%8C%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/</guid>
+      <pubDate>Sat, 20 Feb 2021 13:59:22 GMT</pubDate>
+      
+      <description>&lt;h1 id=&quot;shell脚本执行的几种方式&quot;&gt;&lt;a href=&quot;#shell脚本执行的几种方式&quot; class=&quot;headerlink&quot; title=&quot;shell脚本执行的几种方式&quot;&gt;&lt;/a&gt;shell脚本执行的几种方式&lt;/h1&gt;&lt;p&gt;shell脚本有三种执行方式&lt;/p&gt;</description>
+      
+      
+      
+      <content:encoded><![CDATA[<h1 id="shell脚本执行的几种方式"><a href="#shell脚本执行的几种方式" class="headerlink" title="shell脚本执行的几种方式"></a>shell脚本执行的几种方式</h1><p>shell脚本有三种执行方式</p><span id="more"></span><h2 id="filename-或-filename"><a href="#filename-或-filename" class="headerlink" title="./filename 或 filename"></a>./filename 或 filename</h2><p>这种方式是我们在CLI中最常使用的方式，要求脚本具有<em>可执行</em>权限。类似于执行二进制程序，需要让shell找到文件的具体位置。这种执行方式是重新启动一个子shell，在子shell中执行此脚本。子shell继承父shell的环境变量，但子shell新建的、改变的变量不会带回父shell，除非使用export。</p><h2 id="source-filename-或-filename"><a href="#source-filename-或-filename" class="headerlink" title="source filename 或 . filename"></a>source filename 或 . filename</h2><p>这种方式一般用在脚本中定义shell环境变量，比如修改<code>.bashrc</code>后使用source执行一下，将改动生效到当前shell中。<br>这个命令其实只是简单的读取脚本里面的语句依次在当前shell里面执行，没有新建子shell。脚本里面所有新建、改变变量的语句都会保存在当前shell里面。</p><h2 id="bash-filename-或-sh-filename，两者等效"><a href="#bash-filename-或-sh-filename，两者等效" class="headerlink" title="bash filename 或 sh filename，两者等效"></a>bash filename 或 sh filename，两者等效</h2><p>这种方式与./filename执行方式的唯一区别是，filename不需要可执行权限。</p><h1 id="关于-0和BASH-SOURCE"><a href="#关于-0和BASH-SOURCE" class="headerlink" title="关于$0和BASH_SOURCE"></a>关于$0和BASH_SOURCE</h1><p><code>$0</code>保存了被执行脚本的程序名称, 在脚本中<code>basename $0</code>可以获取脚本的文件名。用source方式执行的脚本不适用，$0为<code>-bash</code>。<br>但是，除了$0之外，bash还提供了一个数组变量<code>BASH_SOURCE</code>,程序名以入栈的方式存储在BASH_SOURCE中，即最后一个执行的脚本是BASH_SOURCE[0]或BASH_SOURCE，等价于$0。<br>在嵌套脚本的调用中，使用<code>BASH_SOURCE[0]</code>获取当前脚本的路径，使用<code>BASH_SOURCE[-1]</code>或<code>$0</code>获取顶层脚本的路径</p>]]></content:encoded>
+      
+      
+      
+      <category domain="https://rancho333.gitee.io/tags/shell/">shell</category>
+      
+      
+      <comments>https://rancho333.gitee.io/2021/02/20/shell%E8%84%9A%E6%9C%AC%E6%89%A7%E8%A1%8C%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>mpls学习</title>
+      <link>https://rancho333.gitee.io/2021/02/09/mpls%E5%AD%A6%E4%B9%A0/</link>
+      <guid>https://rancho333.gitee.io/2021/02/09/mpls%E5%AD%A6%E4%B9%A0/</guid>
+      <pubDate>Tue, 09 Feb 2021 10:27:51 GMT</pubDate>
+      
+      <description>&lt;h1 id=&quot;MPLS简介&quot;&gt;&lt;a href=&quot;#MPLS简介&quot; class=&quot;headerlink&quot; title=&quot;MPLS简介&quot;&gt;&lt;/a&gt;MPLS简介&lt;/h1&gt;&lt;p&gt;MPLS(multiprotocol label switching，多协议标签交换)起源于IPv4，最初是为了提高转发速度而提出的（早期路由是只能由软件处理的），其核心技术可扩展到多种网络协议，包括IPv6，IPX(internet packet exchange，网际报文交换)和CLNP(connectionless network protocol,无连接网络协议)等。MPLS中的&lt;em&gt;M&lt;/em&gt;指的就是支持多种网络协议。&lt;/p&gt;</description>
+      
+      
+      
+      <content:encoded><![CDATA[<h1 id="MPLS简介"><a href="#MPLS简介" class="headerlink" title="MPLS简介"></a>MPLS简介</h1><p>MPLS(multiprotocol label switching，多协议标签交换)起源于IPv4，最初是为了提高转发速度而提出的（早期路由是只能由软件处理的），其核心技术可扩展到多种网络协议，包括IPv6，IPX(internet packet exchange，网际报文交换)和CLNP(connectionless network protocol,无连接网络协议)等。MPLS中的<em>M</em>指的就是支持多种网络协议。</p><span id="more"></span><h1 id="概念说明"><a href="#概念说明" class="headerlink" title="概念说明"></a>概念说明</h1><h2 id="转发等价类"><a href="#转发等价类" class="headerlink" title="转发等价类"></a>转发等价类</h2><p>MPLS作为一种分类转发技术，将具有相同转发处理方式的分组归位一类，称为FEC(forwarding equivalence class，转发等价类)。相同FEC的分组在MPLS中将获得完全相同的处理。<br>FEC的划分方式非常灵活，可以是源地址、目的地址、源端口、目的端口、协议类型或VPN等为划分依据的任意组合。例如，在传统的采用最长匹配算法的IP转发中，到同一个目的地址的所有报文就是一个FEC。</p><h2 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h2><p>标签是一个长度固定，仅具有本地意义的短标识符，用于唯一标识一个分组所属的FEC。一个标签只能代表一个FEC。标签长度为4个字节，结构如下：</p><p><img src="https://rancho333.gitee.io/pictures/mpls_packet.png"></p><p>字段解释如下：</p><table><thead><tr><th align="left">字段</th><th align="left">解释</th></tr></thead><tbody><tr><td align="left">Label</td><td align="left">标签字段，长度为20bits，用来标识一个FEC</td></tr><tr><td align="left">Exp</td><td align="left">3bits, 保留， 协议中没有明确规定， 通常用作CoS</td></tr><tr><td align="left">S</td><td align="left">1bit, MPLS支持多重标签，值为1时表示为最底层标签</td></tr><tr><td align="left">TTL</td><td align="left">8bits, 和IP分组中的TTL意义相同，用来防止环路</td></tr></tbody></table><p>如果链路层协议具有标签域，如ATM的VPI/VCI,则标签封装在这些域中；否则，标签封装在链路层头和网络层数据之间的一个垫层。这样，任意链路层都能够支持标签。下图是标签在分组中的封装位置。</p><p><img src="https://rancho333.gitee.io/pictures/mpls_packet_location.png"></p><h2 id="标签交换路由器"><a href="#标签交换路由器" class="headerlink" title="标签交换路由器"></a>标签交换路由器</h2><p>LSR(label switching router,标签交换路由器)是MPLS网络中的基本单元，所有LSR都支持MPLS技术。</p><h2 id="标签交换路径"><a href="#标签交换路径" class="headerlink" title="标签交换路径"></a>标签交换路径</h2><p>一个转发等价类在MPLS网络中经过的路径称为LSP(label switched path，标签交换路径)。在一条LSP上，沿数据传送的方向，相邻的LSR分别称为上游LSR和下游LSR。如下图所示，R2是R1的下游LSR，相应的R1是R2的上有LSR。</p><p><img src="https://rancho333.gitee.io/pictures/mpls_lsr.png"><br>LSP在功能上与ATM和帧中继(frame relay)的虚电路相同，是从MPLS网络的入口到出口的一个单向路径，LSP中的每个节点由LSR组成。</p><h2 id="标签分发协议"><a href="#标签分发协议" class="headerlink" title="标签分发协议"></a>标签分发协议</h2><p>LDP(label distribution protocol，标签分发协议)是MPLS的控制协议，它相当于传统网络中的信令协议，负责FEC的分类、标签的分配以及LSP的建立和维护等一系列操作。MPLS可以使用多种标签发布协议，包括专为标签发布而制定的协议，例如：LDP、CR-LDP(constraint-based routing using LDP,基于约束路由的LDP)；也包括现有协议扩展后支持标签发布的，例如：BGP、RSVP(resource reservation protocol，资源预留协议)。同时，还可以手工配置静态LSP。<br>LDP有两个重要的作用：</p><ol><li>给本地路由信息分配标签，进行绑定生成LIB表</li><li>传递LSR之间的绑定信息，生成LFIB表</li></ol><h2 id="LSP隧道技术"><a href="#LSP隧道技术" class="headerlink" title="LSP隧道技术"></a>LSP隧道技术</h2><p>MPLS支持LSP隧道技术。一条LSP的上游LSR和下游LSR，尽管他们之间的路径可能并不在路由协议所提供的路径上，但MPLS允许在他们之间建立一条新的LSP，这样，上游LSR和下游LSR分别就是这条LSP的起点和终点。这时，上游LSR和下游LSR间就是LSP隧道，它避免了采用传统的网络层封装隧道。如上图中LSP <code>R2-&gt;R21-&gt;R22-&gt;R3</code>就是R2、R3间的一条隧道。如果隧道经由的路由与逐跳从路由协议中取得的路由一致，这种隧道就称为逐跳路由隧道(Hop by Hop routed tunnel)，否则称为显示路由隧道(explicitly routed tunnel)。</p><h2 id="多层标签栈"><a href="#多层标签栈" class="headerlink" title="多层标签栈"></a>多层标签栈</h2><p>如果分组在超过一层的LSP隧道中传送，就会有多层标签，形成标签栈(label stack)。在每一隧道的入口和出口，进行标签的入栈(push)和出栈(pop)操作。标签按照<code>后进先出</code>(last-in-first-out)方式组织标签，MPLS从栈顶开始处理标签。<br>MPLS对标签栈的深度没有限制，若一个分组的标签深度为m，则位于栈底的标签为1级标签，位于栈顶的标签为m级标签。未压入标签的分组可看作标签栈为空(即标签栈深度为0)的分组。</p><h1 id="MPLS体系结构"><a href="#MPLS体系结构" class="headerlink" title="MPLS体系结构"></a>MPLS体系结构</h1><h2 id="MPLS网络结构"><a href="#MPLS网络结构" class="headerlink" title="MPLS网络结构"></a>MPLS网络结构</h2><p>如下图所示，MPLS网络的基本构成单元是LSR，由LSR构成的网络称为MPLS域。位于MPLS域边缘、连接其它用户网络的LSR称为LER(label edge router, 边缘LSR)，区域内部的LSR称为核心LSR。核心LSR可以是支持MPLS的路由器，也可以是由ATM交换机等升级而成的ATM-LSR。域内部的LSR之间使用MPLS通信，MPLS域的边缘由LER与传统IP技术进行适配。<br>分组在入口LER被压入标签后，沿着由一系列LSR构成的LSP传送，其中，入口LER被称为ingress，出口LER被称为egress，中间的节点则称为transit。</p><p><img src="https://rancho333.gitee.io/pictures/mpls_network.png"><br>结合上图简要介绍MPLS基本工作过程：</p><ol><li>首先，LDP和传统路由协议(如OSPF、ISIS等)一起，在各个LSR中为有业务需求的FEC建立路由表和LIB(label information base，标签信息表)</li><li>入口LER接收分组，完成第三层功能，判定分组所属的FEC，并给分组加上标签，形成MPLS标签分组</li><li>接下来，在LSR构成的网络中，LSR根据分组上的标签以及LFIB(label forwarding information base，标签转发表)进行转发，不对标签分组进行任何第三层处理</li><li>最后，在MPLS出口LER去掉分组中的标签，继续进行后面的IP转发</li></ol><p>MPLS并不是一种业务或者应用，它本质上是一种隧道技术，也是一种将标签交换转发和网络层路由技术集于一身的路由与交换技术平台，这个平台不仅支持多种高层协议与业务，而且，在一定程度上可以保证信息传输的安全性。</p><h2 id="MPLS节点结构"><a href="#MPLS节点结构" class="headerlink" title="MPLS节点结构"></a>MPLS节点结构</h2><p><img src="https://rancho333.gitee.io/pictures/mpls_node.png"></p><p>如上图所示，MPLS节点由两部分组成：</p><ul><li>控制平面(control plane)：负责标签的分配、路由的选择、标签转发表的建立、标签交换路径的建立、拆除等工作</li><li>转发平面(forwarding plane)：依据标签转发表对收到的分组进行转发</li></ul><p>对于普通的LSR，在转发平面只需要进行标签分组的转发，需要使用到LFIB。对于LER，在转发平面不仅需要进行标签分组的转发，也需要进行IP分组的转发，所以既会使用到LFIB，也会使用到FIB表。</p><h2 id="MPLS与路由协议"><a href="#MPLS与路由协议" class="headerlink" title="MPLS与路由协议"></a>MPLS与路由协议</h2><p>LDP通过逐跳方式建立LSP时，利用沿途各LSR路由转发表中的信息来确定下一跳，而路由转发表中的信息一般是通过IGP、BGP等路由协议收集的。LDP并不直接和各种路由协议关联，只是间接使用路由信息。另一方面，通过对BGP、RSVP等已有协议进行扩展，也可以支持标签的分发。<br>在MPLS的应用中，也可能需要对某些路由协议进行扩展。例如，基于MPLS的VPN应用需要对BGP进行扩展，使BGP能够传播VPN的路由信息；基于MPLS的TE(traffic engineering,流量工程)需要对OSPF或IS-IS协议进行扩展，以便携带链路状态信息。</p><h2 id="MPLS的应用"><a href="#MPLS的应用" class="headerlink" title="MPLS的应用"></a>MPLS的应用</h2><p>最初，MPLS技术结合了二层交换与三层路由技术，提高了路由查找速度。但随着ASIC的发展，路由查找速度已经不成为阻碍网络发展的瓶颈。这使得MPLS在提高转发速度方面不具备明显的优势。<br>但由于MPLS结合了IP网络强大的三层路由功能和传统二层网络高效的转发机制，在转发平面采用面向连接的方式，与现有二层网络转发方式非常相似，这些特点使得MPLS能够很容易的实现IP与ATM、帧中继等二层网络的无缝融合，并为QoS、TE、VPN等应用提供更好的解决方案。</p><h3 id="基于MPLS的VPN"><a href="#基于MPLS的VPN" class="headerlink" title="基于MPLS的VPN"></a>基于MPLS的VPN</h3><p>传统的VPN一般是通过GRE、L2TP、PPTP等隧道协议来实现私有网络间数据流在公网上的传送，LSP本身就是公网上的隧道，因此，用MPLS来实现VPN有天然的优势。基于MPLS的VPN就是通过LSP将私有网络的不同分支连接起来，形成一个同一的网络。基于MPLS的VPN还支持对不同的VPN间的互通控制。<br><img src="https://rancho333.gitee.io/pictures/mpls_vpn.png"></p><p>上图是基于MPLS的VPN的基本结构</p><ul><li>CE可以是路由器，也可以是交换机或主机</li><li>PE位于骨干网络<br>PE负责对VPN用户进行管理，建立各PE间的LSP连接，同一VPN用户各分支间路由分派，PE间的路由分派通常是用LDP或扩展的BGP协议实现。<br>基于MPLS的VPN支持不同分支间的IP地址复用，并支持不同VPN间互通。与传统的路由相比，VPN路由中需要增加分支和VPN的标识信息，这就需要对BGP协议进行扩展，以携带VPN路由信息。</li></ul>]]></content:encoded>
+      
+      
+      
+      <category domain="https://rancho333.gitee.io/tags/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/">通信协议</category>
+      
+      
+      <comments>https://rancho333.gitee.io/2021/02/09/mpls%E5%AD%A6%E4%B9%A0/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>Linux路由信息学习</title>
+      <link>https://rancho333.gitee.io/2021/02/08/Linux%E8%B7%AF%E7%94%B1%E4%BF%A1%E6%81%AF%E5%AD%A6%E4%B9%A0/</link>
+      <guid>https://rancho333.gitee.io/2021/02/08/Linux%E8%B7%AF%E7%94%B1%E4%BF%A1%E6%81%AF%E5%AD%A6%E4%B9%A0/</guid>
+      <pubDate>Mon, 08 Feb 2021 14:14:57 GMT</pubDate>
+      
+      <description>&lt;h1 id=&quot;写在前面&quot;&gt;&lt;a href=&quot;#写在前面&quot; class=&quot;headerlink&quot; title=&quot;写在前面&quot;&gt;&lt;/a&gt;写在前面&lt;/h1&gt;&lt;p&gt;&lt;code&gt;route&lt;/code&gt;命令用来查看Linux内核路由表。&lt;/p&gt;</description>
+      
+      
+      
+      <content:encoded><![CDATA[<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p><code>route</code>命令用来查看Linux内核路由表。</p><span id="more"></span><h1 id="表项内容说明"><a href="#表项内容说明" class="headerlink" title="表项内容说明"></a>表项内容说明</h1><p><code>route</code>命令输出如下，使用<code>-n</code>选项表示不解析名字，可以加快信息输出速度。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Kernel IP routing table</span><br><span class="line">Destination     Gateway         Genmask         Flags Metric Ref    Use Iface</span><br><span class="line">default         10.204.112.1    0.0.0.0         UG    0      0        0 ens160</span><br><span class="line">10.10.30.0      *               255.255.255.0   U     0      0        0 ens192</span><br><span class="line">10.204.112.0    *               255.255.254.0   U     0      0        0 ens160</span><br><span class="line">link-local      *               255.255.0.0     U     1000   0        0 ens192</span><br><span class="line">172.17.0.0      *               255.255.0.0     U     0      0        0 docker0</span><br></pre></td></tr></table></figure><p>字段解释如下：<br>| 字段 | 说明 |<br>| :— | :— |<br>| Destination | 目标网段或主机 |<br>| Gateway | 网关地址， *或全0表示目标是本主机所属的网络，不需要路由 |<br>| Genmask | 网络掩码 |<br>| Flags | U:路由时活动的；H:目标是个主机；G:路由指向网关；R:恢复动态路由产生的表项；D:由路由的后台程序动态的安装；M:由路由的后台程序修改; !:拒绝路由 |<br>| Metric | 路由距离，到达指定网络所需要的中转数(linux内核中没有使用) |<br>| Ref | 路由项引用次数(linux内核中没有使用) |<br>| Use | 此路由项被路由软件查找的次数 |<br>| Iface | 该路由表项的输出接口 |</p><p>Linux上有三种路由类型：</p><ul><li>主机路由。路由表中指向单个IP地址或主机名的路由记录。主机路由的Flags字段为H。</li><li>网络路由。代表主机可以到达的网络。网络路由的Flags字段为N。</li><li>默认路由。当主机不能再路由表中查找到目标主机的IP地址或网络路由时，数据包就被发送到默认路由上。默认路由的Flags字段为G。</li></ul><p>对于一个物理网卡，Linux默认只支持一条默认路由。当然可以通过route命令手动添加多条默认路由，当重新启动网口时，会把其它默认路由去掉，只剩下一条该网口生成的默认路由。</p><h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><h2 id="添加或删除路由"><a href="#添加或删除路由" class="headerlink" title="添加或删除路由"></a>添加或删除路由</h2><p>route {add | del } [-net|-host] [网域或主机] netmask [mask] [gw|dev]</p><p>route add default gw 192.168.5.1</p><p>route add -net 10.204.0.0/16 eth0<br>route add -net 10.204.0.0/26 gw 10.204.123.1</p><h2 id="查询路由信息"><a href="#查询路由信息" class="headerlink" title="查询路由信息"></a>查询路由信息</h2><p>route -nee</p><p>ee选项表示详细信息</p>]]></content:encoded>
+      
+      
+      
+      <category domain="https://rancho333.gitee.io/tags/%E8%B7%AF%E7%94%B1/">路由</category>
+      
+      
+      <comments>https://rancho333.gitee.io/2021/02/08/Linux%E8%B7%AF%E7%94%B1%E4%BF%A1%E6%81%AF%E5%AD%A6%E4%B9%A0/#disqus_thread</comments>
+      
+    </item>
+    
+  </channel>
+</rss>
