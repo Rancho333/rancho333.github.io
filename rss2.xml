@@ -14,8 +14,8 @@
     
     <item>
       <title>sonic-testbed的理解</title>
-      <link>https://rancho333.gitee.io/2021/03/03/sonic-testbed%E7%9A%84%E7%90%86%E8%A7%A3/</link>
-      <guid>https://rancho333.gitee.io/2021/03/03/sonic-testbed%E7%9A%84%E7%90%86%E8%A7%A3/</guid>
+      <link>https://rancho333.gitee.io/2021/03/02/sonic-testbed%E7%9A%84%E7%90%86%E8%A7%A3/</link>
+      <guid>https://rancho333.gitee.io/2021/03/02/sonic-testbed%E7%9A%84%E7%90%86%E8%A7%A3/</guid>
       <pubDate>Tue, 02 Mar 2021 19:00:15 GMT</pubDate>
       
       <description>&lt;h1 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h1&gt;&lt;p&gt;这篇文章用来记录对sonic testbed的一些理解以及一些较核心的知识点。&lt;/p&gt;</description>
@@ -29,7 +29,7 @@
       <category domain="https://rancho333.gitee.io/tags/SONiC/">SONiC</category>
       
       
-      <comments>https://rancho333.gitee.io/2021/03/03/sonic-testbed%E7%9A%84%E7%90%86%E8%A7%A3/#disqus_thread</comments>
+      <comments>https://rancho333.gitee.io/2021/03/02/sonic-testbed%E7%9A%84%E7%90%86%E8%A7%A3/#disqus_thread</comments>
       
     </item>
     
@@ -77,8 +77,8 @@
     
     <item>
       <title>shell变量</title>
-      <link>https://rancho333.gitee.io/2021/02/23/shell%E5%8F%98%E9%87%8F/</link>
-      <guid>https://rancho333.gitee.io/2021/02/23/shell%E5%8F%98%E9%87%8F/</guid>
+      <link>https://rancho333.gitee.io/2021/02/22/shell%E5%8F%98%E9%87%8F/</link>
+      <guid>https://rancho333.gitee.io/2021/02/22/shell%E5%8F%98%E9%87%8F/</guid>
       <pubDate>Mon, 22 Feb 2021 16:28:14 GMT</pubDate>
       
       <description>&lt;h1 id=&quot;shell变量&quot;&gt;&lt;a href=&quot;#shell变量&quot; class=&quot;headerlink&quot; title=&quot;shell变量&quot;&gt;&lt;/a&gt;shell变量&lt;/h1&gt;&lt;p&gt;标准的UNIX变量分为两类，环境变量和shell变量。广义上而言，&lt;code&gt;shell变量&lt;/code&gt;只应用于当前的shell实例，是用来设置短期工作情况的; &lt;code&gt;环境变量&lt;/code&gt;有更长远的意义，这些变量在登录时设置，在整个会话期都是有效的。一般约定，环境变量使用大写变量表示，shell变量使用小写表示。&lt;/p&gt;</description>
@@ -92,7 +92,7 @@
       <category domain="https://rancho333.gitee.io/tags/shell/">shell</category>
       
       
-      <comments>https://rancho333.gitee.io/2021/02/23/shell%E5%8F%98%E9%87%8F/#disqus_thread</comments>
+      <comments>https://rancho333.gitee.io/2021/02/22/shell%E5%8F%98%E9%87%8F/#disqus_thread</comments>
       
     </item>
     
@@ -119,8 +119,8 @@
     
     <item>
       <title>shell语法简析</title>
-      <link>https://rancho333.gitee.io/2021/02/21/shell%E8%AF%AD%E6%B3%95%E7%AE%80%E6%9E%90/</link>
-      <guid>https://rancho333.gitee.io/2021/02/21/shell%E8%AF%AD%E6%B3%95%E7%AE%80%E6%9E%90/</guid>
+      <link>https://rancho333.gitee.io/2021/02/20/shell%E8%AF%AD%E6%B3%95%E7%AE%80%E6%9E%90/</link>
+      <guid>https://rancho333.gitee.io/2021/02/20/shell%E8%AF%AD%E6%B3%95%E7%AE%80%E6%9E%90/</guid>
       <pubDate>Sat, 20 Feb 2021 16:14:32 GMT</pubDate>
       
       <description>&lt;h1 id=&quot;问题说明&quot;&gt;&lt;a href=&quot;#问题说明&quot; class=&quot;headerlink&quot; title=&quot;问题说明&quot;&gt;&lt;/a&gt;问题说明&lt;/h1&gt;&lt;p&gt;在shell下遇到一个赋值的问题&lt;/p&gt;</description>
@@ -134,7 +134,7 @@
       <category domain="https://rancho333.gitee.io/tags/shell/">shell</category>
       
       
-      <comments>https://rancho333.gitee.io/2021/02/21/shell%E8%AF%AD%E6%B3%95%E7%AE%80%E6%9E%90/#disqus_thread</comments>
+      <comments>https://rancho333.gitee.io/2021/02/20/shell%E8%AF%AD%E6%B3%95%E7%AE%80%E6%9E%90/#disqus_thread</comments>
       
     </item>
     

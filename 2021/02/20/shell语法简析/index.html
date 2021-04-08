@@ -21,28 +21,20 @@
     var CONFIG = {"hostname":"rancho333.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="问题描述在Ubuntu16.04 server上安装typora时报错：Typora: error while loading shared libraries: libnss3.so">
+  <meta name="description" content="问题说明在shell下遇到一个赋值的问题">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux查找so文件所在pkg">
-<meta property="og:url" content="https://rancho333.gitee.io/2019/07/15/Linux%E6%9F%A5%E6%89%BEso%E6%96%87%E4%BB%B6%E6%89%80%E5%9C%A8pkg/index.html">
+<meta property="og:title" content="shell语法简析">
+<meta property="og:url" content="https://rancho333.gitee.io/2021/02/20/shell%E8%AF%AD%E6%B3%95%E7%AE%80%E6%9E%90/index.html">
 <meta property="og:site_name" content="Rancho Blog">
-<meta property="og:description" content="问题描述在Ubuntu16.04 server上安装typora时报错：Typora: error while loading shared libraries: libnss3.so">
+<meta property="og:description" content="问题说明在shell下遇到一个赋值的问题">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://rancho333.gitee.io/pictures/error.png">
-<meta property="og:image" content="https://rancho333.gitee.io/pictures/diff.png">
-<meta property="og:image" content="https://rancho333.gitee.io/pictures/update.png">
-<meta property="og:image" content="https://rancho333.gitee.io/pictures/where.png">
-<meta property="og:image" content="https://rancho333.gitee.io/pictures/not_found.png">
-<meta property="og:image" content="https://rancho333.gitee.io/pictures/search.png">
-<meta property="article:published_time" content="2019-07-14T20:17:03.000Z">
-<meta property="article:modified_time" content="2021-04-07T07:06:46.883Z">
+<meta property="article:published_time" content="2021-02-20T16:14:32.000Z">
+<meta property="article:modified_time" content="2021-04-07T06:59:11.169Z">
 <meta property="article:author" content="Rancho">
-<meta property="article:tag" content="Linux">
-<meta property="article:tag" content="so文件">
+<meta property="article:tag" content="shell">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://rancho333.gitee.io/pictures/error.png">
 
-<link rel="canonical" href="https://rancho333.gitee.io/2019/07/15/Linux%E6%9F%A5%E6%89%BEso%E6%96%87%E4%BB%B6%E6%89%80%E5%9C%A8pkg/">
+<link rel="canonical" href="https://rancho333.gitee.io/2021/02/20/shell%E8%AF%AD%E6%B3%95%E7%AE%80%E6%9E%90/">
 
 
 <script id="page-configurations">
@@ -55,7 +47,7 @@
   };
 </script>
 
-  <title>Linux查找so文件所在pkg | Rancho Blog</title>
+  <title>shell语法简析 | Rancho Blog</title>
   
 
 
@@ -219,7 +211,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2019/07/15/Linux%E6%9F%A5%E6%89%BEso%E6%96%87%E4%BB%B6%E6%89%80%E5%9C%A8pkg/">
+    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2021/02/20/shell%E8%AF%AD%E6%B3%95%E7%AE%80%E6%9E%90/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/pictures/Rancho.png">
@@ -232,7 +224,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Linux查找so文件所在pkg
+          shell语法简析
         </h1>
 
         <div class="post-meta">
@@ -242,24 +234,15 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-07-15 04:17:03" itemprop="dateCreated datePublished" datetime="2019-07-15T04:17:03+08:00">2019-07-15</time>
+              <time title="创建时间：2021-02-20 16:14:32" itemprop="dateCreated datePublished" datetime="2021-02-20T16:14:32+00:00">2021-02-20</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-04-07 15:06:46" itemprop="dateModified" datetime="2021-04-07T15:06:46+08:00">2021-04-07</time>
+                <time title="修改时间：2021-04-07 06:59:11" itemprop="dateModified" datetime="2021-04-07T06:59:11+00:00">2021-04-07</time>
               </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">Linux相关</span></a>
-                </span>
-            </span>
 
           
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
@@ -270,7 +253,7 @@
               <span id="busuanzi_value_page_pv"></span>
             </span>
             <span class="post-meta-divider">|</span>
-<span title="post.wordcount"><span class="post-meta-item-icon"><i class="fa fa-file-word-o"></i></span>字数： 193</span>
+<span title="post.wordcount"><span class="post-meta-item-icon"><i class="fa fa-file-word-o"></i></span>字数： 440</span>
 
         </div>
       </header>
@@ -281,14 +264,32 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>在Ubuntu16.04 server上安装typora时报错：<code>Typora: error while loading shared libraries: libnss3.so</code>  </p>
+        <h1 id="问题说明"><a href="#问题说明" class="headerlink" title="问题说明"></a>问题说明</h1><p>在shell下遇到一个赋值的问题</p>
 <span id="more"></span>
-<p><img src="https://rancho333.gitee.io/pictures/error.png"><br>使用find在机器上的确没有找到该so文件，一般情况下对于name.so，安装一个name包就行了(so文件与pkg文件名相同)，但有的时候是不相同的，这时需要利用apt-file查找so文件所属的pkg.<br><img src="https://rancho333.gitee.io/pictures/diff.png"></p>
-<h2 id="安装apt-file"><a href="#安装apt-file" class="headerlink" title="安装apt-file"></a>安装apt-file</h2><p>安装命令：<code>sudo apt-get install apt-file</code><br>update：<code>apt-file update</code>,当/etc/apt/source.list文件发生变化时，需要重新update<br><img src="https://rancho333.gitee.io/pictures/update.png"></p>
-<h2 id="查找软件所依赖的so文件并安装依赖包"><a href="#查找软件所依赖的so文件并安装依赖包" class="headerlink" title="查找软件所依赖的so文件并安装依赖包"></a>查找软件所依赖的so文件并安装依赖包</h2><p>查看软件位置：<code>whereis typora</code><br><img src="https://rancho333.gitee.io/pictures/where.png"></p>
-<p>查找软件依赖so：<code>ldd /usr/bin/typora</code><br><img src="https://rancho333.gitee.io/pictures/not_found.png"></p>
-<p>对每一个标有<code>not found</code>的so文件执行如下：<br><img src="https://rancho333.gitee.io/pictures/search.png"></p>
-<p>找到pkg名称后，使用<code>sudo apt-get install pkg-name</code>安装即可。</p>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[rancho ~]$ a&#x3D;10</span><br><span class="line">[rancho ~]$ demo$a&#x3D;$(echo 123)</span><br><span class="line">demo10&#x3D;123: command not found</span><br></pre></td></tr></table></figure>
+
+<h1 id="shell下的命令格式"><a href="#shell下的命令格式" class="headerlink" title="shell下的命令格式"></a>shell下的命令格式</h1><p>shell下我们常用的命令格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var&#x3D;value           #变量赋值，例如a&#x3D;1</span><br><span class="line">cmd [args]          #命令执行，例如ls -l</span><br><span class="line">&gt;redirection        #重定向,例如:&gt;a.c </span><br></pre></td></tr></table></figure>
+
+<p>实际上，bash中的一个简单命令的完整格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var&#x3D;value ... cmd args &gt;redirection ...</span><br></pre></td></tr></table></figure>
+<p>一个完整的简单命令由三部分组成：变量赋值部分、命令和参数部分、重定向部分，只是很多时候我们会省略一些部分的内容。<br>其中：</p>
+<ul>
+<li>变量赋值和重定向可以有多个</li>
+<li>变量赋值必须在cmd前面，并且变量名必须符合bash要求的命令规则<ul>
+<li>定义变量时，普通变量名是字母、数字、下划线的组合，且不能以数字开头</li>
+<li>调用变量时，在变量名前加<code>$</code>，shell有一部分特殊变量如<code>$0 $1 $$</code></li>
+</ul>
+</li>
+</ul>
+<p>对于变量赋值：</p>
+<ul>
+<li>如果有变量赋值而没有命令执行部分，则变量赋值在当前shell下生效</li>
+<li>如果有变量赋值也有命令执行部分，则变量赋值只作用于改命令，对当前shell无影响</li>
+<li>如果变量名不符合bash的命令规范，则不认为是变量赋值语句，而是当作cmd部分</li>
+</ul>
+<h1 id="问题说明-1"><a href="#问题说明-1" class="headerlink" title="问题说明"></a>问题说明</h1><p><code>demo$a</code>不是一个有效的变量名，所以会当作cmd来执行，但是在执行之前会从左到右执行shell命令解析规则，得到<code>demo10=123</code>，之后将其作为命令进行执行，找不到改命令从而报错。类似的，输入<code>123das=10</code>也会报这种错误。</p>
 
     </div>
 
@@ -304,7 +305,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://rancho333.gitee.io/2019/07/15/Linux%E6%9F%A5%E6%89%BEso%E6%96%87%E4%BB%B6%E6%89%80%E5%9C%A8pkg/" title="Linux查找so文件所在pkg">https://rancho333.gitee.io/2019/07/15/Linux查找so文件所在pkg/</a>
+    <a href="https://rancho333.gitee.io/2021/02/20/shell%E8%AF%AD%E6%B3%95%E7%AE%80%E6%9E%90/" title="shell语法简析">https://rancho333.gitee.io/2021/02/20/shell语法简析/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -315,8 +316,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Linux/" rel="tag"># Linux</a>
-              <a href="/tags/so%E6%96%87%E4%BB%B6/" rel="tag"># so文件</a>
+              <a href="/tags/shell/" rel="tag"># shell</a>
           </div>
 
         
@@ -325,12 +325,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/07/14/Hexo%E4%BD%BF%E7%94%A8%E4%BC%98%E5%8C%96/" rel="prev" title="Hexo使用优化">
-      <i class="fa fa-chevron-left"></i> Hexo使用优化
+    <a href="/2021/02/20/shell-tips-tricks/" rel="prev" title="shell_tips_tricks">
+      <i class="fa fa-chevron-left"></i> shell_tips_tricks
     </a></div>
       <div class="post-nav-item">
-    <a href="/2019/07/25/%E5%85%B3%E4%BA%8EUbuntu%E7%9A%84%E8%BD%AF%E4%BB%B6%E6%BA%90source-list%E5%AD%A6%E4%B9%A0/" rel="next" title="关于Ubuntu的软件源source.list学习">
-      关于Ubuntu的软件源source.list学习 <i class="fa fa-chevron-right"></i>
+    <a href="/2021/02/22/shell%E6%A0%B8%E5%BF%83%E6%9C%BA%E5%88%B6%E4%B9%8B%E5%AD%90shell%E4%B8%8Eshell%E7%8E%AF%E5%A2%83/" rel="next" title="shell核心机制之子shell与shell环境">
+      shell核心机制之子shell与shell环境 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -390,7 +390,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85apt-file"><span class="nav-number">2.</span> <span class="nav-text">安装apt-file</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E6%89%BE%E8%BD%AF%E4%BB%B6%E6%89%80%E4%BE%9D%E8%B5%96%E7%9A%84so%E6%96%87%E4%BB%B6%E5%B9%B6%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96%E5%8C%85"><span class="nav-number">3.</span> <span class="nav-text">查找软件所依赖的so文件并安装依赖包</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%AF%B4%E6%98%8E"><span class="nav-number">1.</span> <span class="nav-text">问题说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#shell%E4%B8%8B%E7%9A%84%E5%91%BD%E4%BB%A4%E6%A0%BC%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">shell下的命令格式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%AF%B4%E6%98%8E-1"><span class="nav-number">3.</span> <span class="nav-text">问题说明</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
