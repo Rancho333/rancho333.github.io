@@ -16,7 +16,7 @@
       <title>sonic-testbed的理解</title>
       <link>https://rancho333.gitee.io/2021/03/02/sonic-testbed%E7%9A%84%E7%90%86%E8%A7%A3/</link>
       <guid>https://rancho333.gitee.io/2021/03/02/sonic-testbed%E7%9A%84%E7%90%86%E8%A7%A3/</guid>
-      <pubDate>Tue, 02 Mar 2021 19:00:15 GMT</pubDate>
+      <pubDate>Tue, 02 Mar 2021 11:00:15 GMT</pubDate>
       
       <description>&lt;h1 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h1&gt;&lt;p&gt;这篇文章用来记录对sonic testbed的一些理解以及一些较核心的知识点。&lt;/p&gt;</description>
       
@@ -37,7 +37,7 @@
       <title>对SONiC项目的认识</title>
       <link>https://rancho333.gitee.io/2021/02/25/%E5%AF%B9SONiC%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AE%A4%E8%AF%86/</link>
       <guid>https://rancho333.gitee.io/2021/02/25/%E5%AF%B9SONiC%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%AE%A4%E8%AF%86/</guid>
-      <pubDate>Thu, 25 Feb 2021 13:36:57 GMT</pubDate>
+      <pubDate>Thu, 25 Feb 2021 05:36:57 GMT</pubDate>
       
       <description>&lt;h1 id=&quot;SONiC简介&quot;&gt;&lt;a href=&quot;#SONiC简介&quot; class=&quot;headerlink&quot; title=&quot;SONiC简介&quot;&gt;&lt;/a&gt;SONiC简介&lt;/h1&gt;&lt;p&gt;不做过多赘述，SONiC本质就是一个Linux交换机网络操作系统，它有两个特点。&lt;/p&gt;</description>
       
@@ -58,7 +58,7 @@
       <title>shell重定向</title>
       <link>https://rancho333.gitee.io/2021/02/23/shell%E9%87%8D%E5%AE%9A%E5%90%91/</link>
       <guid>https://rancho333.gitee.io/2021/02/23/shell%E9%87%8D%E5%AE%9A%E5%90%91/</guid>
-      <pubDate>Tue, 23 Feb 2021 13:28:38 GMT</pubDate>
+      <pubDate>Tue, 23 Feb 2021 05:28:38 GMT</pubDate>
       
       <description>&lt;h1 id=&quot;shell重定向&quot;&gt;&lt;a href=&quot;#shell重定向&quot; class=&quot;headerlink&quot; title=&quot;shell重定向&quot;&gt;&lt;/a&gt;shell重定向&lt;/h1&gt;&lt;p&gt;shell重定向即重新确定数据的流向，是通过改变文件描述符目标来实现的，如流向&lt;code&gt;1&lt;/code&gt;的数据让其流向&lt;code&gt;/tmp/a.c&lt;/code&gt;。&lt;/p&gt;</description>
       
@@ -79,7 +79,7 @@
       <title>shell变量</title>
       <link>https://rancho333.gitee.io/2021/02/22/shell%E5%8F%98%E9%87%8F/</link>
       <guid>https://rancho333.gitee.io/2021/02/22/shell%E5%8F%98%E9%87%8F/</guid>
-      <pubDate>Mon, 22 Feb 2021 16:28:14 GMT</pubDate>
+      <pubDate>Mon, 22 Feb 2021 08:28:14 GMT</pubDate>
       
       <description>&lt;h1 id=&quot;shell变量&quot;&gt;&lt;a href=&quot;#shell变量&quot; class=&quot;headerlink&quot; title=&quot;shell变量&quot;&gt;&lt;/a&gt;shell变量&lt;/h1&gt;&lt;p&gt;标准的UNIX变量分为两类，环境变量和shell变量。广义上而言，&lt;code&gt;shell变量&lt;/code&gt;只应用于当前的shell实例，是用来设置短期工作情况的; &lt;code&gt;环境变量&lt;/code&gt;有更长远的意义，这些变量在登录时设置，在整个会话期都是有效的。一般约定，环境变量使用大写变量表示，shell变量使用小写表示。&lt;/p&gt;</description>
       
@@ -100,7 +100,7 @@
       <title>shell核心机制之子shell与shell环境</title>
       <link>https://rancho333.gitee.io/2021/02/22/shell%E6%A0%B8%E5%BF%83%E6%9C%BA%E5%88%B6%E4%B9%8B%E5%AD%90shell%E4%B8%8Eshell%E7%8E%AF%E5%A2%83/</link>
       <guid>https://rancho333.gitee.io/2021/02/22/shell%E6%A0%B8%E5%BF%83%E6%9C%BA%E5%88%B6%E4%B9%8B%E5%AD%90shell%E4%B8%8Eshell%E7%8E%AF%E5%A2%83/</guid>
-      <pubDate>Mon, 22 Feb 2021 10:49:31 GMT</pubDate>
+      <pubDate>Mon, 22 Feb 2021 02:49:31 GMT</pubDate>
       
       <description>&lt;h1 id=&quot;深入了解shell必备的两个知识点&quot;&gt;&lt;a href=&quot;#深入了解shell必备的两个知识点&quot; class=&quot;headerlink&quot; title=&quot;深入了解shell必备的两个知识点&quot;&gt;&lt;/a&gt;深入了解shell必备的两个知识点&lt;/h1&gt;&lt;p&gt;子shell与shell环境是深入了解shell所必备的两个知识点。shell的实现方式有多种，如bash，sh，zsh等，这些软件本质就是一个shell解释器，最常用的是bash，因为其在几乎所有的Linux发行版中都预安装了。&lt;br&gt;子shell是shell命令的运行机制，而shell环境是shell命令的运行环境，就是我们常说的环境变量了。&lt;/p&gt;</description>
       
@@ -121,7 +121,7 @@
       <title>shell语法简析</title>
       <link>https://rancho333.gitee.io/2021/02/20/shell%E8%AF%AD%E6%B3%95%E7%AE%80%E6%9E%90/</link>
       <guid>https://rancho333.gitee.io/2021/02/20/shell%E8%AF%AD%E6%B3%95%E7%AE%80%E6%9E%90/</guid>
-      <pubDate>Sat, 20 Feb 2021 16:14:32 GMT</pubDate>
+      <pubDate>Sat, 20 Feb 2021 08:14:32 GMT</pubDate>
       
       <description>&lt;h1 id=&quot;问题说明&quot;&gt;&lt;a href=&quot;#问题说明&quot; class=&quot;headerlink&quot; title=&quot;问题说明&quot;&gt;&lt;/a&gt;问题说明&lt;/h1&gt;&lt;p&gt;在shell下遇到一个赋值的问题&lt;/p&gt;</description>
       
@@ -142,7 +142,7 @@
       <title>shell_tips_tricks</title>
       <link>https://rancho333.gitee.io/2021/02/20/shell-tips-tricks/</link>
       <guid>https://rancho333.gitee.io/2021/02/20/shell-tips-tricks/</guid>
-      <pubDate>Sat, 20 Feb 2021 15:09:00 GMT</pubDate>
+      <pubDate>Sat, 20 Feb 2021 07:09:00 GMT</pubDate>
       
       <description>&lt;h1 id=&quot;写在前面&quot;&gt;&lt;a href=&quot;#写在前面&quot; class=&quot;headerlink&quot; title=&quot;写在前面&quot;&gt;&lt;/a&gt;写在前面&lt;/h1&gt;&lt;p&gt;这篇文章用来记录shell的一些使用技巧，使用场景&lt;/p&gt;</description>
       
@@ -163,7 +163,7 @@
       <title>shell脚本执行的几种方式</title>
       <link>https://rancho333.gitee.io/2021/02/20/shell%E8%84%9A%E6%9C%AC%E6%89%A7%E8%A1%8C%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/</link>
       <guid>https://rancho333.gitee.io/2021/02/20/shell%E8%84%9A%E6%9C%AC%E6%89%A7%E8%A1%8C%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/</guid>
-      <pubDate>Sat, 20 Feb 2021 13:59:22 GMT</pubDate>
+      <pubDate>Sat, 20 Feb 2021 05:59:22 GMT</pubDate>
       
       <description>&lt;h1 id=&quot;shell脚本执行的几种方式&quot;&gt;&lt;a href=&quot;#shell脚本执行的几种方式&quot; class=&quot;headerlink&quot; title=&quot;shell脚本执行的几种方式&quot;&gt;&lt;/a&gt;shell脚本执行的几种方式&lt;/h1&gt;&lt;p&gt;shell脚本有三种执行方式&lt;/p&gt;</description>
       
@@ -184,7 +184,7 @@
       <title>mpls学习</title>
       <link>https://rancho333.gitee.io/2021/02/09/mpls%E5%AD%A6%E4%B9%A0/</link>
       <guid>https://rancho333.gitee.io/2021/02/09/mpls%E5%AD%A6%E4%B9%A0/</guid>
-      <pubDate>Tue, 09 Feb 2021 10:27:51 GMT</pubDate>
+      <pubDate>Tue, 09 Feb 2021 02:27:51 GMT</pubDate>
       
       <description>&lt;h1 id=&quot;MPLS简介&quot;&gt;&lt;a href=&quot;#MPLS简介&quot; class=&quot;headerlink&quot; title=&quot;MPLS简介&quot;&gt;&lt;/a&gt;MPLS简介&lt;/h1&gt;&lt;p&gt;MPLS(multiprotocol label switching，多协议标签交换)起源于IPv4，最初是为了提高转发速度而提出的（早期路由是只能由软件处理的），其核心技术可扩展到多种网络协议，包括IPv6，IPX(internet packet exchange，网际报文交换)和CLNP(connectionless network protocol,无连接网络协议)等。MPLS中的&lt;em&gt;M&lt;/em&gt;指的就是支持多种网络协议。&lt;/p&gt;</description>
       
@@ -205,7 +205,7 @@
       <title>Linux路由信息学习</title>
       <link>https://rancho333.gitee.io/2021/02/08/Linux%E8%B7%AF%E7%94%B1%E4%BF%A1%E6%81%AF%E5%AD%A6%E4%B9%A0/</link>
       <guid>https://rancho333.gitee.io/2021/02/08/Linux%E8%B7%AF%E7%94%B1%E4%BF%A1%E6%81%AF%E5%AD%A6%E4%B9%A0/</guid>
-      <pubDate>Mon, 08 Feb 2021 14:14:57 GMT</pubDate>
+      <pubDate>Mon, 08 Feb 2021 06:14:57 GMT</pubDate>
       
       <description>&lt;h1 id=&quot;写在前面&quot;&gt;&lt;a href=&quot;#写在前面&quot; class=&quot;headerlink&quot; title=&quot;写在前面&quot;&gt;&lt;/a&gt;写在前面&lt;/h1&gt;&lt;p&gt;&lt;code&gt;route&lt;/code&gt;命令用来查看Linux内核路由表。&lt;/p&gt;</description>
       
