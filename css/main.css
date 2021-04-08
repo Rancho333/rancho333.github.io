@@ -1309,7 +1309,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #b3cc03;
+  background: #2a054f;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2820,7 +2820,7 @@ ul.breadcrumb li + li:last-child {
   }
 }
 body {
-  background: url("/pictures/Rancho.png");
+  background: url("/pictures/R-W.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
