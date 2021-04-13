@@ -21,20 +21,24 @@
     var CONFIG = {"hostname":"rancho333.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="2021年天弘跑团数据统计 1月1号至1月3号">
+  <meta name="description" content="写在前面本文通过研究SONiC中已支持的路由协议BGP，了解SONiC中路由模块的工作流程，进而为支持SONiC中暂未支持的路由协议（ospf、rip）的porting打下基础。以协议栈收包，协议栈状态机运转，协议栈表项生成下发至SDK为方向进行研究。 SONiC中支持的协议SONiC中支持BGP、ECMP、LLDP、QoS、SNMP、NTP、DHCP、VxLAN、NAT、ARP等协议。其中，使用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="2021年天弘跑团数据">
-<meta property="og:url" content="https://rancho333.gitee.io/2021/01/04/2021%E5%B9%B4%E5%A4%A9%E5%BC%98%E8%B7%91%E5%9B%A2%E6%95%B0%E6%8D%AE/index.html">
+<meta property="og:title" content="SONiC路由协议简述">
+<meta property="og:url" content="https://rancho333.gitee.io/2021/04/08/SONiC%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE%E7%AE%80%E8%BF%B0/index.html">
 <meta property="og:site_name" content="Rancho Blog">
-<meta property="og:description" content="2021年天弘跑团数据统计 1月1号至1月3号">
+<meta property="og:description" content="写在前面本文通过研究SONiC中已支持的路由协议BGP，了解SONiC中路由模块的工作流程，进而为支持SONiC中暂未支持的路由协议（ospf、rip）的porting打下基础。以协议栈收包，协议栈状态机运转，协议栈表项生成下发至SDK为方向进行研究。 SONiC中支持的协议SONiC中支持BGP、ECMP、LLDP、QoS、SNMP、NTP、DHCP、VxLAN、NAT、ARP等协议。其中，使用">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-01-04T03:54:59.000Z">
-<meta property="article:modified_time" content="2021-04-07T10:26:50.133Z">
+<meta property="og:image" content="https://rancho333.gitee.io/pictures/frr-sonic.png">
+<meta property="og:image" content="https://rancho333.gitee.io/pictures/frr-bgpd.png">
+<meta property="og:image" content="https://rancho333.gitee.io/pictures/route-flow.png">
+<meta property="article:published_time" content="2021-04-08T09:38:53.000Z">
+<meta property="article:modified_time" content="2021-04-13T09:17:23.800Z">
 <meta property="article:author" content="Rancho">
-<meta property="article:tag" content="Racncho, Rancho Blog, 嵌入式">
+<meta property="article:tag" content="SONiC">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://rancho333.gitee.io/pictures/frr-sonic.png">
 
-<link rel="canonical" href="https://rancho333.gitee.io/2021/01/04/2021%E5%B9%B4%E5%A4%A9%E5%BC%98%E8%B7%91%E5%9B%A2%E6%95%B0%E6%8D%AE/">
+<link rel="canonical" href="https://rancho333.gitee.io/2021/04/08/SONiC%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE%E7%AE%80%E8%BF%B0/">
 
 
 <script id="page-configurations">
@@ -47,7 +51,7 @@
   };
 </script>
 
-  <title>2021年天弘跑团数据 | Rancho Blog</title>
+  <title>SONiC路由协议简述 | Rancho Blog</title>
   
 
 
@@ -211,7 +215,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2021/01/04/2021%E5%B9%B4%E5%A4%A9%E5%BC%98%E8%B7%91%E5%9B%A2%E6%95%B0%E6%8D%AE/">
+    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2021/04/08/SONiC%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE%E7%AE%80%E8%BF%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/pictures/R-W.png">
@@ -224,7 +228,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          2021年天弘跑团数据
+          SONiC路由协议简述
         </h1>
 
         <div class="post-meta">
@@ -234,14 +238,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-01-04 11:54:59" itemprop="dateCreated datePublished" datetime="2021-01-04T11:54:59+08:00">2021-01-04</time>
+              <time title="创建时间：2021-04-08 17:38:53" itemprop="dateCreated datePublished" datetime="2021-04-08T17:38:53+08:00">2021-04-08</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-04-07 18:26:50" itemprop="dateModified" datetime="2021-04-07T18:26:50+08:00">2021-04-07</time>
+                <time title="修改时间：2021-04-13 17:17:23" itemprop="dateModified" datetime="2021-04-13T17:17:23+08:00">2021-04-13</time>
               </span>
 
           
@@ -253,7 +257,7 @@
               <span id="busuanzi_value_page_pv"></span>
             </span>
             <span class="post-meta-divider">|</span>
-<span title="post.wordcount"><span class="post-meta-item-icon"><i class="fa fa-file-word-o"></i></span>字数： 433</span>
+<span title="post.wordcount"><span class="post-meta-item-icon"><i class="fa fa-file-word-o"></i></span>字数： 1.1k</span>
 
         </div>
       </header>
@@ -264,190 +268,47 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>2021年天弘跑团数据统计</p>
-<p>1月1号至1月3号</p>
-<span id="more"></span>
-<table>
-<thead>
-<tr>
-<th align="left">姓名</th>
-<th align="left">日期</th>
-<th align="left">方式</th>
-<th align="left">距离/km</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">Leon</td>
-<td align="left">1.1</td>
-<td align="left">线上</td>
-<td align="left">20.21</td>
-</tr>
-<tr>
-<td align="left">Rancho</td>
-<td align="left">1.1+1.2</td>
-<td align="left">线上+线下</td>
-<td align="left">20.21+10</td>
-</tr>
-<tr>
-<td align="left">Gary</td>
-<td align="left">1.1</td>
-<td align="left">线上</td>
-<td align="left">4.3</td>
-</tr>
-<tr>
-<td align="left">Jason</td>
-<td align="left">1.2</td>
-<td align="left">线下</td>
-<td align="left">20</td>
-</tr>
-<tr>
-<td align="left">Ceecee+小朋友</td>
-<td align="left">1.2</td>
-<td align="left">线下</td>
-<td align="left">5+5</td>
-</tr>
-<tr>
-<td align="left">杨坤</td>
-<td align="left">1.2</td>
-<td align="left">线下</td>
-<td align="left">15</td>
-</tr>
-<tr>
-<td align="left">Lisa</td>
-<td align="left">1.2</td>
-<td align="left">线下</td>
-<td align="left">5</td>
-</tr>
-<tr>
-<td align="left">Lewis+小朋友</td>
-<td align="left">1.2</td>
-<td align="left">线下</td>
-<td align="left">10+5</td>
-</tr>
-<tr>
-<td align="left">吴徐祥</td>
-<td align="left">1.2</td>
-<td align="left">线下</td>
-<td align="left">10</td>
-</tr>
-<tr>
-<td align="left">energy</td>
-<td align="left">1.2</td>
-<td align="left">线上</td>
-<td align="left">4.73</td>
-</tr>
-<tr>
-<td align="left">xiang</td>
-<td align="left">1.2</td>
-<td align="left">线上</td>
-<td align="left">8.25</td>
-</tr>
-</tbody></table>
-<p>2月10号至18号春节跑步打卡数据统计</p>
-<table>
-<thead>
-<tr>
-<th align="left">姓名</th>
-<th align="left">数据</th>
-<th align="left">累计/km</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">Lewis+小朋友</td>
-<td align="left">5.03(10) + 7.68(13)</td>
-<td align="left">12.71</td>
-</tr>
-<tr>
-<td align="left">Rancho</td>
-<td align="left">10.02(10) + 7.55(13) + 10.02(14) + 10.39(15) + 10.05(16) + 6.07(17) + 14.24(18)</td>
-<td align="left">68.34</td>
-</tr>
-<tr>
-<td align="left">Ceecee+小朋友</td>
-<td align="left">7.55(13)</td>
-<td align="left">7.55</td>
-</tr>
-<tr>
-<td align="left">Xiang</td>
-<td align="left">22.26(11) + 22.27(16)</td>
-<td align="left">44.53</td>
-</tr>
-<tr>
-<td align="left">Even</td>
-<td align="left">8.88(12) + 13.14(14)</td>
-<td align="left">22.02</td>
-</tr>
-<tr>
-<td align="left">Leon</td>
-<td align="left">8.88(12) + 12.21(13) + 13.14(14) + 15.21(15) + 14.91(17)</td>
-<td align="left">64.35</td>
-</tr>
-<tr>
-<td align="left">Jason</td>
-<td align="left">9.01(10) + 4.87+7.68+5.16(13) + 9.85(15) + 9.02(17) + 6.06(18)</td>
-<td align="left">51.65</td>
-</tr>
-<tr>
-<td align="left">Linda</td>
-<td align="left">7.05(13)</td>
-<td align="left">7.05</td>
-</tr>
-<tr>
-<td align="left">Jack XU</td>
-<td align="left">3.03(14) + 3.03(16)</td>
-<td align="left">6.06</td>
-</tr>
-<tr>
-<td align="left">Vivian</td>
-<td align="left">5.18(10) + 5.51(13) + 5.22(14) + 5.64(17) + 5.23(18)</td>
-<td align="left">26.78</td>
-</tr>
-<tr>
-<td align="left">ian.Yuan</td>
-<td align="left">9.61(16) + 6.93(18)</td>
-<td align="left">16.54</td>
-</tr>
-</tbody></table>
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本文通过研究SONiC中已支持的路由协议BGP，了解SONiC中路由模块的工作流程，进而为支持SONiC中暂未支持的路由协议（ospf、rip）的porting打下基础。以协议栈收包，协议栈状态机运转，协议栈表项生成下发至SDK为方向进行研究。</p>
+<h2 id="SONiC中支持的协议"><a href="#SONiC中支持的协议" class="headerlink" title="SONiC中支持的协议"></a>SONiC中支持的协议</h2><p>SONiC中支持BGP、ECMP、LLDP、QoS、SNMP、NTP、DHCP、VxLAN、NAT、ARP等协议。其中，使用FRR作为默认路由协议栈。运行在<code>bdp</code>容器中。</p>
+<h2 id="初步了解FRR"><a href="#初步了解FRR" class="headerlink" title="初步了解FRR"></a>初步了解FRR</h2><p>对于FRR的框架不做过多赘述，可以参见《FRR开源代码研究》，其脱胎于quagga。SONiC中FRR运行在<code>bgp</code>容器中，运行<code>docker exec -it bgp bash</code>进入该容器，但是SONiC中现在只支持BGP协议。执行<code>vtysh</code>进入FRR命令行，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@sonic:&#x2F;# vtysh </span><br><span class="line"></span><br><span class="line">Hello, this is FRRouting (version 7.2.1-sonic).</span><br><span class="line">Copyright 1996-2005 Kunihiro Ishiguro, et al.</span><br></pre></td></tr></table></figure>
+
+<p>在<code>201911</code>分支上使用的是7.2.1, 在<code>~/rules/frr.mk</code>中可以看到。SONiC的master分支使用的FRR版本是7.5.1(sonic基于此进行porting),与FRR官方最新的<a target="_blank" rel="noopener" href="https://github.com/FRRouting/frr/releases">release</a>保持一致。</p>
+<p>在进行FRR模块调试的过程中，我们可以单独更新FRR模块。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[rancho sonic-buildimage]$ make list | grep frr</span><br><span class="line">&quot;ROUTING_STACK&quot;                   : &quot;frr&quot;</span><br><span class="line">target&#x2F;debs&#x2F;stretch&#x2F;frr_7.2.1-sonic-0_amd64.deb</span><br><span class="line">target&#x2F;debs&#x2F;stretch&#x2F;frr-pythontools_7.2.1-sonic-0_all.deb</span><br><span class="line">target&#x2F;debs&#x2F;stretch&#x2F;frr-dbgsym_7.2.1-sonic-0_amd64.deb</span><br><span class="line">target&#x2F;debs&#x2F;stretch&#x2F;frr-snmp_7.2.1-sonic-0_amd64.deb</span><br><span class="line">target&#x2F;debs&#x2F;stretch&#x2F;frr-snmp-dbgsym_7.2.1-sonic-0_amd64.deb</span><br><span class="line">target&#x2F;docker-fpm-frr.gz</span><br><span class="line">target&#x2F;docker-fpm-frr-dbg.gz</span><br></pre></td></tr></table></figure>
+
+<h2 id="SONiC中路由模块的交互"><a href="#SONiC中路由模块的交互" class="headerlink" title="SONiC中路由模块的交互"></a>SONiC中路由模块的交互</h2><p>SONiC中路由模块交互如下图所示：<br><img src="https://rancho333.gitee.io/pictures/frr-sonic.png"> </p>
 <ol>
-<li>Rancho + 男 + XL</li>
-<li>Ceecee Nie +女+ M</li>
-<li>Lewis+男+XL</li>
-<li>卢海龙 + 男 + XL</li>
-<li>Wind Wang+男+XL</li>
-<li>Milly Li +女+M</li>
-<li>Ferris+男+XL</li>
-<li>陈毓敏Even +女+L</li>
-<li>xiang+男+2XL</li>
-<li>Leon + 男 + 3XL</li>
-<li>杨坤 + 男 + XL</li>
-<li>周军 + 男 +  XL</li>
-<li>🏃Jason Zhang +男+L</li>
-<li>zl  + 女 + xl</li>
-<li>许天辉-TianhuiXu  + 男+ L</li>
-<li>天天 +女+M</li>
-<li>李超超 + 女 +  L</li>
-<li>万俊霞+女+M</li>
-<li>Sandy Zhang+男 + XL</li>
-<li>Jack XU +男+XL</li>
-<li>Lisa Q +女+XL</li>
-<li>Vivian Xue+女+XL</li>
-<li>Chad Xu +男+3XL</li>
-<li>Jenny Yang+女XL</li>
-<li>Keven kai+男 3XL</li>
-<li>Jeff Zhang+男+XL</li>
-<li>Don Liu +男+3XL</li>
-<li>Lindsay Zou +女+XL</li>
-<li>薛晶+女+L</li>
-<li>謝 +男+2XL</li>
-<li>Maggie Yu + 女+2XL</li>
-<li>秋_秋_ ＋女＋XL</li>
-<li>donmi + 男 + 2XL</li>
-<li>Michael + 男+L</li>
-<li>Tom Mo + 男 + 3XL</li>
-<li>矿士Orge +男+L</li>
-<li>Ely Sun + 男 + L</li>
-<li>Mark Wu+男+3XL</li>
+<li>在BGP容器初始化时， zebra通过TCP socket连接到<code>fpmsyncd</code>。在稳定状态下，zebra、linux kernel、APPL_DB、ASIC_DB、ASIC中的路由表应该是完全一致的。<br>这里做一点说明，OSPF、BGP等路由进程会将自己选择出的路由发送给zebra，zebra通过计算筛选之后会通过netlink将之同步给kernel，同时zebra通过FPM(forwarding plane manger)将之同步给ASIC。zebra中运行FPM client，通过TCP socket与FPM server进行通信。FPM client端代码如下：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">//zebra_fpm.c</span></span><br><span class="line">    serv.sin_family = AF_INET;</span><br><span class="line">    serv.sin_port = htons(zfpm_g-&gt;fpm_port);                    <span class="comment">//fpm默认使用2620端口</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> HAVE_STRUCT_SOCKADDR_IN_SIN_LEN</span></span><br><span class="line">    serv.sin_len = <span class="keyword">sizeof</span>(struct sockaddr_in);                                     </span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">/* HAVE_STRUCT_SOCKADDR_IN_SIN_LEN */</span></span></span><br><span class="line">    <span class="keyword">if</span> (!zfpm_g-&gt;fpm_server)</span><br><span class="line">        serv.sin_addr.s_addr = htonl(INADDR_LOOPBACK);          <span class="comment">//FPM server一般部署在本机上</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        serv.sin_addr.s_addr = (zfpm_g-&gt;fpm_server);</span><br></pre></td></tr></table></figure></li>
 </ol>
+<p>FRR定义了FPM的数据格式，类似于协议报文，用户自己实现FPM server，解析出client发送过来的路由数据，然后进行相应的处理。</p>
+<ol start="2">
+<li><p>Bgpd处理收到的协议报文，以bgp-update报文为例，将计算得到的路由信息发送给zebra<br>对于一个协议的porting，要搞明白三件事情：1. 从哪里获取信息（端口状态变化、控制报文、数据报文）; 2.协议状态机变化; 3.控制面信息如何生效到转发面</p>
+</li>
+<li><p>zebra根据自身的计算策略过滤该路由，如果通过zebra则生成route-netlink信息将路由信息发送给kernel</p>
+</li>
+<li><p>同时，zebra通过FPM接口将route-netlink信息发送给<code>fpmsyncd</code><br>2,3,4的大致流程参见下图：<br><img src="https://rancho333.gitee.io/pictures/frr-bgpd.png"> </p>
+</li>
+<li><p>Fpmsyncd处理该信息并将之放入APPL_DB<br>SONiC中FPM server在<code>fpmsyncd</code>中实现，源码在<code>sonic-swss</code>中：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//fpmsyncd.cpp  连接redis APPL_DB</span></span><br><span class="line"><span class="function">DBConnector <span class="title">db</span><span class="params">(<span class="string">&quot;APPL_DB&quot;</span>, <span class="number">0</span>)</span></span>; </span><br><span class="line"><span class="function">RedisPipeline <span class="title">pipeline</span><span class="params">(&amp;db)</span></span>;</span><br><span class="line"><span class="function">RouteSync <span class="title">sync</span><span class="params">(&amp;pipeline)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//fpmlink.cpp  创建socket，做为FPM server</span></span><br><span class="line">addr.sin_family = AF_INET;                          </span><br><span class="line">addr.sin_port = htons(port);                        <span class="comment">//port为2620, 在fpm/fpm.h中定义</span></span><br><span class="line">addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);      <span class="comment">//部署在本地</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>编译过程中会打包到<code>swss_1.0.0_amd64.deb</code>，在<code>dockers/docker-fpm-frr/Dockerfile.j2</code>会将其安装到<code>docker-fpm-frr</code>镜像中。在BGP进程中可以看到该进程。在<code>/etc/supervisor/conf.d/supervisord.conf</code>中可以看到各服务的启动控制：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[program:bgpd]</span><br><span class="line">command&#x3D;&#x2F;usr&#x2F;lib&#x2F;frr&#x2F;bgpd -M bmp -A 127.0.0.1</span><br><span class="line">priority&#x3D;6</span><br><span class="line"></span><br><span class="line">[program:fpmsyncd]</span><br><span class="line">command&#x3D;fpmsyncd</span><br><span class="line">priority&#x3D;8</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li><p><code>orchagentd</code>作为APPL_DB的订阅者，它会收到fpmsyncd发布的信息</p>
+</li>
+<li><p>orchagentd作为一个中转站，会调用sairedis的APIs将信息发布到ASIC_DB</p>
+</li>
+<li><p><code>syncd</code>作为ASIC_DB的订阅者，它会收到orchagend发布的信息</p>
+</li>
+<li><p>Syncd调用SAI APIs将路由信息下发到SDK</p>
+</li>
+<li><p>最终新的路由规则在ASIC中生效</p>
+</li>
+</ol>
+<p>上述流程图示如下：<br><img src="https://rancho333.gitee.io/pictures/route-flow.png"></p>
+<h2 id="静态路由的实现"><a href="#静态路由的实现" class="headerlink" title="静态路由的实现"></a>静态路由的实现</h2><p>基于以上的SONiC路由实现流程，我们可以实现一个<code>FPM client</code>，按照指定的格式将路由数据发送给<code>fpmsyncd</code>，之后在各个数据中转节点验证路由是否按设定的流程转发最终生效到ASIC。</p>
 
     </div>
 
@@ -463,7 +324,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://rancho333.gitee.io/2021/01/04/2021%E5%B9%B4%E5%A4%A9%E5%BC%98%E8%B7%91%E5%9B%A2%E6%95%B0%E6%8D%AE/" title="2021年天弘跑团数据">https://rancho333.gitee.io/2021/01/04/2021年天弘跑团数据/</a>
+    <a href="https://rancho333.gitee.io/2021/04/08/SONiC%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE%E7%AE%80%E8%BF%B0/" title="SONiC路由协议简述">https://rancho333.gitee.io/2021/04/08/SONiC路由协议简述/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -473,6 +334,9 @@
 
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SONiC/" rel="tag"># SONiC</a>
+          </div>
 
         
 
@@ -480,13 +344,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/12/31/SONiC%E6%B7%BB%E5%8A%A0%E6%96%B0%E7%9A%84device/" rel="prev" title="SONiC添加新的device">
-      <i class="fa fa-chevron-left"></i> SONiC添加新的device
+    <a href="/2021/03/02/sonic-testbed%E7%9A%84%E7%90%86%E8%A7%A3/" rel="prev" title="sonic-testbed的理解">
+      <i class="fa fa-chevron-left"></i> sonic-testbed的理解
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/01/05/%E5%85%B3%E4%BA%8E%E7%BB%88%E7%AB%AF%E5%9B%9E%E6%98%BE%E7%9A%84%E9%97%AE%E9%A2%98/" rel="next" title="关于终端回显的问题">
-      关于终端回显的问题 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -545,6 +406,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SONiC%E4%B8%AD%E6%94%AF%E6%8C%81%E7%9A%84%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.</span> <span class="nav-text">SONiC中支持的协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E6%AD%A5%E4%BA%86%E8%A7%A3FRR"><span class="nav-number">3.</span> <span class="nav-text">初步了解FRR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SONiC%E4%B8%AD%E8%B7%AF%E7%94%B1%E6%A8%A1%E5%9D%97%E7%9A%84%E4%BA%A4%E4%BA%92"><span class="nav-number">4.</span> <span class="nav-text">SONiC中路由模块的交互</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">5.</span> <span class="nav-text">静态路由的实现</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
