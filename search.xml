@@ -2916,6 +2916,7 @@
     <title>SONiC路由协议简述</title>
     <url>/2021/04/08/SONiC%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE%E7%AE%80%E8%BF%B0/</url>
     <content><![CDATA[<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本文通过研究SONiC中已支持的路由协议BGP，了解SONiC中路由模块的工作流程，进而为支持SONiC中暂未支持的路由协议（ospf、rip）的porting打下基础。以协议栈收包，协议栈状态机运转，协议栈表项生成下发至SDK为方向进行研究。</p>
+<span id="more"></span>
 <h2 id="SONiC中支持的协议"><a href="#SONiC中支持的协议" class="headerlink" title="SONiC中支持的协议"></a>SONiC中支持的协议</h2><p>SONiC中支持BGP、ECMP、LLDP、QoS、SNMP、NTP、DHCP、VxLAN、NAT、ARP等协议。其中，使用FRR作为默认路由协议栈。运行在<code>bdp</code>容器中。</p>
 <h2 id="初步了解FRR"><a href="#初步了解FRR" class="headerlink" title="初步了解FRR"></a>初步了解FRR</h2><p>对于FRR的框架不做过多赘述，可以参见《FRR开源代码研究》，其脱胎于quagga。SONiC中FRR运行在<code>bgp</code>容器中，运行<code>docker exec -it bgp bash</code>进入该容器，但是SONiC中现在只支持BGP协议。执行<code>vtysh</code>进入FRR命令行，如下所示：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">root@sonic:&#x2F;# vtysh </span><br><span class="line"></span><br><span class="line">Hello, this is FRRouting (version 7.2.1-sonic).</span><br><span class="line">Copyright 1996-2005 Kunihiro Ishiguro, et al.</span><br></pre></td></tr></table></figure>
