@@ -21,18 +21,25 @@
     var CONFIG = {"hostname":"rancho333.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="写在前面本文通过研究SONiC中已支持的路由协议BGP，了解SONiC中路由模块的工作流程，进而为支持SONiC中暂未支持的路由协议（ospf、rip）的porting打下基础。以协议栈收包，协议栈状态机运转，协议栈表项生成下发至SDK为方向进行研究。">
+  <meta name="description" content="写在前面本文通过研究SONiC中已支持的路由协议BGP，了解SONiC中路由模块的工作流程，进而为支持SONiC中暂未支持的路由协议（ospf、rip、pim）的porting打下基础。以协议栈收包，协议栈状态机运转，协议栈表项生成下发至SDK为方向进行研究。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SONiC路由协议简述">
 <meta property="og:url" content="https://rancho333.gitee.io/2021/04/08/SONiC%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE%E7%AE%80%E8%BF%B0/index.html">
 <meta property="og:site_name" content="Rancho Blog">
-<meta property="og:description" content="写在前面本文通过研究SONiC中已支持的路由协议BGP，了解SONiC中路由模块的工作流程，进而为支持SONiC中暂未支持的路由协议（ospf、rip）的porting打下基础。以协议栈收包，协议栈状态机运转，协议栈表项生成下发至SDK为方向进行研究。">
+<meta property="og:description" content="写在前面本文通过研究SONiC中已支持的路由协议BGP，了解SONiC中路由模块的工作流程，进而为支持SONiC中暂未支持的路由协议（ospf、rip、pim）的porting打下基础。以协议栈收包，协议栈状态机运转，协议栈表项生成下发至SDK为方向进行研究。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://rancho333.gitee.io/pictures/frr-sonic.png">
 <meta property="og:image" content="https://rancho333.gitee.io/pictures/frr-bgpd.png">
 <meta property="og:image" content="https://rancho333.gitee.io/pictures/route-flow.png">
+<meta property="og:image" content="https://rancho333.gitee.io/pictures/show-ip-route.png">
+<meta property="og:image" content="https://rancho333.gitee.io/pictures/ip-route-show.png">
+<meta property="og:image" content="https://rancho333.gitee.io/pictures/appl-db.png">
+<meta property="og:image" content="https://rancho333.gitee.io/pictures/asic-db.png">
+<meta property="og:image" content="https://rancho333.gitee.io/pictures/asic-route.png">
+<meta property="og:image" content="https://rancho333.gitee.io/pictures/frr-routes.png">
+<meta property="og:image" content="https://rancho333.gitee.io/pictures/ospf-sock.png">
 <meta property="article:published_time" content="2021-04-08T09:38:53.000Z">
-<meta property="article:modified_time" content="2021-04-14T02:13:37.345Z">
+<meta property="article:modified_time" content="2021-04-14T08:45:42.549Z">
 <meta property="article:author" content="Rancho">
 <meta property="article:tag" content="SONiC">
 <meta name="twitter:card" content="summary">
@@ -245,7 +252,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-04-14 10:13:37" itemprop="dateModified" datetime="2021-04-14T10:13:37+08:00">2021-04-14</time>
+                <time title="修改时间：2021-04-14 16:45:42" itemprop="dateModified" datetime="2021-04-14T16:45:42+08:00">2021-04-14</time>
               </span>
 
           
@@ -257,7 +264,7 @@
               <span id="busuanzi_value_page_pv"></span>
             </span>
             <span class="post-meta-divider">|</span>
-<span title="post.wordcount"><span class="post-meta-item-icon"><i class="fa fa-file-word-o"></i></span>字数： 1.1k</span>
+<span title="post.wordcount"><span class="post-meta-item-icon"><i class="fa fa-file-word-o"></i></span>字数： 1.6k</span>
 
         </div>
       </header>
@@ -268,7 +275,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本文通过研究SONiC中已支持的路由协议BGP，了解SONiC中路由模块的工作流程，进而为支持SONiC中暂未支持的路由协议（ospf、rip）的porting打下基础。以协议栈收包，协议栈状态机运转，协议栈表项生成下发至SDK为方向进行研究。</p>
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本文通过研究SONiC中已支持的路由协议BGP，了解SONiC中路由模块的工作流程，进而为支持SONiC中暂未支持的路由协议（ospf、rip、pim）的porting打下基础。以协议栈收包，协议栈状态机运转，协议栈表项生成下发至SDK为方向进行研究。</p>
 <span id="more"></span>
 <h2 id="SONiC中支持的协议"><a href="#SONiC中支持的协议" class="headerlink" title="SONiC中支持的协议"></a>SONiC中支持的协议</h2><p>SONiC中支持BGP、ECMP、LLDP、QoS、SNMP、NTP、DHCP、VxLAN、NAT、ARP等协议。其中，使用FRR作为默认路由协议栈。运行在<code>bdp</code>容器中。</p>
 <h2 id="初步了解FRR"><a href="#初步了解FRR" class="headerlink" title="初步了解FRR"></a>初步了解FRR</h2><p>对于FRR的框架不做过多赘述，可以参见《FRR开源代码研究》，其脱胎于quagga。SONiC中FRR运行在<code>bgp</code>容器中，运行<code>docker exec -it bgp bash</code>进入该容器，但是SONiC中现在只支持BGP协议。执行<code>vtysh</code>进入FRR命令行，如下所示：</p>
@@ -285,7 +292,7 @@
 </ol>
 <p>FRR定义了FPM的数据格式，类似于协议报文，用户自己实现FPM server，解析出client发送过来的路由数据，然后进行相应的处理。</p>
 <ol start="2">
-<li><p>Bgpd处理收到的协议报文，以bgp-update报文为例，将计算得到的路由信息发送给zebra<br>对于一个协议的porting，要搞明白三件事情：1. 从哪里获取信息（端口状态变化、控制报文、数据报文）; 2.协议状态机变化; 3.控制面信息如何生效到转发面</p>
+<li><p>Bgpd处理收到的协议报文，以bgp-update报文为例，将计算得到的路由信息发送给zebra</p>
 </li>
 <li><p>zebra根据自身的计算策略过滤该路由，如果通过zebra则生成route-netlink信息将路由信息发送给kernel</p>
 </li>
@@ -310,7 +317,37 @@
 </li>
 </ol>
 <p>FRR与SONiC的完整交互流程图示如下：<br><img src="https://rancho333.gitee.io/pictures/route-flow.png"></p>
-<h2 id="静态路由的实现"><a href="#静态路由的实现" class="headerlink" title="静态路由的实现"></a>静态路由的实现</h2><p>基于以上的SONiC路由实现流程，我们可以实现一个<code>FPM client</code>，按照指定的格式将路由数据发送给<code>fpmsyncd</code>，之后在各个数据中转节点验证路由是否按设定的流程转发最终生效到ASIC。</p>
+<h2 id="静态路由的实现"><a href="#静态路由的实现" class="headerlink" title="静态路由的实现"></a>静态路由的实现</h2><p>基于以上的SONiC路由实现流程，我们可以实现一个<code>FPM client</code>，按照ZAPI的格式封装netlink路由数据发送给<code>fpmsyncd</code>，之后在各个数据中转节点验证路由是否按设定的流程转发最终生效到ASIC。这样可以脱离<code>FRR</code>的协议栈逻辑，只借用FPM模块。</p>
+<p>当然，我们可以直接通过FRR的配置文件或者<code>vtysh</code>来下发静态路由，有一个进程<code>staticd</code>用来处理静态路由。<br>路由下发的命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip route 192.168.2.0&#x2F;24 PortChannel0001</span><br></pre></td></tr></table></figure>
+<p>验证一下命令是否生效：<br><img src="https://rancho333.gitee.io/pictures/show-ip-route.png"></p>
+<p>看下在kernel中是否生效：<br><img src="https://rancho333.gitee.io/pictures/ip-route-show.png"></p>
+<p>查看是否同步到<code>APPL_DB</code>中：<br><img src="https://rancho333.gitee.io/pictures/appl-db.png"></p>
+<p>查看是否同步到<code>ASIC_DB</code>中：<br><img src="https://rancho333.gitee.io/pictures/asic-db.png"></p>
+<p>查看是否下发到<code>ASIC</code>中：<br><img src="https://rancho333.gitee.io/pictures/asic-route.png"></p>
+<p>可以看到路由信息按照<code>SONiC中路由模块的交互</code>中描述的进行处理下发。</p>
+<h2 id="对于单播-OSPF、RIP-以及组播-PIM-的支持"><a href="#对于单播-OSPF、RIP-以及组播-PIM-的支持" class="headerlink" title="对于单播(OSPF、RIP)以及组播(PIM)的支持"></a>对于单播(OSPF、RIP)以及组播(PIM)的支持</h2><p>对于支持上述协议，需要回答几个问题：</p>
+<ol>
+<li>从哪里获取信息（端口状态变化、控制报文、数据报文是怎么送到协议栈的）</li>
+<li>协议状态机变化 (问题怎么定位以及功能的支持程度, 至于测试，需要专业协议测试人员介入)</li>
+<li>控制面信息如何生效到转发面 (协议栈控制信息同步到kernel与ASIC)</li>
+</ol>
+<p>SONiC默认只启动了<code>bgpd</code>和<code>staticd</code>这两个路由进程，尝试手动开启<code>ospf</code>、<code>rip</code>、<code>pim</code>并为发现异常：<br><img src="https://rancho333.gitee.io/pictures/frr-routes.png"></p>
+<p>SONIC本身并未对FRR做什么修改，只是增加了一个FPM server模块，整个路由通路是没有问题的，理论上是<em>完全可以支持FRR中的其它路由协议</em>的，很好奇为什么微软不顺手把这些做了？<br>难道是因为数据中心中只要BGP+ECMP+VxLAN?</p>
+<p>下面做一个工作量的评估（基于单个协议）</p>
+<ol>
+<li><p>协议学习2周</p>
+</li>
+<li><p>OSPF、PIM基于IP，使用protocol创建socket与keenel进行通信，RIP基于UDP，BGP基于TCP。ospf创建socket如下：<br><img src="https://rancho333.gitee.io/pictures/ospf-sock.png"><br>控制报文调试1周，这玩意要是顺利应该就几分钟，大概率没啥问题。</p>
+</li>
+<li><p>看代码，了解协议状态机，了解常见的测试拓扑，搭建测试拓扑，生成路由信息，2周</p>
+</li>
+<li><p>打通路由下发，1周</p>
+</li>
+<li><p>协议维护，解bug，不定</p>
+</li>
+</ol>
+<p>其实，从技术上说，很可能SONiC是已经支持上述路由协议了，只要开启相应进程，所以测试吧！说不定有惊喜！</p>
 
     </div>
 
@@ -408,7 +445,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SONiC%E4%B8%AD%E6%94%AF%E6%8C%81%E7%9A%84%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.</span> <span class="nav-text">SONiC中支持的协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E6%AD%A5%E4%BA%86%E8%A7%A3FRR"><span class="nav-number">3.</span> <span class="nav-text">初步了解FRR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SONiC%E4%B8%AD%E8%B7%AF%E7%94%B1%E6%A8%A1%E5%9D%97%E7%9A%84%E4%BA%A4%E4%BA%92"><span class="nav-number">4.</span> <span class="nav-text">SONiC中路由模块的交互</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">5.</span> <span class="nav-text">静态路由的实现</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SONiC%E4%B8%AD%E6%94%AF%E6%8C%81%E7%9A%84%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.</span> <span class="nav-text">SONiC中支持的协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E6%AD%A5%E4%BA%86%E8%A7%A3FRR"><span class="nav-number">3.</span> <span class="nav-text">初步了解FRR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SONiC%E4%B8%AD%E8%B7%AF%E7%94%B1%E6%A8%A1%E5%9D%97%E7%9A%84%E4%BA%A4%E4%BA%92"><span class="nav-number">4.</span> <span class="nav-text">SONiC中路由模块的交互</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">5.</span> <span class="nav-text">静态路由的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E5%8D%95%E6%92%AD-OSPF%E3%80%81RIP-%E4%BB%A5%E5%8F%8A%E7%BB%84%E6%92%AD-PIM-%E7%9A%84%E6%94%AF%E6%8C%81"><span class="nav-number">6.</span> <span class="nav-text">对于单播(OSPF、RIP)以及组播(PIM)的支持</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -478,7 +515,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">全站共 58.5k 字</span>
+  <span class="post-count">全站共 59k 字</span>
 </div>
 
         
