@@ -2925,7 +2925,8 @@
 <p>在进行FRR模块调试的过程中，我们可以单独更新FRR模块。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[rancho sonic-buildimage]$ make list | grep frr</span><br><span class="line">&quot;ROUTING_STACK&quot;                   : &quot;frr&quot;</span><br><span class="line">target&#x2F;debs&#x2F;stretch&#x2F;frr_7.2.1-sonic-0_amd64.deb</span><br><span class="line">target&#x2F;debs&#x2F;stretch&#x2F;frr-pythontools_7.2.1-sonic-0_all.deb</span><br><span class="line">target&#x2F;debs&#x2F;stretch&#x2F;frr-dbgsym_7.2.1-sonic-0_amd64.deb</span><br><span class="line">target&#x2F;debs&#x2F;stretch&#x2F;frr-snmp_7.2.1-sonic-0_amd64.deb</span><br><span class="line">target&#x2F;debs&#x2F;stretch&#x2F;frr-snmp-dbgsym_7.2.1-sonic-0_amd64.deb</span><br><span class="line">target&#x2F;docker-fpm-frr.gz</span><br><span class="line">target&#x2F;docker-fpm-frr-dbg.gz</span><br></pre></td></tr></table></figure>
 
-<h2 id="SONiC中路由模块的交互"><a href="#SONiC中路由模块的交互" class="headerlink" title="SONiC中路由模块的交互"></a>SONiC中路由模块的交互</h2><p>SONiC中路由模块交互如下图所示：<br><img src="https://rancho333.gitee.io/pictures/frr-sonic.png"> </p>
+<h2 id="SONiC中路由模块的交互"><a href="#SONiC中路由模块的交互" class="headerlink" title="SONiC中路由模块的交互"></a>SONiC中路由模块的交互</h2><p>SONiC中路由模块交互如下图所示：</p>
+<p><img src="https://rancho333.gitee.io/pictures/frr-sonic.png"> </p>
 <ol>
 <li>在BGP容器初始化时， zebra通过TCP socket连接到<code>fpmsyncd</code>。在稳定状态下，zebra、linux kernel、APPL_DB、ASIC_DB、ASIC中的路由表应该是完全一致的。<br>这里做一点说明，OSPF、BGP等路由进程会将自己选择出的路由发送给zebra，zebra通过计算筛选之后会通过netlink将之同步给kernel，同时zebra通过FPM(forwarding plane manger)将之同步给ASIC。zebra中运行FPM client，通过TCP socket与FPM server进行通信。FPM client端代码如下：<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">    <span class="comment">//zebra_fpm.c</span></span><br><span class="line">    serv.sin_family = AF_INET;</span><br><span class="line">    serv.sin_port = htons(zfpm_g-&gt;fpm_port);                    <span class="comment">//fpm默认使用2620端口</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> HAVE_STRUCT_SOCKADDR_IN_SIN_LEN</span></span><br><span class="line">    serv.sin_len = <span class="keyword">sizeof</span>(struct sockaddr_in);                                     </span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">/* HAVE_STRUCT_SOCKADDR_IN_SIN_LEN */</span></span></span><br><span class="line">    <span class="keyword">if</span> (!zfpm_g-&gt;fpm_server)</span><br><span class="line">        serv.sin_addr.s_addr = htonl(INADDR_LOOPBACK);          <span class="comment">//FPM server一般部署在本机上</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        serv.sin_addr.s_addr = (zfpm_g-&gt;fpm_server);</span><br></pre></td></tr></table></figure></li>
 </ol>
@@ -2937,7 +2938,7 @@
 </li>
 <li><p>同时，zebra通过FPM接口将route-netlink信息发送给<code>fpmsyncd</code>，2,3,4的大致流程参见下图：<br><img src="https://rancho333.gitee.io/pictures/frr-bgpd.png"> </p>
 </li>
-<li><p>Fpmsyncd处理该信息并将之放入APPL_DB<br>SONiC中FPM server在<code>fpmsyncd</code>中实现，源码在<code>sonic-swss</code>中：</p>
+<li><p>Fpmsyncd处理该信息并将之放入<code>APPL_DB</code><br>SONiC中FPM server在<code>fpmsyncd</code>中实现，源码在<code>sonic-swss</code>中：</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//fpmsyncd.cpp  连接redis APPL_DB</span></span><br><span class="line"><span class="function">DBConnector <span class="title">db</span><span class="params">(<span class="string">&quot;APPL_DB&quot;</span>, <span class="number">0</span>)</span></span>; </span><br><span class="line"><span class="function">RedisPipeline <span class="title">pipeline</span><span class="params">(&amp;db)</span></span>;</span><br><span class="line"><span class="function">RouteSync <span class="title">sync</span><span class="params">(&amp;pipeline)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//fpmlink.cpp  创建socket，做为FPM server</span></span><br><span class="line">addr.sin_family = AF_INET;                          </span><br><span class="line">addr.sin_port = htons(port);                        <span class="comment">//port为2620, 在fpm/fpm.h中定义</span></span><br><span class="line">addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);      <span class="comment">//部署在本地</span></span><br></pre></td></tr></table></figure></li>
 </ol>
 <p>编译过程中会打包到<code>swss_1.0.0_amd64.deb</code>，在<code>dockers/docker-fpm-frr/Dockerfile.j2</code>会将其安装到<code>docker-fpm-frr</code>镜像中。在BGP进程中可以看到该进程。在<code>/etc/supervisor/conf.d/supervisord.conf</code>中可以看到各服务的启动控制：</p>
@@ -2955,7 +2956,7 @@
 <li><p>最终新的路由规则在ASIC中生效</p>
 </li>
 </ol>
-<p>上述流程图示如下：<br><img src="https://rancho333.gitee.io/pictures/route-flow.png"></p>
+<p>FRR与SONiC的完整交互流程图示如下：<br><img src="https://rancho333.gitee.io/pictures/route-flow.png"></p>
 <h2 id="静态路由的实现"><a href="#静态路由的实现" class="headerlink" title="静态路由的实现"></a>静态路由的实现</h2><p>基于以上的SONiC路由实现流程，我们可以实现一个<code>FPM client</code>，按照指定的格式将路由数据发送给<code>fpmsyncd</code>，之后在各个数据中转节点验证路由是否按设定的流程转发最终生效到ASIC。</p>
 ]]></content>
       <tags>
