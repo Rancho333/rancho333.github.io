@@ -3007,6 +3007,7 @@
     <title>SONiC中OSPF使用简述</title>
     <url>/2021/04/23/SONiC%E4%B8%ADOSPF%E4%BD%BF%E7%94%A8%E7%AE%80%E8%BF%B0/</url>
     <content><![CDATA[<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>承接上文<a href="https://rancho333.gitee.io/2021/04/08/SONiC%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE%E7%AE%80%E8%BF%B0/">SONiC路由协议简述</a>，这边文章记录SONiC上使能OSPF的过程。</p>
+<span id="more"></span>
 <h2 id="实验过程"><a href="#实验过程" class="headerlink" title="实验过程"></a>实验过程</h2><h3 id="拓扑说明"><a href="#拓扑说明" class="headerlink" title="拓扑说明"></a>拓扑说明</h3><p>拓扑图如下：<br><img src="https://rancho333.gitee.io/pictures/ospf-topology.png"></p>
 <p>实验预期：</p>
 <ol>
