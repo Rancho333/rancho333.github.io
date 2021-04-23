@@ -208,6 +208,101 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2021/04/23/SONiC%E4%B8%ADOSPF%E4%BD%BF%E7%94%A8%E7%AE%80%E8%BF%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/pictures/R-W.png">
+      <meta itemprop="name" content="Rancho">
+      <meta itemprop="description" content="No pain, no gain!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rancho Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/23/SONiC%E4%B8%ADOSPF%E4%BD%BF%E7%94%A8%E7%AE%80%E8%BF%B0/" class="post-title-link" itemprop="url">SONiC中OSPF使用简述</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-04-23 15:32:20 / 修改时间：16:26:05" itemprop="dateCreated datePublished" datetime="2021-04-23T15:32:20+08:00">2021-04-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>承接上文<a href="https://rancho333.gitee.io/2021/04/08/SONiC%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE%E7%AE%80%E8%BF%B0/">SONiC路由协议简述</a>，这边文章记录SONiC上使能OSPF的过程。</p>
+<h2 id="实验过程"><a href="#实验过程" class="headerlink" title="实验过程"></a>实验过程</h2><h3 id="拓扑说明"><a href="#拓扑说明" class="headerlink" title="拓扑说明"></a>拓扑说明</h3><p>拓扑图如下：<br><img src="https://rancho333.gitee.io/pictures/ospf-topology.png"></p>
+<p>实验预期：</p>
+<ol>
+<li>三台设备上能建立ospf邻居，完成LSDB交换，建立ospf路由</li>
+<li><code>192.168.1.2</code>能够<code>ping</code>通<code>192.168.2.2</code></li>
+</ol>
+<h3 id="启动OSPF"><a href="#启动OSPF" class="headerlink" title="启动OSPF"></a>启动OSPF</h3><p>在<code>bgp</code>容器中启动<code>ospf</code>进程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;lib&#x2F;frr&#x2F;ospfd -A 127.0.0.1 -d</span><br></pre></td></tr></table></figure>
+<p>参照<code>bgpd</code>的启动过程，将ospf添加到supervisor中，并指定配置文件，在<code>/etc/supervisor/conf.d/supervisord.conf</code>中添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[program:ospfd]</span><br><span class="line">command&#x3D;&#x2F;usr&#x2F;lib&#x2F;frr&#x2F;ospfd -A 127.0.0.1 -f &#x2F;etc&#x2F;frr&#x2F;ospfd.conf</span><br><span class="line">priority&#x3D;5</span><br><span class="line">stopsignal&#x3D;KILL</span><br><span class="line">autostart&#x3D;false</span><br><span class="line">autorestart&#x3D;false</span><br><span class="line">startsecs&#x3D;0</span><br><span class="line">stdout_logfile&#x3D;syslog</span><br><span class="line">stderr_logfile&#x3D;syslog</span><br></pre></td></tr></table></figure>
+<p>在<code>/usr/bin/start.sh</code>中添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">supervisorctl start ospfd</span><br></pre></td></tr></table></figure>
+<p>创建ospf配置文件<code>/etc/frr/ospfd.conf</code>, 根据具体业务添加配置内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">frr version 7.2.1-sonic</span><br><span class="line">frr defaults traditional</span><br><span class="line">hostname lambda</span><br><span class="line">router ospf</span><br><span class="line"> network 192.168.1.0&#x2F;24 area 0</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置接口IP"><a href="#配置接口IP" class="headerlink" title="配置接口IP"></a>配置接口IP</h3><p>在SONiC命令行中可配置接口ip，命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config interface ip add 192.168.2.1&#x2F;24</span><br></pre></td></tr></table></figure>
+<p>zebra会通过netlink获取接口配置，反之在vty中配置接口ip不能同步到sonic。也可将配置写到配置文件中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&quot;INTERFACE&quot;: &#123;              </span><br><span class="line">        &quot;Ethernet1|192.168.1.1&#x2F;24&quot;: &#123;&#125;,</span><br><span class="line">        &quot;Ethernet2|192.168.2.1&#x2F;24&quot;: &#123;&#125;                                                                                                                                                                                                                                                                               </span><br><span class="line">    &#125;,      </span><br></pre></td></tr></table></figure>
+
+<p>配置完成之后，在vty中可以看到使能了ospf的接口：<br><img src="https://rancho333.gitee.io/pictures/ospf-interface.png"></p>
+<p>注意将接口的mtu配置成1500或者在ospf中关闭mtu check。</p>
+<h3 id="配置ASIC"><a href="#配置ASIC" class="headerlink" title="配置ASIC"></a>配置ASIC</h3><p>SONiC中默认ospf报文不送CPU，这可能和各家的SDK初始化实现有关。在broadcom下我们需要做一些配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">fp qset add ipprotocol</span><br><span class="line">fp group create 20 21				    (20是优先级， 21是group-id)</span><br><span class="line">fp entry create 21 3000				    （3000是entry-id，这是一个全局的值，注意不能重叠）</span><br><span class="line">fp qual  3000 ipprotocol 89 0xffff		(指定copy-to-cpu的协议特征)</span><br><span class="line">fp action add 3000 CopyToCpu 0 0		（对匹配到特征的协议指定动作）</span><br><span class="line">fp entry install 3000					（使能配置）</span><br><span class="line">fp show entry 3000                        （验证配置）</span><br></pre></td></tr></table></figure>
+<p>应当在ASIC中看到使能的配置：<br><img src="https://rancho333.gitee.io/pictures/ospf-asic.png"></p>
+<p>sonic中提供了copp功能配置sdk下发这些报文上CPU等的控制操作，受当前实验版本限制暂不做这方面深入研究。</p>
+<h3 id="功能验证"><a href="#功能验证" class="headerlink" title="功能验证"></a>功能验证</h3><p>查看邻居状态：<br><img src="https://rancho333.gitee.io/pictures/ospf-neighbour.png"></p>
+<p>查看数据库信息：<br><img src="https://rancho333.gitee.io/pictures/ospf-database.png"></p>
+<p>查看路由表：<br><img src="https://rancho333.gitee.io/pictures/ospf-route.png"></p>
+<p>ping测试：<br><img src="https://rancho333.gitee.io/pictures/ospf-ping.png"></p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>当前SONiC上ospf功能使能需要做三方面的配置：</p>
+<ol>
+<li>ospf自身，包括功能启用以及协议参数配置</li>
+<li>启用ospf协议的接口</li>
+<li>配置ASIC，协议报文上CPU</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2021/04/08/SONiC%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE%E7%AE%80%E8%BF%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -852,78 +947,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://rancho333.gitee.io/2021/02/09/mpls%E5%AD%A6%E4%B9%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/pictures/R-W.png">
-      <meta itemprop="name" content="Rancho">
-      <meta itemprop="description" content="No pain, no gain!">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Rancho Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/02/09/mpls%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">mpls学习</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-02-09 10:27:51" itemprop="dateCreated datePublished" datetime="2021-02-09T10:27:51+08:00">2021-02-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-04-07 14:57:17" itemprop="dateModified" datetime="2021-04-07T14:57:17+08:00">2021-04-07</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="MPLS简介"><a href="#MPLS简介" class="headerlink" title="MPLS简介"></a>MPLS简介</h1><p>MPLS(multiprotocol label switching，多协议标签交换)起源于IPv4，最初是为了提高转发速度而提出的（早期路由是只能由软件处理的），其核心技术可扩展到多种网络协议，包括IPv6，IPX(internet packet exchange，网际报文交换)和CLNP(connectionless network protocol,无连接网络协议)等。MPLS中的<em>M</em>指的就是支持多种网络协议。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/02/09/mpls%E5%AD%A6%E4%B9%A0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -995,7 +1018,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-count">44</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1049,7 +1072,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">全站共 59k 字</span>
+  <span class="post-count">全站共 59.6k 字</span>
 </div>
 
         
