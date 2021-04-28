@@ -755,13 +755,12 @@
     <title>SONiC中ARP测试用例简析</title>
     <url>/2021/04/26/SONiC%E4%B8%ADARP%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B%E7%AE%80%E6%9E%90/</url>
     <content><![CDATA[<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本文简要分析SONiC testbed中ARP测试用例的实现，作为对<a href="https://rancho333.gitee.io/2020/12/25/ARP%E5%8D%8F%E8%AE%AE%E7%AE%80%E8%BF%B0%E5%8F%8A%E5%BA%94%E7%94%A8/">ARP协议简述及应用</a>的补充。</p>
+<span id="more"></span>
 <h2 id="背景知识简述"><a href="#背景知识简述" class="headerlink" title="背景知识简述"></a>背景知识简述</h2><p>ARP直接基于以太帧进行封装，<code>type</code>类型为<code>0x0806</code>，报文很简单，只有两类：ARP request报文和ARP reply报文。其中request报文可分为三类：<br>    1. 单播request，参考rfc1122，一种arp缓存刷新机制<br>    2. 广播request，这也是常见的arp请求报文<br>    3. 免费arp报文，sender ip和destination ip相同</p>
-<h2 id="测试用例简析"><a href="#测试用例简析" class="headerlink" title="测试用例简析"></a>测试用例简析</h2><p>测试拓扑抽象简化如下：</p>
-<p><img src="https://rancho333.gitee.io/pictures/arp_test_topology.png"></p>
-<p>在<code>sonic-mgmt/tests/arp</code>下共有4个测试文件：</p>
+<h2 id="测试用例简析"><a href="#测试用例简析" class="headerlink" title="测试用例简析"></a>测试用例简析</h2><p>在<code>sonic-mgmt/tests/arp</code>下共有4个测试文件：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">test_arpall.py</span><br><span class="line">test_neighbor_mac_noptf.py</span><br><span class="line">test_neighbor_mac.py</span><br><span class="line">test_wr_arp.py</span><br></pre></td></tr></table></figure>
 <p>本文会分析<code>test_arpall.py</code>文件，对于其它三个文件会简要说明一下，最后对测试失败的<code>test_wr_arp.py</code>做一个分析。</p>
-<p><code>test_arpall.py</code>中设计了5中测试用例：</p>
+<p><code>test_arpall.py</code>中设计了5种测试用例：</p>
 <ol>
 <li>发送单播arp request</li>
 <li>发送广播arp request</li>
