@@ -3125,6 +3125,8 @@
     <title>SONiC中Vxlan-decap测试用例简析</title>
     <url>/2021/04/28/SONiC%E4%B8%ADVxlan-decap%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B%E7%AE%80%E6%9E%90/</url>
     <content><![CDATA[<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本文简要分析SONiC testbed中Vxlan decap测试用例的实现，作为对<a href="https://rancho333.gitee.io/2021/02/03/vxlan%E5%AD%A6%E4%B9%A0/">vxlan学习</a>的补充。</p>
+<span id="more"></span>
+
 <h2 id="背景简述"><a href="#背景简述" class="headerlink" title="背景简述"></a>背景简述</h2><p>Vxlan技术的本质是通过overlay实现一个vm无感知的大二层网络，一般用于数据中心，好处是vm迁移时可以保持IP不变（再辅以一些技术手段可以保持业务不中断）,换种方式说，vm可以在任意物理主机上实现和网关的二层互通。</p>
 <h2 id="测试用例简析"><a href="#测试用例简析" class="headerlink" title="测试用例简析"></a>测试用例简析</h2><p>在<code>sonic-mgmt/tests/vxlan</code>下共有5个测试文件：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">test_vnet_route_leak.py</span><br><span class="line">test_vnet_vxlan.py</span><br><span class="line">test_vxlan_decap.py</span><br><span class="line">vnet_constants.py</span><br><span class="line">vnet_utils.py</span><br></pre></td></tr></table></figure>
